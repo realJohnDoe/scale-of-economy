@@ -15,6 +15,9 @@ const circlesData: CircleData[] = [
   { id: 4, name: "A Village", numberOfPersons: 200 },
   { id: 5, name: "Town", numberOfPersons: 10000 },
   { id: 6, name: "City", numberOfPersons: 1000000 },
+  { id: 7, name: "Walmart", numberOfPersons: 2000000 },
+  { id: 8, name: "Germany", numberOfPersons: 80000000 },
+  { id: 9, name: "Bosch", numberOfPersons: 400000 },
 ];
 
 // --- Pure Geometric Calculation Function ---
