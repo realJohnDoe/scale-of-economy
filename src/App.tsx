@@ -1,5 +1,3 @@
-import React from "react";
-
 function App() {
   type Circle = {
     area: number;
