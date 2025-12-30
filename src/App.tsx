@@ -87,6 +87,12 @@ const circlesData: CircleData[] = [
     numberOfPersons: 1000000000,
     yearlyTurnOver: 3000000000000,
   },
+  {
+    id: 18,
+    name: "Stuttgart",
+    numberOfPersons: 612000,
+    yearlyTurnOver: 59000000000,
+  },
 ];
 
 // --- Helper Functions ---
