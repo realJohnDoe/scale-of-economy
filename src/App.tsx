@@ -10,13 +10,14 @@ const circlesData: { area: number }[] = [
   { area: 2 },
   { area: 10 },
 ];
-const baseDiameter = 7; // rem
 const fixedDistance = 3; // rem
 const anchorArea = 2;
 
 // --- Helper Functions ---
-const getRadius = (area: number): number =>
-  (baseDiameter * Math.sqrt(area)) / 2;
+function getRadius(area: number): number {
+  const baseDiameter = 7; // rem
+  return (baseDiameter * Math.sqrt(area)) / 2;
+}
 
 const calculateDeltaX = (area1: number, area2: number): number => {
   const r1 = getRadius(area1);
