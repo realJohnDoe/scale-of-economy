@@ -39,24 +39,49 @@ const circlesData: CircleData[] = [
     numberOfPersons: 400000,
     yearlyTurnOver: 90000000000,
   },
+  {
+    id: 10,
+    name: "China",
+    numberOfPersons: 1000000000,
+    yearlyTurnOver: 40000000000000,
+  },
+  {
+    id: 11,
+    name: "India",
+    numberOfPersons: 1000000000,
+    yearlyTurnOver: 20000000000000,
+  },
+  {
+    id: 12,
+    name: "World",
+    numberOfPersons: 8000000000,
+    yearlyTurnOver: 100000000000000,
+  },
 ];
 
 // --- Helper Functions ---
-function formatNumberCompact(num: number, isCurrency: boolean = false): string {
+function formatToOneSignificantDigit(
+  num: number,
+  isCurrency: boolean = false
+): string {
   if (num === 0) return isCurrency ? "$0" : "0";
+
+  const power = Math.floor(Math.log10(Math.abs(num)));
+  const factor = 10 ** power;
+  const rounded = Math.round(num / factor) * factor;
 
   const options: Intl.NumberFormatOptions = {
     notation: "compact",
     compactDisplay: "short",
-    maximumFractionDigits: 1, // At most 1 decimal
+    maximumFractionDigits: 0,
   };
 
   if (isCurrency) {
     options.style = "currency";
-    options.currency = "USD"; // Assuming USD
+    options.currency = "USD";
   }
 
-  return new Intl.NumberFormat("en-US", options).format(num);
+  return new Intl.NumberFormat("en-US", options).format(rounded);
 }
 
 // --- Pure Geometric Calculation Function ---
@@ -168,7 +193,13 @@ function App() {
 
         // Calculate daily turnover
         const dailyTurnover = circle.yearlyTurnOver / 365;
-        const formattedDailyTurnover = formatNumberCompact(dailyTurnover, true);
+        const formattedDailyTurnover = formatToOneSignificantDigit(
+          dailyTurnover,
+          true
+        );
+        const formattedPersons = formatToOneSignificantDigit(
+          circle.numberOfPersons
+        );
 
         return (
           <div
@@ -196,15 +227,15 @@ function App() {
                     lineHeight: "1",
                   }}
                 >
-                  Persons: {formatNumberCompact(circle.numberOfPersons)}
+                  Persons: {formattedPersons}
                 </span>
                 <span
                   style={{
-                    fontSize: `0.75rem`, // Smaller font for daily turnover
+                    fontSize: `0.75rem`,
                     lineHeight: "1",
                   }}
                 >
-                  Turnover: {formattedDailyTurnover}
+                  Daily Turnover: {formattedDailyTurnover}
                 </span>
               </div>
             </div>
