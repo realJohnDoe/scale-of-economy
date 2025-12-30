@@ -1,18 +1,25 @@
 import React from "react";
 
 // --- Types ---
-type Circle = {
+type CircleData = {
   id: number;
+  name: string;
+  numberOfPersons: number;
+};
+
+type PositionedCircle = {
+  id: number;
+  name: string;
   area: number;
   posX: number; // in units of the selected circle's radius
 };
 
 // --- Constants ---
-const circlesData: { id: number; area: number }[] = [
-  { id: 1, area: 1 },
-  { id: 2, area: 2 },
-  { id: 3, area: 10 },
-  { id: 4, area: 50 },
+const circlesData: CircleData[] = [
+  { id: 1, name: "Team A", numberOfPersons: 1 },
+  { id: 2, name: "Team B", numberOfPersons: 2 },
+  { id: 3, name: "Team C", numberOfPersons: 10 },
+  { id: 4, name: "Team D", numberOfPersons: 50 },
 ];
 
 // --- Helper Functions ---
@@ -32,47 +39,48 @@ function calculateDeltaX(area1: number, area2: number): number {
 
 // --- Main Calculation Function ---
 function calculatePositions(
-  circles: { id: number; area: number }[],
+  circles: CircleData[],
   selectedId: number
-): Circle[] {
+): PositionedCircle[] {
+  const getArea = (c: CircleData) => c.numberOfPersons;
+
   const anchorCircle = circles.find((c) => c.id === selectedId);
   if (!anchorCircle) {
     console.error("Selected circle not found in data!");
     return [];
   }
 
-  const selectedCircleRadius = getRadius(anchorCircle.area); // This is our unit
+  const selectedCircleRadius = getRadius(getArea(anchorCircle)); // This is our unit
 
-  const sortedByArea = [...circles].sort((a, b) => a.area - b.area);
+  const sortedByArea = [...circles].sort((a, b) => getArea(a) - getArea(b));
   const anchorIndex = sortedByArea.findIndex((c) => c.id === selectedId);
 
-  // This check should be redundant due to the one above, but it's good practice
   if (anchorIndex === -1) return [];
 
   const posXValues: { [id: number]: number } = { [selectedId]: 0 };
   let currentPosRem = 0;
 
-  // Calculate posX for circles to the right of the anchor in the sorted list
   for (let i = anchorIndex + 1; i < sortedByArea.length; i++) {
     currentPosRem += calculateDeltaX(
-      sortedByArea[i - 1].area,
-      sortedByArea[i].area
+      getArea(sortedByArea[i - 1]),
+      getArea(sortedByArea[i])
     );
     posXValues[sortedByArea[i].id] = currentPosRem / selectedCircleRadius;
   }
 
-  // Calculate posX for circles to the left of the anchor in the sorted list
   currentPosRem = 0;
   for (let i = anchorIndex - 1; i >= 0; i--) {
     currentPosRem -= calculateDeltaX(
-      sortedByArea[i].area,
-      sortedByArea[i + 1].area
+      getArea(sortedByArea[i]),
+      getArea(sortedByArea[i + 1])
     );
     posXValues[sortedByArea[i].id] = currentPosRem / selectedCircleRadius;
   }
 
   return circles.map((c) => ({
-    ...c,
+    id: c.id,
+    name: c.name,
+    area: getArea(c),
     posX: posXValues[c.id],
   }));
 }
@@ -84,7 +92,7 @@ function App() {
   const positionedCircles = calculatePositions(circlesData, selectedId);
   const selectedCircle = circlesData.find((c) => c.id === selectedId);
   const selectedCircleRadius = selectedCircle
-    ? getRadius(selectedCircle.area)
+    ? getRadius(selectedCircle.numberOfPersons)
     : 0;
 
   return (
@@ -96,7 +104,7 @@ function App() {
           width: `${diameter}rem`,
           height: `${diameter}rem`,
           left: `calc(50% + ${circle.posX * selectedCircleRadius}rem)`,
-          transition: 'all 0.5s ease-in-out', // Added this line
+          transition: 'all 0.5s ease-in-out',
         };
         const fontSize = 1.5 * Math.sqrt(circle.area);
         const isSelected = circle.id === selectedId;
@@ -107,10 +115,10 @@ function App() {
             key={circle.id}
             onClick={() => setSelectedId(circle.id)}
             style={style}
-            className={`${bgColor} rounded-full flex justify-center items-center text-black font-bold absolute bottom-[10vh] -translate-x-1/2 cursor-pointer`}
+            className={`${bgColor} rounded-full flex justify-center items-center text-black font-bold absolute bottom-[10vh] -translate-x-1/2 cursor-pointer p-2 text-center`}
           >
             <span style={{ fontSize: `${fontSize}rem`, lineHeight: "1" }}>
-              {circle.area}
+              {circle.name}
             </span>
           </div>
         );
