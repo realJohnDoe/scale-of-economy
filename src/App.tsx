@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // --- Types ---
 type Circle = {
@@ -12,6 +12,7 @@ const circlesData: { id: number; area: number }[] = [
   { id: 1, area: 1 },
   { id: 2, area: 2 },
   { id: 3, area: 10 },
+  { id: 4, area: 50 },
 ];
 
 // --- Helper Functions ---
@@ -34,7 +35,7 @@ function calculatePositions(
   circles: { id: number; area: number }[],
   selectedId: number
 ): Circle[] {
-  const anchorCircle = circles.find(c => c.id === selectedId);
+  const anchorCircle = circles.find((c) => c.id === selectedId);
   if (!anchorCircle) {
     console.error("Selected circle not found in data!");
     return [];
@@ -81,8 +82,10 @@ function App() {
   const [selectedId, setSelectedId] = React.useState(2); // Default selection
 
   const positionedCircles = calculatePositions(circlesData, selectedId);
-  const selectedCircle = circlesData.find(c => c.id === selectedId);
-  const selectedCircleRadius = selectedCircle ? getRadius(selectedCircle.area) : 0;
+  const selectedCircle = circlesData.find((c) => c.id === selectedId);
+  const selectedCircleRadius = selectedCircle
+    ? getRadius(selectedCircle.area)
+    : 0;
 
   return (
     <div className="relative w-screen h-screen">
@@ -96,7 +99,7 @@ function App() {
         };
         const fontSize = 1.5 * Math.sqrt(circle.area);
         const isSelected = circle.id === selectedId;
-        const bgColor = isSelected ? 'bg-yellow-400' : 'bg-gray-500';
+        const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-500";
 
         return (
           <div
