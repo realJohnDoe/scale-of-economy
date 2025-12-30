@@ -7,14 +7,6 @@ type CircleData = {
   numberOfPersons: number;
 };
 
-type PositionedCircle = {
-  id: number;
-  name: string;
-  numberOfPersons: number;
-  posX: number; // in units of the selected circle's on-screen radius
-  diameter: number; // final on-screen diameter in rem
-};
-
 // --- Constants ---
 const circlesData: CircleData[] = [
   { id: 1, name: "You", numberOfPersons: 1 },
@@ -22,98 +14,104 @@ const circlesData: CircleData[] = [
   { id: 3, name: "Your Friends", numberOfPersons: 30 },
   { id: 4, name: "A Village", numberOfPersons: 200 },
 ];
-const targetSelectedDiameter = 10; // rem
 
-// --- Helper Functions ---
-function calculateDeltaX(r1: number, r2: number): number {
-  const fixedDistance = 3; // rem
-  const hypotenuse = r1 + fixedDistance + r2;
-  const vertical = Math.abs(r1 - r2);
-  return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
-}
-
-// --- Main Calculation Function ---
+// --- Pure Geometric Calculation Function ---
 function calculatePositions(
-  circles: CircleData[],
-  selectedId: number
-): PositionedCircle[] {
-  const anchorCircleData = circles.find((c) => c.id === selectedId);
-  if (!anchorCircleData) {
-    console.error("Selected circle not found in data!");
-    return [];
-  }
+  areas: number[],
+  selectedIndex: number,
+  targetDiameter: number,
+  fixedDist: number
+): number[] {
+  if (selectedIndex < 0 || selectedIndex >= areas.length) return [];
 
-  const getDisplayDiameter = (persons: number) =>
-    targetSelectedDiameter *
-    Math.sqrt(persons / anchorCircleData.numberOfPersons);
+  const anchorArea = areas[selectedIndex];
 
-  // Create an intermediate structure with on-screen diameters
-  const circlesWithDiams = circles.map((c) => ({
-    ...c,
-    diameter: getDisplayDiameter(c.numberOfPersons),
-  }));
+  const getDisplayDiameter = (area: number) => {
+    return targetDiameter * Math.sqrt(area / anchorArea);
+  };
 
-  const selectedCircleDisplayRadius = targetSelectedDiameter / 2; // This is our unit for posX
+  const calculateDeltaX = (d1: number, d2: number): number => {
+    const r1 = d1 / 2;
+    const r2 = d2 / 2;
+    const hypotenuse = r1 + fixedDist + r2;
+    const vertical = Math.abs(r1 - r2);
+    return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
+  };
 
-  const sortedByPersons = [...circlesWithDiams].sort(
-    (a, b) => a.numberOfPersons - b.numberOfPersons
-  );
-  const anchorIndex = sortedByPersons.findIndex((c) => c.id === selectedId);
-  if (anchorIndex === -1) return [];
+  const displayDiameters = areas.map(getDisplayDiameter);
+  const selectedCircleDisplayRadius = targetDiameter / 2;
 
-  const posXValues: { [id: number]: number } = { [selectedId]: 0 };
+  const sortedIndices = [...areas.keys()].sort((a, b) => areas[a] - areas[b]);
+  const anchorSortedIndex = sortedIndices.indexOf(selectedIndex);
+
+  const posXValues: number[] = new Array(areas.length);
+  posXValues[selectedIndex] = 0; // posX is in units of selected radius
   let currentPosRem = 0;
 
-  // Right of anchor
-  for (let i = anchorIndex + 1; i < sortedByPersons.length; i++) {
-    const r1 = sortedByPersons[i - 1].diameter / 2;
-    const r2 = sortedByPersons[i].diameter / 2;
-    currentPosRem += calculateDeltaX(r1, r2);
-    posXValues[sortedByPersons[i].id] =
-      currentPosRem / selectedCircleDisplayRadius;
+  // Right side of anchor in sorted list
+  for (let i = anchorSortedIndex + 1; i < sortedIndices.length; i++) {
+    const prevSortedIdx = sortedIndices[i - 1];
+    const currentSortedIdx = sortedIndices[i];
+    currentPosRem += calculateDeltaX(
+      displayDiameters[prevSortedIdx],
+      displayDiameters[currentSortedIdx]
+    );
+    posXValues[currentSortedIdx] = currentPosRem / selectedCircleDisplayRadius;
   }
 
-  // Left of anchor
+  // Left side of anchor in sorted list
   currentPosRem = 0;
-  for (let i = anchorIndex - 1; i >= 0; i--) {
-    const r1 = sortedByPersons[i].diameter / 2;
-    const r2 = sortedByPersons[i + 1].diameter / 2;
-    currentPosRem -= calculateDeltaX(r1, r2);
-    posXValues[sortedByPersons[i].id] =
-      currentPosRem / selectedCircleDisplayRadius;
+  for (let i = anchorSortedIndex - 1; i >= 0; i--) {
+    const prevSortedIdx = sortedIndices[i + 1];
+    const currentSortedIdx = sortedIndices[i];
+    currentPosRem -= calculateDeltaX(
+      displayDiameters[currentSortedIdx],
+      displayDiameters[prevSortedIdx]
+    );
+    posXValues[currentSortedIdx] = currentPosRem / selectedCircleDisplayRadius;
   }
 
-  return circles.map((c) => ({
-    ...c,
-    posX: posXValues[c.id],
-    diameter: getDisplayDiameter(c.numberOfPersons),
-  }));
+  return posXValues;
 }
 
 // --- The React Component ---
 function App() {
   const [selectedId, setSelectedId] = React.useState(2);
 
-  const positionedCircles = calculatePositions(circlesData, selectedId);
-  const selectedCircleRadius = targetSelectedDiameter / 2;
+  const targetDiameter = 10; // rem
+  const fixedDistance = 3; // rem
+
+  const areas = circlesData.map((c) => c.numberOfPersons);
+  const selectedIndex = circlesData.findIndex((c) => c.id === selectedId);
+
+  const posXValues = calculatePositions(
+    areas,
+    selectedIndex,
+    targetDiameter,
+    fixedDistance
+  );
+
+  const anchorPersons =
+    circlesData.find((c) => c.id === selectedId)?.numberOfPersons || 1;
+  const getDisplayDiameter = (persons: number) =>
+    targetDiameter * Math.sqrt(persons / anchorPersons);
 
   return (
     <div className="relative w-screen h-screen">
-      {positionedCircles.map((circle) => {
-        if (circle.posX === undefined) return null;
+      {circlesData.map((circle, index) => {
+        const posX = posXValues[index];
+        if (posX === undefined) return null;
+
+        const diameter = getDisplayDiameter(circle.numberOfPersons);
+        const selectedCircleRadius = targetDiameter / 2;
+
         const style = {
-          width: `${circle.diameter}rem`,
-          height: `${circle.diameter}rem`,
-          left: `calc(50% + ${circle.posX * selectedCircleRadius}rem)`,
+          width: `${diameter}rem`,
+          height: `${diameter}rem`,
+          left: `calc(50% + ${posX * selectedCircleRadius}rem)`,
           transition: "all 0.5s ease-in-out",
         };
-        const fontSize =
-          1.5 *
-          Math.sqrt(
-            circle.numberOfPersons /
-              (circlesData.find((c) => c.id === selectedId)?.numberOfPersons ||
-                1)
-          );
+        const fontSize = (1.5 * diameter) / targetDiameter;
         const isSelected = circle.id === selectedId;
         const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-500";
 
