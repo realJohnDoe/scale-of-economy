@@ -5,7 +5,7 @@ type CircleData = {
   id: number;
   name: string;
   numberOfPersons: number;
-  yearlyTurnOver: number;
+  yearlyTurnOver: number; // Explicitly declared
 };
 
 // --- Constants ---
@@ -59,7 +59,8 @@ function calculatePositions(
   const calculateDeltaX = (d1: number, d2: number): number => {
     const r1 = d1 / 2;
     const r2 = d2 / 2;
-    const hypotenuse = r1 + fixedDist + r2;
+    const fixedDistance = fixedDist; // Use passed in fixedDist
+    const hypotenuse = r1 + fixedDistance + r2;
     const vertical = Math.abs(r1 - r2);
     return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
   };
@@ -147,6 +148,11 @@ function App() {
         const isSelected = circle.id === selectedId;
         const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-500";
 
+        // Calculate daily turnover
+        const dailyTurnover = circle.yearlyTurnOver / 365;
+        const formattedDailyTurnover = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(dailyTurnover);
+
+
         return (
           <div
             key={circle.id}
@@ -174,6 +180,14 @@ function App() {
                   }}
                 >
                   {circle.numberOfPersons}
+                </span>
+                <span
+                  style={{
+                    fontSize: `0.6rem`, // Smaller font for daily turnover
+                    lineHeight: "1",
+                  }}
+                >
+                  {formattedDailyTurnover}
                 </span>
               </div>
             </div>
