@@ -63,6 +63,30 @@ const circlesData: CircleData[] = [
     numberOfPersons: 1,
     yearlyTurnOver: 300000000000,
   },
+  {
+    id: 14,
+    name: "USA",
+    numberOfPersons: 300000000,
+    yearlyTurnOver: 30000000000000,
+  },
+  {
+    id: 15,
+    name: "Amazon",
+    numberOfPersons: 2000000,
+    yearlyTurnOver: 600000000000,
+  },
+  {
+    id: 16,
+    name: "State Grid Corporation of China",
+    numberOfPersons: 1000000,
+    yearlyTurnOver: 500000000000,
+  },
+  {
+    id: 17,
+    name: "Africa",
+    numberOfPersons: 1000000000,
+    yearlyTurnOver: 3000000000000,
+  },
 ];
 
 // --- Helper Functions ---
@@ -80,14 +104,10 @@ function formatToOneSignificantDigit(
   const factor = 10 ** power;
   const rounded = Math.round(absNum / factor) * factor;
 
-  if (rounded >= 1.0e12)
-    return prefix + sign + rounded / 1.0e12 + " trillion";
-  if (rounded >= 1.0e9)
-    return prefix + sign + rounded / 1.0e9 + " billion";
-  if (rounded >= 1.0e6)
-    return prefix + sign + rounded / 1.0e6 + " million";
-  if (rounded >= 1.0e3)
-    return prefix + sign + rounded / 1.0e3 + " thousand";
+  if (rounded >= 1.0e12) return prefix + sign + rounded / 1.0e12 + " trillion";
+  if (rounded >= 1.0e9) return prefix + sign + rounded / 1.0e9 + " billion";
+  if (rounded >= 1.0e6) return prefix + sign + rounded / 1.0e6 + " million";
+  if (rounded >= 1.0e3) return prefix + sign + rounded / 1.0e3 + " thousand";
 
   return prefix + sign + rounded;
 }
