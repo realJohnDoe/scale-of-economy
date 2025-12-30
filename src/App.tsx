@@ -96,6 +96,7 @@ function App() {
           width: `${diameter}rem`,
           height: `${diameter}rem`,
           left: `calc(50% + ${circle.posX * selectedCircleRadius}rem)`,
+          transition: 'all 0.5s ease-in-out', // Added this line
         };
         const fontSize = 1.5 * Math.sqrt(circle.area);
         const isSelected = circle.id === selectedId;
