@@ -10,8 +10,9 @@ type CircleData = {
 type PositionedCircle = {
   id: number;
   name: string;
-  area: number;
+  area: number; // calculated from numberOfPersons
   posX: number; // in units of the selected circle's radius
+  numberOfPersons: number; // ADDED
 };
 
 // --- Constants ---
@@ -82,6 +83,7 @@ function calculatePositions(
     name: c.name,
     area: getArea(c),
     posX: posXValues[c.id],
+    numberOfPersons: c.numberOfPersons, // ADDED
   }));
 }
 
@@ -90,9 +92,9 @@ function App() {
   const [selectedId, setSelectedId] = React.useState(2); // Default selection
 
   const positionedCircles = calculatePositions(circlesData, selectedId);
-  const selectedCircle = circlesData.find((c) => c.id === selectedId);
+  const selectedCircle = positionedCircles.find((c) => c.id === selectedId);
   const selectedCircleRadius = selectedCircle
-    ? getRadius(selectedCircle.numberOfPersons)
+    ? getRadius(selectedCircle.area)
     : 0;
 
   return (
@@ -117,9 +119,14 @@ function App() {
             style={style}
             className={`${bgColor} rounded-full flex justify-center items-center text-black font-bold absolute bottom-[10vh] -translate-x-1/2 cursor-pointer p-2 text-center`}
           >
-            <span style={{ fontSize: `${fontSize}rem`, lineHeight: "1" }}>
-              {circle.name}
-            </span>
+            <div className="flex flex-col items-center"> {/* ADDED this div */}
+              <span style={{ fontSize: `${fontSize}rem`, lineHeight: "1" }}>
+                {circle.name}
+              </span>
+              <span style={{ fontSize: `${fontSize * 0.5}rem`, lineHeight: "1" }}> {/* Smaller font for number */}
+                {circle.numberOfPersons}
+              </span>
+            </div>
           </div>
         );
       })}
