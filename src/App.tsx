@@ -1,16 +1,18 @@
+import React from 'react';
+
 // --- Types ---
 type Circle = {
+  id: number;
   area: number;
-  posX: number; // in units of the center circle's radius
+  posX: number; // in units of the selected circle's radius
 };
 
 // --- Constants ---
-const circlesData: { area: number }[] = [
-  { area: 1 },
-  { area: 2 },
-  { area: 10 },
+const circlesData: { id: number; area: number }[] = [
+  { id: 1, area: 1 },
+  { id: 2, area: 2 },
+  { id: 3, area: 10 },
 ];
-const anchorArea = 2;
 
 // --- Helper Functions ---
 function getRadius(area: number): number {
@@ -28,66 +30,80 @@ function calculateDeltaX(area1: number, area2: number): number {
 }
 
 // --- Main Calculation Function ---
-function calculatePositions(circles: { area: number }[]): Circle[] {
-  const centerCircleRadius = getRadius(anchorArea); // This is our unit
-
-  const sortedByArea = [...circles].sort((a, b) => a.area - b.area);
-  const anchorIndex = sortedByArea.findIndex((c) => c.area === anchorArea);
-
-  if (anchorIndex === -1) {
-    console.error("Anchor circle not found in data!");
+function calculatePositions(
+  circles: { id: number; area: number }[],
+  selectedId: number
+): Circle[] {
+  const anchorCircle = circles.find(c => c.id === selectedId);
+  if (!anchorCircle) {
+    console.error("Selected circle not found in data!");
     return [];
   }
 
-  const posXValues: { [area: number]: number } = { [anchorArea]: 0 };
+  const selectedCircleRadius = getRadius(anchorCircle.area); // This is our unit
+
+  const sortedByArea = [...circles].sort((a, b) => a.area - b.area);
+  const anchorIndex = sortedByArea.findIndex((c) => c.id === selectedId);
+
+  // This check should be redundant due to the one above, but it's good practice
+  if (anchorIndex === -1) return [];
+
+  const posXValues: { [id: number]: number } = { [selectedId]: 0 };
   let currentPosRem = 0;
 
-  // Calculate posX for circles to the right of the anchor
+  // Calculate posX for circles to the right of the anchor in the sorted list
   for (let i = anchorIndex + 1; i < sortedByArea.length; i++) {
     currentPosRem += calculateDeltaX(
       sortedByArea[i - 1].area,
       sortedByArea[i].area
     );
-    posXValues[sortedByArea[i].area] = currentPosRem / centerCircleRadius;
+    posXValues[sortedByArea[i].id] = currentPosRem / selectedCircleRadius;
   }
 
-  // Calculate posX for circles to the left of the anchor
+  // Calculate posX for circles to the left of the anchor in the sorted list
   currentPosRem = 0;
   for (let i = anchorIndex - 1; i >= 0; i--) {
     currentPosRem -= calculateDeltaX(
       sortedByArea[i].area,
       sortedByArea[i + 1].area
     );
-    posXValues[sortedByArea[i].area] = currentPosRem / centerCircleRadius;
+    posXValues[sortedByArea[i].id] = currentPosRem / selectedCircleRadius;
   }
 
   return circles.map((c) => ({
     ...c,
-    posX: posXValues[c.area],
+    posX: posXValues[c.id],
   }));
 }
 
 // --- The React Component ---
 function App() {
-  const positionedCircles = calculatePositions(circlesData);
-  const centerCircleRadius = getRadius(anchorArea);
+  const [selectedId, setSelectedId] = React.useState(2); // Default selection
+
+  const positionedCircles = calculatePositions(circlesData, selectedId);
+  const selectedCircle = circlesData.find(c => c.id === selectedId);
+  const selectedCircleRadius = selectedCircle ? getRadius(selectedCircle.area) : 0;
 
   return (
     <div className="relative w-screen h-screen">
       {positionedCircles.map((circle) => {
+        if (circle.posX === undefined) return null;
         const diameter = getRadius(circle.area) * 2;
         const style = {
           width: `${diameter}rem`,
           height: `${diameter}rem`,
-          left: `calc(50% + ${circle.posX * centerCircleRadius}rem)`,
+          left: `calc(50% + ${circle.posX * selectedCircleRadius}rem)`,
         };
         const fontSize = 1.5 * Math.sqrt(circle.area);
+        const isSelected = circle.id === selectedId;
+        const bgColor = isSelected ? 'bg-yellow-400' : 'bg-gray-500';
 
         return (
           <div
-            key={circle.area}
+            key={circle.id}
+            onClick={() => setSelectedId(circle.id)}
             style={style}
-            className="bg-gray-500 rounded-full flex justify-center items-center text-white font-bold absolute bottom-[10vh] -translate-x-1/2"
+            className={`${bgColor} rounded-full flex justify-center items-center text-black font-bold absolute bottom-[10vh] -translate-x-1/2 cursor-pointer`}
           >
             <span style={{ fontSize: `${fontSize}rem`, lineHeight: "1" }}>
               {circle.area}
