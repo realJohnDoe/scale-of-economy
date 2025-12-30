@@ -70,24 +70,26 @@ function formatToOneSignificantDigit(
   num: number,
   isCurrency: boolean = false
 ): string {
-  if (num === 0) return isCurrency ? "$0" : "0";
+  const prefix = isCurrency ? "$" : "";
+  if (num === 0) return prefix + "0";
 
-  const power = Math.floor(Math.log10(Math.abs(num)));
+  const absNum = Math.abs(num);
+  const sign = num < 0 ? "-" : "";
+
+  const power = Math.floor(Math.log10(absNum));
   const factor = 10 ** power;
-  const rounded = Math.round(num / factor) * factor;
+  const rounded = Math.round(absNum / factor) * factor;
 
-  const options: Intl.NumberFormatOptions = {
-    notation: "compact",
-    compactDisplay: "long",
-    maximumFractionDigits: 0,
-  };
+  if (rounded >= 1.0e12)
+    return prefix + sign + rounded / 1.0e12 + " trillion";
+  if (rounded >= 1.0e9)
+    return prefix + sign + rounded / 1.0e9 + " billion";
+  if (rounded >= 1.0e6)
+    return prefix + sign + rounded / 1.0e6 + " million";
+  if (rounded >= 1.0e3)
+    return prefix + sign + rounded / 1.0e3 + " thousand";
 
-  if (isCurrency) {
-    options.style = "currency";
-    options.currency = "USD";
-  }
-
-  return new Intl.NumberFormat("en-US", options).format(rounded);
+  return prefix + sign + rounded;
 }
 
 // --- Pure Geometric Calculation Function ---
