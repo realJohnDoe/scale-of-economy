@@ -5,19 +5,40 @@ type CircleData = {
   id: number;
   name: string;
   numberOfPersons: number;
+  yearlyTurnOver: number;
 };
 
 // --- Constants ---
 const circlesData: CircleData[] = [
-  { id: 1, name: "You", numberOfPersons: 1 },
-  { id: 2, name: "Your Family", numberOfPersons: 4 },
-  { id: 3, name: "Your Friends", numberOfPersons: 30 },
-  { id: 4, name: "A Village", numberOfPersons: 200 },
-  { id: 5, name: "Town", numberOfPersons: 10000 },
-  { id: 6, name: "City", numberOfPersons: 1000000 },
-  { id: 7, name: "Walmart", numberOfPersons: 2000000 },
-  { id: 8, name: "Germany", numberOfPersons: 80000000 },
-  { id: 9, name: "Bosch", numberOfPersons: 400000 },
+  { id: 1, name: "You", numberOfPersons: 1, yearlyTurnOver: 40000 },
+  { id: 2, name: "Your Family", numberOfPersons: 4, yearlyTurnOver: 90000 },
+  { id: 3, name: "Your Friends", numberOfPersons: 30, yearlyTurnOver: 1000000 },
+  { id: 4, name: "A Village", numberOfPersons: 200, yearlyTurnOver: 10000000 },
+  { id: 5, name: "Town", numberOfPersons: 10000, yearlyTurnOver: 400000000 },
+  {
+    id: 6,
+    name: "City",
+    numberOfPersons: 1000000,
+    yearlyTurnOver: 40000000000,
+  },
+  {
+    id: 7,
+    name: "Walmart",
+    numberOfPersons: 2000000,
+    yearlyTurnOver: 700000000000,
+  },
+  {
+    id: 8,
+    name: "Germany",
+    numberOfPersons: 80000000,
+    yearlyTurnOver: 5000000000000,
+  },
+  {
+    id: 9,
+    name: "Bosch",
+    numberOfPersons: 400000,
+    yearlyTurnOver: 90000000000,
+  },
 ];
 
 // --- Pure Geometric Calculation Function ---
