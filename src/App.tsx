@@ -146,7 +146,7 @@ function App() {
               key={circle.id}
               onClick={() => setSelectedId(circle.id)}
               style={wrapperStyle}
-              className="absolute bottom-[10vh] -translate-x-1/2 cursor-pointer"
+              className="absolute bottom-[20vh] -translate-x-1/2 cursor-pointer"
             >
               <div style={innerStyle} className="origin-bottom">
                 <Circle
