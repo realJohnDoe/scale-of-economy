@@ -67,7 +67,7 @@ const Circle: React.FC<CircleProps> = ({
 
   return (
     <div
-      className={`${bgColor} rounded-full flex justify-center items-center text-black font-bold p-2 text-center w-full h-full`}
+      className={`${bgColor} rounded-full flex justify-center items-center text-black font-bold p-2 text-center w-full h-full transition-colors duration-500 ease-in-out`}
     >
       <div className="flex flex-col items-center">
         <span
