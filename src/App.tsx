@@ -101,7 +101,7 @@ function App() {
 
   return (
     <>
-      <div className="absolute top-4 left-1/2 text-white -translate-x-1/2 text-3xl font-bold z-10">
+      <div className="absolute top-8 left-1/2 text-white -translate-x-1/2 text-3xl font-bold z-10">
         How many people are...
       </div>
       <Dropdown
