@@ -112,6 +112,7 @@ function App() {
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver"
   >("numberOfPersons");
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const targetDiameter = 20; // rem
   const fixedDistance = 3; // rem
@@ -133,24 +134,39 @@ function App() {
 
   return (
     <>
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 text-3xl font-bold z-10">
+      <div className="absolute top-4 left-1/2 text-black -translate-x-1/2 text-3xl font-bold z-10">
         How many people are...
       </div>
       <div className="absolute top-4 left-4 z-10">
-        <label htmlFor="orderBy" className="text-white mr-2">
-          Order by:
-        </label>
-        <select
-          id="orderBy"
-          value={orderBy}
-          onChange={(e) =>
-            setOrderBy(e.target.value as "numberOfPersons" | "yearlyTurnOver")
-          }
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="bg-gray-700 text-white rounded p-2"
         >
-          <option value="numberOfPersons">Number of Persons</option>
-          <option value="yearlyTurnOver">Yearly Turnover</option>
-        </select>
+          <img src="/src/icon.svg" alt="order by" className="w-6 h-6" />
+        </button>
+        {isMenuOpen && (
+          <div className="absolute top-12 left-0 bg-gray-700 text-white rounded p-2">
+            <div className="font-bold mb-2">Circle Size by...</div>
+            <div
+              onClick={() => {
+                setOrderBy("numberOfPersons");
+                setIsMenuOpen(false);
+              }}
+              className="cursor-pointer p-1 hover:bg-gray-600"
+            >
+              Number of Persons
+            </div>
+            <div
+              onClick={() => {
+                setOrderBy("yearlyTurnOver");
+                setIsMenuOpen(false);
+              }}
+              className="cursor-pointer p-1 hover:bg-gray-600"
+            >
+              Yearly Turnover
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="relative w-screen h-screen">
