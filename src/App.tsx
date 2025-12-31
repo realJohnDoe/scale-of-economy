@@ -14,7 +14,7 @@ function formatToTwoSignificantDigits(
 
   const options: Intl.NumberFormatOptions = {
     maximumSignificantDigits: 2,
-    minimumSignificantDigits: 1 // Ensure at least one digit is shown
+    minimumSignificantDigits: 1, // Ensure at least one digit is shown
   };
 
   let formatted = absNum.toLocaleString(undefined, options);
@@ -42,7 +42,7 @@ function formatToTwoSignificantDigits(
 
   // Format the scaled number for the suffix, ensuring two significant digits
   formatted = scaledNum.toLocaleString(undefined, options);
-  
+
   return prefix + sign + formatted + suffix;
 }
 
@@ -133,6 +133,9 @@ function App() {
 
   return (
     <>
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 text-3xl font-bold z-10">
+        How many people are...
+      </div>
       <div className="absolute top-4 left-4 z-10">
         <label htmlFor="orderBy" className="text-white mr-2">
           Order by:
