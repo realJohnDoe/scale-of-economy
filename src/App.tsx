@@ -1,5 +1,5 @@
 import React from "react";
-import { type CircleData, circlesData } from "./data";
+import { circlesData } from "./data";
 
 // --- Helper Functions ---
 function formatToOneSignificantDigit(
