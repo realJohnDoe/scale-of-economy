@@ -79,7 +79,16 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
             </div>
           )}
           {imageFileName && ( // Always show name if image, regardless of selection
-            <div className="text-2xl">{name}</div>
+            <div className="text-2xl">
+              {name}
+              <span
+                className={`transition-opacity duration-500 ease-in-out ${
+                  isSelected ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                ?
+              </span>
+            </div>
           )}
         </div>
       ) : null}
@@ -95,7 +104,16 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
             className="absolute inset-0 w-full h-full object-cover rounded-full z-0"
           />
         ) : (
-          <span className="text-2xl leading-none">{name}</span>
+          <span className="text-2xl leading-none">
+            {name}
+            <span
+              className={`transition-opacity duration-500 ease-in-out ${
+                isSelected ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              ?
+            </span>
+          </span>
         )}
       </div>
 
