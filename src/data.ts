@@ -103,7 +103,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1400000000,
     yearlyTurnOver: 19000000000000,
     predicate: "living in",
-    imageFileName: null,
+    imageFileName: "images/china.png",
     sources: [],
   },
   {
@@ -112,7 +112,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1430000000,
     yearlyTurnOver: 4200000000000,
     predicate: "living in",
-    imageFileName: null,
+    imageFileName: "images/india.png",
     sources: [],
   },
   {
@@ -139,7 +139,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 340000000,
     yearlyTurnOver: 30600000000000,
     predicate: "living in the",
-    imageFileName: null,
+    imageFileName: "images/usa.png",
     sources: [],
   },
   {
@@ -175,7 +175,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 612000,
     yearlyTurnOver: 59000000000,
     predicate: "living in",
-    imageFileName: null,
+    imageFileName: "images/stuttgart.png",
     sources: [],
   },
   {
@@ -214,7 +214,23 @@ export const circlesData: CircleData[] = [
     predicate: "living in",
     numberOfPersons: 32862000,
     yearlyTurnOver: 205000000000,
-    imageFileName: null,
-    sources: []
+    imageFileName: "images/ukraine.png",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/Ukraine"
+    }
+    ]
+  },
+  {
+    id: 23,
+    name: "European Union",
+    predicate: "living in the",
+    numberOfPersons: 450000000,
+    yearlyTurnOver: 21000000000000,
+    imageFileName: "images/eu.png",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/European_Union"
+    }]
   }
 ];
