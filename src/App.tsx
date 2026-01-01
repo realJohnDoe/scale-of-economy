@@ -89,13 +89,6 @@ function App() {
   const getDisplayDiameter = (value: number) =>
     targetDiameter * Math.sqrt(value / anchorValue);
 
-  const overlayPadding = 4; // rem
-  const overlayWidth = targetDiameter + overlayPadding;
-  const overlayStyle: React.CSSProperties = {
-    left: `calc(50% - ${overlayWidth / 2}rem)`,
-    width: `${overlayWidth}rem`,
-  };
-
   return (
     <>
       <div className="absolute top-8 left-1/2 text-white -translate-x-1/2 text-3xl font-bold z-10">
@@ -109,10 +102,7 @@ function App() {
       />
 
       {selectedId && (
-        <div
-          className="absolute rounded-lg bg-gray-700 bg-opacity-30 top-4 bottom-4 z-0"
-          style={overlayStyle}
-        ></div>
+        <div className="absolute rounded-lg bg-gray-700 bg-opacity-30 top-4 bottom-4 z-0 w-96 left-1/2 -translate-x-1/2"></div>
       )}
 
       <div className="relative w-screen h-screen">
