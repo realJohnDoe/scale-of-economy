@@ -27,7 +27,7 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 2,
-    name: "Your Family",
+    name: "A typical Family",
     numberOfPersons: 4,
     yearlyTurnOver: 90000,
     predicate: "living in",
@@ -36,7 +36,7 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 3,
-    name: "Your Friends",
+    name: "A typical circle of friends",
     numberOfPersons: 30,
     yearlyTurnOver: 1000000,
     predicate: null,
@@ -45,7 +45,7 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 4,
-    name: "A Village",
+    name: "A typical Village",
     numberOfPersons: 200,
     yearlyTurnOver: 10000000,
     predicate: "living in",
@@ -63,7 +63,7 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 6,
-    name: "City",
+    name: "A typical City",
     numberOfPersons: 1000000,
     yearlyTurnOver: 40000000000,
     predicate: "living in",
@@ -198,5 +198,14 @@ export const circlesData: CircleData[] = [
       name: "Wikipedia",
       url: "https://en.wikipedia.org/wiki/Malawi"
     }]
+  },
+  {
+    id: 21,
+    name: "A typical Super Market",
+    predicate: "working at",
+    numberOfPersons: 20,
+    yearlyTurnOver: 10000000,
+    imageFileName: null,
+    sources: []
   }
 ];
