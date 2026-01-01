@@ -67,13 +67,19 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
   return (
     <div className="relative w-full h-full">
       {/* Top text container */}
-      {(isSelected && predicate) || imageFileName ? (
+      {predicate || imageFileName ? (
         <div className="absolute bottom-full mb-2 text-primary text-lg font-bold text-center w-max left-1/2 -translate-x-1/2">
-          {isSelected && predicate && (
-            <div className="mb-1">{predicate}</div> // Added margin-bottom
+          {predicate && (
+            <div
+              className={`transition-opacity duration-500 ease-in-out ${
+                isSelected ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {predicate}
+            </div>
           )}
           {imageFileName && ( // Always show name if image, regardless of selection
-            <div>{name}</div>
+            <div>{name}?</div>
           )}
         </div>
       ) : null}
