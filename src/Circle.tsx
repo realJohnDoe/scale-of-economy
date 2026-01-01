@@ -52,7 +52,7 @@ interface CircleProps {
 }
 
 const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
-  const { name, numberOfPersons, yearlyTurnOver, predicate } = circle;
+  const { name, numberOfPersons, yearlyTurnOver, predicate, imageFileName } = circle;
   const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-500";
 
   // Calculate daily turnover and format numbers here
@@ -78,9 +78,17 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
 
       {/* The actual circle content */}
       <div
-        className={`${bgColor} rounded-full flex justify-center items-center text-white font-bold p-2 text-center w-full h-full transition-colors duration-500 ease-in-out`}
+        className={`${bgColor} rounded-full flex justify-center items-center text-white font-bold p-2 text-center w-full h-full transition-colors duration-500 ease-in-out relative overflow-hidden`}
       >
-        <span // Only the name remains inside the circle
+        {imageFileName && (
+          <img
+            src={`/${imageFileName}`}
+            alt={name}
+            className="absolute inset-0 w-full h-full object-cover rounded-full z-0"
+          />
+        )}
+        <span
+          className="relative z-10"
           style={{
             fontSize: `1.5rem`,
             lineHeight: "1",
