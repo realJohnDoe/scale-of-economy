@@ -1,4 +1,5 @@
 import React from "react";
+import { type CircleData } from "./data"; // Import CircleData type
 
 // --- Helper Functions ---
 function formatToTwoSignificantDigits(
@@ -46,18 +47,12 @@ function formatToTwoSignificantDigits(
 }
 
 interface CircleProps {
-  name: string;
-  numberOfPersons: number;
-  yearlyTurnOver: number;
+  circle: CircleData;
   isSelected: boolean;
 }
 
-const Circle: React.FC<CircleProps> = ({
-  name,
-  numberOfPersons,
-  yearlyTurnOver,
-  isSelected,
-}) => {
+const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
+  const { name, numberOfPersons, yearlyTurnOver, predicate } = circle;
   const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-500";
 
   // Calculate daily turnover and format numbers here
@@ -70,6 +65,17 @@ const Circle: React.FC<CircleProps> = ({
 
   return (
     <div className="relative w-full h-full">
+      {/* Predicate above the circle */}
+      {isSelected && predicate && (
+        <div
+          className={`absolute bottom-full mb-2 text-white text-lg font-bold text-center w-max left-1/2 -translate-x-1/2 transition-opacity duration-500 ease-in-out ${
+            isSelected ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {predicate}
+        </div>
+      )}
+
       {/* The actual circle content */}
       <div
         className={`${bgColor} rounded-full flex justify-center items-center text-white font-bold p-2 text-center w-full h-full transition-colors duration-500 ease-in-out`}

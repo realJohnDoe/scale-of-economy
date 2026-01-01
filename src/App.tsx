@@ -136,12 +136,7 @@ function App() {
               className="absolute bottom-[20vh] -translate-x-1/2 cursor-pointer"
             >
               <div style={innerStyle} className="origin-bottom">
-                <Circle
-                  name={circle.name}
-                  numberOfPersons={circle.numberOfPersons}
-                  yearlyTurnOver={circle.yearlyTurnOver}
-                  isSelected={isSelected}
-                />
+                <Circle circle={circle} isSelected={isSelected} />
               </div>
             </div>
           );
