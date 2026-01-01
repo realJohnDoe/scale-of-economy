@@ -68,7 +68,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
     <div className="relative w-full h-full">
       {/* Top text container */}
       {predicate || imageFileName ? (
-        <div className="absolute bottom-full mb-2 text-primary text-lg font-bold text-center w-max left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-full mb-2 text-primary text-xl font-bold text-center w-max left-1/2 -translate-x-1/2">
           {predicate && (
             <div
               className={`transition-opacity duration-500 ease-in-out ${
@@ -79,7 +79,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
             </div>
           )}
           {imageFileName && ( // Always show name if image, regardless of selection
-            <div>{name}?</div>
+            <div className="text-2xl">{name}</div>
           )}
         </div>
       ) : null}
@@ -95,14 +95,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
             className="absolute inset-0 w-full h-full object-cover rounded-full z-0"
           />
         ) : (
-          <span
-            style={{
-              fontSize: `1.5rem`,
-              lineHeight: "1",
-            }}
-          >
-            {name}
-          </span>
+          <span className="text-2xl leading-none">{name}</span>
         )}
       </div>
 
@@ -112,9 +105,9 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
           isSelected ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div>{formattedPersons},</div>
+        <div className="text-2xl">{formattedPersons},</div>
         <div>with a daily turnover of</div>
-        <div>{formattedDailyTurnover}</div>
+        <div className="text-2xl">{formattedDailyTurnover}</div>
       </div>
     </div>
   );
