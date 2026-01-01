@@ -106,8 +106,9 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
           isSelected ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div>Persons: {formattedPersons}</div>
-        <div>Daily Turnover: {formattedDailyTurnover}</div>
+        <div>{formattedPersons},</div>
+        <div>with a daily turnover of</div>
+        <div>{formattedDailyTurnover}</div>
       </div>
     </div>
   );
