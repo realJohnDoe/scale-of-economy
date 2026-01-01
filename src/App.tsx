@@ -7,8 +7,7 @@ import Circle from "./Circle";
 function calculatePositions(
   areas: number[],
   selectedIndex: number,
-  targetDiameter: number,
-  fixedDist: number
+  targetDiameter: number
 ): number[] {
   if (selectedIndex < 0 || selectedIndex >= areas.length) return [];
 
@@ -21,7 +20,7 @@ function calculatePositions(
   const calculateDeltaX = (d1: number, d2: number): number => {
     const r1 = d1 / 2;
     const r2 = d2 / 2;
-    const fixedDistance = fixedDist; // Use passed in fixedDist
+    const fixedDistance = 2; // Use passed in fixedDist
     const hypotenuse = r1 + fixedDistance + r2;
     const vertical = Math.abs(r1 - r2);
     return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
@@ -72,17 +71,11 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const targetDiameter = 20; // rem
-  const fixedDistance = 3; // rem
 
   const areas = circlesData.map((c) => c[orderBy]);
   const selectedIndex = circlesData.findIndex((c) => c.id === selectedId);
 
-  const posXValues = calculatePositions(
-    areas,
-    selectedIndex,
-    targetDiameter,
-    fixedDistance
-  );
+  const posXValues = calculatePositions(areas, selectedIndex, targetDiameter);
 
   const anchorValue =
     circlesData.find((c) => c.id === selectedId)?.[orderBy] || 1;
