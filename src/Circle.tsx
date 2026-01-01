@@ -56,6 +56,10 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
     circle;
   const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-400";
 
+  const fadeClass = `transition-opacity duration-500 ease-in-out ${
+    isSelected ? "opacity-100" : "opacity-0"
+  }`;
+
   // Calculate daily turnover and format numbers here
   const dailyTurnover = yearlyTurnOver / 365;
   const formattedDailyTurnover = formatToTwoSignificantDigits(
@@ -70,24 +74,14 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
       {predicate || imageFileName ? (
         <div className="absolute bottom-full mb-2 text-primary text-xl font-bold text-center w-max left-1/2 -translate-x-1/2">
           {predicate && (
-            <div
-              className={`transition-opacity duration-500 ease-in-out ${
-                isSelected ? "opacity-100" : "opacity-0"
-              }`}
-            >
+            <div className={fadeClass}>
               {predicate}
             </div>
           )}
           {imageFileName && ( // Always show name if image, regardless of selection
             <div className="text-2xl">
               {name}
-              <span
-                className={`transition-opacity duration-500 ease-in-out ${
-                  isSelected ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                ?
-              </span>
+              <span className={fadeClass}>?</span>
             </div>
           )}
         </div>
@@ -106,22 +100,14 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
         ) : (
           <span className="text-2xl leading-none">
             {name}
-            <span
-              className={`transition-opacity duration-500 ease-in-out ${
-                isSelected ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              ?
-            </span>
+            <span className={fadeClass}>?</span>
           </span>
         )}
       </div>
 
       {/* The text positioned below the circle (only for selected) */}
       <div
-        className={`absolute top-full mt-2 text-primary text-lg font-bold text-center w-max left-1/2 -translate-x-1/2 transition-opacity duration-500 ease-in-out ${
-          isSelected ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute top-full mt-2 text-primary text-lg font-bold text-center w-max left-1/2 -translate-x-1/2 ${fadeClass}`}
       >
         <div className="text-2xl">{formattedPersons},</div>
         <div>with a daily turnover of</div>
