@@ -64,10 +64,10 @@ function calculatePositions(
 
 // --- The React Component ---
 function App() {
-  const [selectedId, setSelectedId] = React.useState(2);
+  const [selectedId, setSelectedId] = React.useState(1);
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver"
-  >("numberOfPersons");
+  >("yearlyTurnOver");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const targetDiameter = 20; // rem
