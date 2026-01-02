@@ -40,7 +40,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 30,
     yearlyTurnOver: 1000000,
     predicate: null,
-    imageFileName: null,
+    imageFileName: "images/friends.png",
     sources: [],
   },
   {
