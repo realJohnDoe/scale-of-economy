@@ -93,6 +93,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
       >
         {imageFileName ? (
           <img
+            loading="lazy"
             src={imageFileName}
             alt={name}
             className="absolute inset-0 w-full h-full object-cover rounded-full z-0"
