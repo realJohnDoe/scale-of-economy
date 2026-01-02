@@ -2,8 +2,10 @@ import React from "react";
 import icon from "./icon.svg";
 
 type DropdownProps = {
-  orderBy: "numberOfPersons" | "yearlyTurnOver";
-  setOrderBy: (orderBy: "numberOfPersons" | "yearlyTurnOver") => void;
+  orderBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
+  setOrderBy: (
+    orderBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
+  ) => void;
   isMenuOpen: boolean;
   setIsMenuOpen: (isMenuOpen: boolean) => void;
 };
@@ -15,10 +17,12 @@ function Dropdown({
   setIsMenuOpen,
 }: DropdownProps) {
   const [hoveredOption, setHoveredOption] = React.useState<
-    "numberOfPersons" | "yearlyTurnOver" | null
+    "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson" | null
   >(null);
 
-  const getOptionClassName = (option: "numberOfPersons" | "yearlyTurnOver") => {
+  const getOptionClassName = (
+    option: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
+  ) => {
     if (hoveredOption) {
       return hoveredOption === option ? "bg-gray-600" : "";
     }
@@ -62,6 +66,18 @@ function Dropdown({
             )}`}
           >
             Yearly Turnover
+          </div>
+          <div
+            onClick={() => {
+              setOrderBy("turnoverPerPerson");
+              setIsMenuOpen(false);
+            }}
+            onMouseEnter={() => setHoveredOption("turnoverPerPerson")}
+            className={`cursor-pointer p-1 ${getOptionClassName(
+              "turnoverPerPerson"
+            )}`}
+          >
+            Turnover per Person
           </div>
         </div>
       )}

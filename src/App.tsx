@@ -66,21 +66,31 @@ function calculatePositions(
 function App() {
   const [selectedId, setSelectedId] = React.useState(1);
   const [orderBy, setOrderBy] = React.useState<
-    "numberOfPersons" | "yearlyTurnOver"
+    "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const targetDiameter = 20; // rem
 
-  const areas = circlesData.map((c) => c[orderBy]);
+  const areas = circlesData.map((c) => {
+    if (orderBy === "turnoverPerPerson") {
+      return c.yearlyTurnOver / c.numberOfPersons;
+    }
+    return c[orderBy];
+  });
   const selectedIndex = circlesData.findIndex((c) => c.id === selectedId);
 
   const posXValues = calculatePositions(areas, selectedIndex, targetDiameter);
 
   const anchorValue =
-    circlesData.find((c) => c.id === selectedId)?.[orderBy] || 1;
-  const getDisplayDiameter = (value: number) =>
-    targetDiameter * Math.sqrt(value / anchorValue);
+    orderBy === "turnoverPerPerson"
+      ? (circlesData.find((c) => c.id === selectedId)?.yearlyTurnOver || 1) /
+        (circlesData.find((c) => c.id === selectedId)?.numberOfPersons || 1)
+      : circlesData.find((c) => c.id === selectedId)?.[orderBy] || 1;
+
+  const getDisplayDiameter = (value: number) => {
+    return targetDiameter * Math.sqrt(value / anchorValue);
+  };
 
   const selectNextCircle = () => {
     const selectedPosX = posXValues[selectedIndex];
@@ -171,7 +181,11 @@ function App() {
           const posX = posXValues[index];
           if (posX === undefined) return null;
 
-          const diameter = getDisplayDiameter(circle[orderBy]);
+          const diameter = getDisplayDiameter(
+            orderBy === "turnoverPerPerson"
+              ? circle.yearlyTurnOver / circle.numberOfPersons
+              : circle[orderBy]
+          );
           const selectedCircleRadius = targetDiameter / 2;
           const scaleFactor = diameter / targetDiameter;
           const isSelected = circle.id === selectedId;
