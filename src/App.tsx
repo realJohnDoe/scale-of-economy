@@ -82,6 +82,70 @@ function App() {
   const getDisplayDiameter = (value: number) =>
     targetDiameter * Math.sqrt(value / anchorValue);
 
+  const selectNextCircle = () => {
+    const selectedPosX = posXValues[selectedIndex];
+    const positionsToTheRight = posXValues
+      .map((posX, index) => ({ posX, index }))
+      .filter((p) => p.posX > selectedPosX);
+
+    if (positionsToTheRight.length > 0) {
+      const nextCircle = positionsToTheRight.reduce((prev, curr) =>
+        prev.posX < curr.posX ? prev : curr
+      );
+      setSelectedId(circlesData[nextCircle.index].id);
+    }
+  };
+
+  const selectPreviousCircle = () => {
+    const selectedPosX = posXValues[selectedIndex];
+    const positionsToTheLeft = posXValues
+      .map((posX, index) => ({ posX, index }))
+      .filter((p) => p.posX < selectedPosX);
+
+    if (positionsToTheLeft.length > 0) {
+      const prevCircle = positionsToTheLeft.reduce((prev, curr) =>
+        prev.posX > curr.posX ? prev : curr
+      );
+      setSelectedId(circlesData[prevCircle.index].id);
+    }
+  };
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight") {
+        selectNextCircle();
+      } else if (event.key === "ArrowLeft") {
+        selectPreviousCircle();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedId, posXValues]);
+
+  const [touchStart, setTouchStart] = React.useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEnd = e.changedTouches[0].clientX;
+
+    if (touchStart - touchEnd > 50) {
+      // Swiped left
+      selectNextCircle();
+    }
+
+    if (touchStart - touchEnd < -50) {
+      // Swiped right
+      selectPreviousCircle();
+    }
+  };
+
   return (
     <>
       <div className="absolute top-8 left-1/2 text-primary -translate-x-1/2 text-3xl font-bold z-10">
@@ -98,7 +162,11 @@ function App() {
         <div className="absolute rounded-lg bg-gray-200 top-4 bottom-4 z-0 w-96 left-1/2 -translate-x-1/2"></div>
       )}
 
-      <div className="relative w-screen h-screen">
+      <div
+        className="relative w-screen h-screen"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {circlesData.map((circle, index) => {
           const posX = posXValues[index];
           if (posX === undefined) return null;
@@ -124,9 +192,8 @@ function App() {
           return (
             <div
               key={circle.id}
-              onClick={() => setSelectedId(circle.id)}
               style={wrapperStyle}
-              className="absolute bottom-[20vh] -translate-x-1/2 cursor-pointer"
+              className="absolute bottom-[20vh] -translate-x-1/2"
             >
               <div style={innerStyle} className="origin-bottom">
                 <Circle circle={circle} isSelected={isSelected} />
