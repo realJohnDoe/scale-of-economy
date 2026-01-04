@@ -242,7 +242,7 @@ export const circlesData: CircleData[] = [
     predicate: "working at",
     numberOfPersons: 22,
     yearlyTurnOver: 8880000,
-    imageFileName: "images/super-market.png",
+    imageFileName: "images/aldi.png",
     sources: [{
       name: "Wikipedia",
       url: "https://en.wikipedia.org/wiki/Aldi"
