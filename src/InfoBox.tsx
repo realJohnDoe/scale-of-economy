@@ -65,7 +65,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
 
   return (
     <div
-      className={`text-primary text-lg font-bold text-center w-max ${fadeClass}`}
+      className={`text-primary text-lg font-bold text-center w-max mt-4 ${fadeClass}`}
     >
       <div className="text-2xl">{formattedPersons},</div>
       <div>with a daily turnover of</div>
