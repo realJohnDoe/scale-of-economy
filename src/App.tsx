@@ -157,7 +157,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center h-screen">
+    <div className="flex flex-col items-center min-h-dvh">
       <div className="text-3xl font-bold text-primary my-4">
         How many people are...
       </div>
