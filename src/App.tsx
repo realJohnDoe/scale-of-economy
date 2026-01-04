@@ -62,6 +62,8 @@ function calculatePositions(
   return posXValues;
 }
 
+import InfoBox from "./InfoBox";
+
 // --- The React Component ---
 function App() {
   const [selectedId, setSelectedId] = React.useState(1);
@@ -189,17 +191,22 @@ function App() {
               style={{
                 left: `calc(50% + ${posX * selectedCircleRadius}rem)`,
               }}
-              className="absolute -translate-x-1/2 transition-[left] duration-500 ease-in-out bottom-[calc(50%-10rem)]"
+              className="absolute -translate-x-1/2 transition-[left] duration-500 ease-in-out h-full"
             >
-              <div
-                style={{
-                  width: `${targetDiameter}rem`,
-                  height: `${targetDiameter}rem`,
-                  transform: `scale(${scaleFactor})`,
-                }}
-                className="origin-bottom transition-transform duration-500 ease-in-out"
-              >
-                <Circle circle={circle} isSelected={isSelected} />
+                            {/* Container for the visual circle */}
+                            <div 
+                              className="absolute bottom-[calc(50%-10rem)] left-1/2 -translate-x-1/2 origin-bottom transition-transform duration-500 ease-in-out"
+                              style={{
+                                  width: `${targetDiameter}rem`,
+                                  height: `${targetDiameter}rem`,
+                                  transform: `scale(${scaleFactor})`,
+                              }}
+                            >
+                              <Circle circle={circle} isSelected={isSelected} />
+                            </div>
+              {/* Container for the InfoBox */}
+              <div className="absolute top-[calc(50%+10rem)] left-1/2 -translate-x-1/2">
+                <InfoBox circle={circle} isSelected={isSelected} />
               </div>
             </div>
           );
