@@ -63,25 +63,25 @@ const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
       <div>with a daily turnover of</div>
       <div className="text-2xl">{formattedDailyTurnover}</div>
       
-      {sources && sources.length > 0 && (
-        <div className="mt-4 text-sm text-gray-600 text-right w-full">
-          Sources:
-          <ul className="list-disc pl-4 text-left">
-            {sources.map((source, index) => (
-              <li key={index}>
-                <a
-                  href={source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {source.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+          {circle.sources && circle.sources.length > 0 && (
+            <div className="mt-4 text-sm text-gray-500">
+              [
+              {circle.sources.map((source, index) => (
+                <React.Fragment key={index}>
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline" // Link color will be inherited from parent
+                  >
+                    {source.name}
+                  </a>
+                  {index < circle.sources.length - 1 && ", "}
+                </React.Fragment>
+              ))}
+              ]
+            </div>
+          )}
     </div>
   );
 };
