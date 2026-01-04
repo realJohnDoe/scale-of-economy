@@ -163,7 +163,7 @@ function App() {
       </div>
 
       <div
-        className="relative w-full flex-grow"
+        className="relative w-full grow"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
