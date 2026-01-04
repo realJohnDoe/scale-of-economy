@@ -265,5 +265,17 @@ export const circlesData: CircleData[] = [
       name: "Ikea",
       url: "https://www.ikea.com/global/en/our-business/how-we-work/year-in-review-fy25/"
     }]
+  },
+  {
+    id: 27,
+    name: "Christiano Ronaldo",
+    predicate: null,
+    numberOfPersons: 1,
+    yearlyTurnOver: 275000000,
+    imageFileName: "images/ronaldo.webp",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/Forbes_list_of_the_world%27s_highest-paid_athletes"
+    }]
   }
 ];
