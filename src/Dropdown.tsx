@@ -30,7 +30,7 @@ function Dropdown({
   };
 
   return (
-    <div className="absolute top-4 left-4 z-10">
+    <div className="relative">
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="bg-gray-700 text-white rounded p-2"
@@ -39,7 +39,7 @@ function Dropdown({
       </button>
       {isMenuOpen && (
         <div
-          className="absolute top-12 left-0 bg-gray-700 text-white rounded p-2 w-48"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-gray-700 text-white rounded p-2 w-48"
           onMouseLeave={() => setHoveredOption(null)}
         >
           <div className="font-bold mb-2">Circle Size by...</div>

@@ -157,26 +157,19 @@ function App() {
   };
 
   return (
-    <>
-      <div className="absolute top-8 left-1/2 text-primary -translate-x-1/2 text-3xl font-bold z-10">
+    <div className="flex flex-col items-center h-screen">
+      <div className="text-3xl font-bold text-primary my-4">
         How many people are...
       </div>
-      <Dropdown
-        orderBy={orderBy}
-        setOrderBy={setOrderBy}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-      />
-
-      {selectedId && (
-        <div className="absolute rounded-lg bg-gray-200 top-4 bottom-4 z-0 w-96 left-1/2 -translate-x-1/2"></div>
-      )}
 
       <div
-        className="relative w-screen h-screen"
+        className="relative w-full flex-grow"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
+        {selectedId && (
+          <div className="absolute rounded-lg bg-gray-200 top-0 bottom-0 w-96 left-1/2 -translate-x-1/2 z-0"></div>
+        )}
         {circlesData.map((circle, index) => {
           const posX = posXValues[index];
           if (posX === undefined) return null;
@@ -212,7 +205,15 @@ function App() {
           );
         })}
       </div>
-    </>
+      <div className="my-4">
+        <Dropdown
+          orderBy={orderBy}
+          setOrderBy={setOrderBy}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+        />
+      </div>
+    </div>
   );
 }
 
