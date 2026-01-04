@@ -9,7 +9,7 @@ export type CircleData = {
   name: string;
   numberOfPersons: number;
   yearlyTurnOver: number; // Explicitly declared
-  predicate: "living in" | "living in the" | "working at" | "working at the" | null;
+  predicate: "living in" | "living in the" | "working at" | "working at the" | "attending" | null;
   imageFileName: string | null;
   sources: Source[];
 };
@@ -276,6 +276,18 @@ export const circlesData: CircleData[] = [
     sources: [{
       name: "Wikipedia",
       url: "https://en.wikipedia.org/wiki/Forbes_list_of_the_world%27s_highest-paid_athletes"
+    }]
+  },
+  {
+    id: 28,
+    name: "an average Taylor Swift concert",
+    predicate: "attending",
+    numberOfPersons: 67785,
+    yearlyTurnOver: 5089468750,
+    imageFileName: "images/taylor-swift.webp",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/List_of_highest-grossing_concert_tours"
     }]
   }
 ];
