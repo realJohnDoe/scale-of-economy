@@ -77,13 +77,12 @@ function App() {
         }
       });
 
-      if (closestCircleId !== null) {
-        setSelectedId((prevId) => {
-          if (prevId === closestCircleId) return prevId;
-          return closestCircleId;
-        });
-      }
-    };
+              if (closestCircleId !== null) {
+                setSelectedId((prevId) => {
+                  if (prevId === (closestCircleId as number)) return prevId;
+                  return closestCircleId as number;
+                });
+              }    };
 
     scrollContainer.addEventListener("scroll", handleScroll);
 
