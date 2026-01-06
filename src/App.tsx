@@ -3,6 +3,7 @@ import { circlesData } from "./data";
 import Circle from "./Circle";
 import InfoBox from "./InfoBox";
 import Overlay from "./Overlay";
+import { getSortingOffsets } from "./geometry"; // Removed TARGET_DIAMETER_REM from import
 
 // --- The React Component ---
 function App() {
@@ -12,51 +13,77 @@ function App() {
   >("yearlyTurnOver");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [paddingX, setPaddingX] = React.useState(0);
+  const [itemSpacingPx, setItemSpacingPx] = React.useState(0); // New state for dynamic spacing
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const sortedCircles = React.useMemo(() => {
-    const sortedData = [...circlesData];
-    sortedData.sort((a, b) => {
-      switch (orderBy) {
-        case "numberOfPersons":
-          return a.numberOfPersons - b.numberOfPersons;
-        case "yearlyTurnOver":
-          return a.yearlyTurnOver - b.yearlyTurnOver;
-        case "turnoverPerPerson":
-          const turnoverA = a.numberOfPersons
-            ? a.yearlyTurnOver / a.numberOfPersons
-            : 0;
-          const turnoverB = b.numberOfPersons
-            ? b.yearlyTurnOver / b.numberOfPersons
-            : 0;
-          return turnoverA - turnoverB;
-        default:
-          return 0;
-      }
-    });
-    return sortedData;
-  }, [orderBy]);
-
   const targetDiameter = 20; // rem
-  const targetDiameterPx = targetDiameter * 16; // assuming 1rem = 16px
+  const targetDiameterPx = targetDiameter * 16; // using REM_TO_PX from geometry.ts
+
+  // Use the new getSortingOffsets function with dynamically measured itemSpacingPx
+  const sortedCirclesWithOffsets = React.useMemo(() => {
+    // If itemSpacingPx is 0 or no circles, return a simple array without offsets.
+    // This also handles the initial state before itemSpacingPx is measured.
+    if (itemSpacingPx === 0 || circlesData.length === 0) {
+      return circlesData.map((circle) => ({ circle, offsetX: 0 }));
+    }
+
+    const offsetsMap = getSortingOffsets(circlesData, itemSpacingPx, orderBy);
+    // Convert the Map to an array of objects that include the original circle data and its offset
+    return circlesData.map((circle) => ({
+      circle,
+      offsetX: offsetsMap.get(circle.id) || 0, // Get the offset from the map
+    }));
+  }, [orderBy, itemSpacingPx, circlesData]); // Depend on itemSpacingPx and circlesData
 
   const selectNextCircle = () => {
-    const currentIndex = sortedCircles.findIndex((c) => c.id === selectedId);
-    if (currentIndex < sortedCircles.length - 1) {
-      setSelectedId(sortedCircles[currentIndex + 1].id);
+    const currentIndex = sortedCirclesWithOffsets.findIndex(
+      (item) => item.circle.id === selectedId
+    );
+    if (currentIndex < sortedCirclesWithOffsets.length - 1) {
+      setSelectedId(sortedCirclesWithOffsets[currentIndex + 1].circle.id);
     }
   };
 
   const selectPreviousCircle = () => {
-    const currentIndex = sortedCircles.findIndex((c) => c.id === selectedId);
+    const currentIndex = sortedCirclesWithOffsets.findIndex(
+      (item) => item.circle.id === selectedId
+    );
     if (currentIndex > 0) {
-      setSelectedId(sortedCircles[currentIndex - 1].id);
+      setSelectedId(sortedCirclesWithOffsets[currentIndex - 1].circle.id);
     }
   };
 
   const isUserScrollingRef = React.useRef(false);
   const scrollEndTimeout = React.useRef<number | null>(null);
+
+  // New useEffect to measure item spacing dynamically
+  React.useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer && circlesData.length > 1 && itemSpacingPx === 0) {
+      // Find two adjacent circles to measure the distance
+      // Assuming circles have IDs like "circle-1", "circle-2"
+      const firstCircle = scrollContainer.querySelector('#circle-1') as HTMLElement;
+      const secondCircle = scrollContainer.querySelector('#circle-2') as HTMLElement;
+
+      console.log('--- Spacing Debug ---');
+      console.log('targetDiameter:', targetDiameter);
+      console.log('targetDiameterPx:', targetDiameterPx);
+
+
+      if (firstCircle && secondCircle) {
+        console.log('firstCircle.offsetLeft:', firstCircle.offsetLeft);
+        console.log('secondCircle.offsetLeft:', secondCircle.offsetLeft);
+        const measuredSpacing = secondCircle.offsetLeft - firstCircle.offsetLeft;
+        console.log('measuredSpacing:', measuredSpacing);
+        setItemSpacingPx(measuredSpacing);
+        console.log('setItemSpacingPx called with:', measuredSpacing);
+      } else {
+        console.log('Could not find firstCircle or secondCircle to measure spacing.');
+      }
+      console.log('--- End Spacing Debug ---');
+    }
+  }, [circlesData, itemSpacingPx]); // Corrected dependency array
 
   React.useEffect(() => {
     const circleElement = document.getElementById(`circle-${selectedId}`);
@@ -66,7 +93,7 @@ function App() {
         inline: "center",
       });
     }
-  }, [selectedId, sortedCircles]);
+  }, [selectedId, sortedCirclesWithOffsets]); // Dependency updated
 
   React.useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -115,7 +142,7 @@ function App() {
         clearTimeout(scrollEndTimeout.current);
       }
     };
-  }, [sortedCircles]);
+  }, [sortedCirclesWithOffsets]); // Dependency updated
 
   React.useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -191,8 +218,9 @@ function App() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {sortedCircles.map((circle) => {
-            const scaleFactor = 1;
+          {sortedCirclesWithOffsets.map((item) => {
+            const { circle, offsetX } = item;
+            const scaleFactor = 1; // scaleFactor will be calculated by getVisualTransforms later
             const isSelected = circle.id === selectedId;
 
             return (
@@ -200,6 +228,10 @@ function App() {
                 key={circle.id}
                 id={`circle-${circle.id}`}
                 className="relative flex flex-col items-center justify-center space-y-4 shrink-0 snap-center"
+                style={{
+                  transform: `translateX(${offsetX}px)`,
+                  transition: 'transform 0.5s ease-in-out', // Smooth transition for reordering
+                }}
               >
                 {/* Container for the visual circle */}
                 <div
