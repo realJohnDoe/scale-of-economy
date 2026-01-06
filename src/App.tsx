@@ -24,9 +24,12 @@ function App() {
         case "yearlyTurnOver":
           return a.yearlyTurnOver - b.yearlyTurnOver;
         case "turnoverPerPerson":
-          const turnoverA = a.yearlyTurnOver / a.numberOfPersons;
-          const turnoverB = b.yearlyTurnOver / b.numberOfPersons;
-
+          const turnoverA = a.numberOfPersons
+            ? a.yearlyTurnOver / a.numberOfPersons
+            : 0;
+          const turnoverB = b.numberOfPersons
+            ? b.yearlyTurnOver / b.numberOfPersons
+            : 0;
           return turnoverA - turnoverB;
         default:
           return 0;
@@ -53,20 +56,62 @@ function App() {
   };
 
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight") {
-        selectNextCircle();
-      } else if (event.key === "ArrowLeft") {
-        selectPreviousCircle();
+    const circleElement = document.getElementById(`circle-${selectedId}`);
+    if (circleElement) {
+      circleElement.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+      });
+    }
+  }, [selectedId, sortedCircles]);
+
+  const scrollTimeout = React.useRef<number | null>(null);
+
+  React.useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
       }
+
+      scrollTimeout.current = window.setTimeout(() => {
+        const containerCenter =
+          scrollContainer.scrollLeft + scrollContainer.offsetWidth / 2;
+        let closestCircleId: number | null = null;
+        let minDistance = Infinity;
+
+        const circles = scrollContainer.querySelectorAll('[id^="circle-"]');
+        circles.forEach((circleElement) => {
+          const circle = circleElement as HTMLElement;
+          const circleCenter = circle.offsetLeft + circle.offsetWidth / 2;
+          const distance = Math.abs(containerCenter - circleCenter);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestCircleId = parseInt(circle.id.split("circle-")[1], 10);
+          }
+        });
+
+        if (closestCircleId !== null) {
+          setSelectedId((prevId) => {
+            if (prevId === closestCircleId) return prevId;
+            return closestCircleId;
+          });
+        }
+      }, 150);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    scrollContainer.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      scrollContainer.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
     };
-  }, [selectedId, sortedCircles]);
+  }, [sortedCircles]);
 
   React.useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -75,7 +120,7 @@ function App() {
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       scrollContainer.scrollBy({
-        left: event.deltaY,
+        left: event.deltaY * 0.5,
         behavior: "smooth",
       });
     };
@@ -149,6 +194,7 @@ function App() {
             return (
               <div
                 key={circle.id}
+                id={`circle-${circle.id}`}
                 className="relative flex flex-col items-center justify-center space-y-4 shrink-0 snap-center"
               >
                 {/* Container for the visual circle */}
