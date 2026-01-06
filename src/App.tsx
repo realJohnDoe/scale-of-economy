@@ -15,20 +15,43 @@ function App() {
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
+  const sortedCircles = React.useMemo(() => {
+    const sortedData = [...circlesData];
+    sortedData.sort((a, b) => {
+      switch (orderBy) {
+        case "numberOfPersons":
+          return b.numberOfPersons - a.numberOfPersons;
+        case "yearlyTurnOver":
+          return b.yearlyTurnOver - a.yearlyTurnOver;
+        case "turnoverPerPerson":
+          const turnoverA = a.numberOfPersons
+            ? a.yearlyTurnOver / a.numberOfPersons
+            : 0;
+          const turnoverB = b.numberOfPersons
+            ? b.yearlyTurnOver / b.numberOfPersons
+            : 0;
+          return turnoverB - turnoverA;
+        default:
+          return 0;
+      }
+    });
+    return sortedData;
+  }, [orderBy]);
+
   const targetDiameter = 20; // rem
   const targetDiameterPx = targetDiameter * 16; // assuming 1rem = 16px
 
   const selectNextCircle = () => {
-    const currentIndex = circlesData.findIndex((c) => c.id === selectedId);
-    if (currentIndex < circlesData.length - 1) {
-      setSelectedId(circlesData[currentIndex + 1].id);
+    const currentIndex = sortedCircles.findIndex((c) => c.id === selectedId);
+    if (currentIndex < sortedCircles.length - 1) {
+      setSelectedId(sortedCircles[currentIndex + 1].id);
     }
   };
 
   const selectPreviousCircle = () => {
-    const currentIndex = circlesData.findIndex((c) => c.id === selectedId);
+    const currentIndex = sortedCircles.findIndex((c) => c.id === selectedId);
     if (currentIndex > 0) {
-      setSelectedId(circlesData[currentIndex - 1].id);
+      setSelectedId(sortedCircles[currentIndex - 1].id);
     }
   };
 
@@ -46,7 +69,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedId]);
+  }, [selectedId, sortedCircles]);
 
   React.useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -55,7 +78,8 @@ function App() {
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       scrollContainer.scrollBy({
-        left: event.deltaY, // Keep the smoothing factor
+        left: event.deltaY,
+        behavior: "smooth",
       });
     };
 
@@ -121,7 +145,7 @@ function App() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {circlesData.map((circle) => {
+          {sortedCircles.map((circle) => {
             const scaleFactor = 1;
             const isSelected = circle.id === selectedId;
 
