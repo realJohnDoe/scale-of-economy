@@ -20,9 +20,9 @@ function App() {
     sortedData.sort((a, b) => {
       switch (orderBy) {
         case "numberOfPersons":
-          return b.numberOfPersons - a.numberOfPersons;
+          return a.numberOfPersons - b.numberOfPersons;
         case "yearlyTurnOver":
-          return b.yearlyTurnOver - a.yearlyTurnOver;
+          return a.yearlyTurnOver - b.yearlyTurnOver;
         case "turnoverPerPerson":
           const turnoverA = a.numberOfPersons
             ? a.yearlyTurnOver / a.numberOfPersons
@@ -30,7 +30,7 @@ function App() {
           const turnoverB = b.numberOfPersons
             ? b.yearlyTurnOver / b.numberOfPersons
             : 0;
-          return turnoverB - turnoverA;
+          return turnoverA - turnoverB;
         default:
           return 0;
       }
