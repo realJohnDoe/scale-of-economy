@@ -18,7 +18,7 @@ export const TARGET_DIAMETER_PX = TARGET_DIAMETER_REM * REM_TO_PX;
 export function getSortingOffsets(
   circles: CircleData[],
   circleDistanceInPx: number,
-  sortBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
+  sortBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson",
 ): Map<number, number> { // Changed return type to Map<number, number>
   const sortedCircles = [...circles]; // Create a shallow copy to sort
 
@@ -52,7 +52,7 @@ export function getSortingOffsets(
     const oldIndex = originalIdToIndex.get(circle.id) as number; // Should always exist
     const newIndex = sortedIdToIndex.get(circle.id) as number; // Should always exist
 
-    const deltaX = (newIndex - oldIndex) * circleDistanceInPx;
+    const deltaX = (newIndex * circleDistanceInPx) - (oldIndex * circleDistanceInPx);
     translateXOffsets.set(circle.id, deltaX);
   });
 
