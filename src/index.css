@@ -5,9 +5,13 @@
     --color-text-primary: #000000;
   }
 
-  html,
+  html {
+    /* Ensure html doesn't interfere with body scrolling */
+  }
+
   body {
-    overflow-x: hidden;
+    margin: 0;
+    overflow-x: auto;
     overflow-y: hidden;
   }
 }
