@@ -24,12 +24,9 @@ function App() {
         case "yearlyTurnOver":
           return a.yearlyTurnOver - b.yearlyTurnOver;
         case "turnoverPerPerson":
-          const turnoverA = a.numberOfPersons
-            ? a.yearlyTurnOver / a.numberOfPersons
-            : 0;
-          const turnoverB = b.numberOfPersons
-            ? b.yearlyTurnOver / b.numberOfPersons
-            : 0;
+          const turnoverA = a.yearlyTurnOver / a.numberOfPersons;
+          const turnoverB = b.yearlyTurnOver / b.numberOfPersons;
+
           return turnoverA - turnoverB;
         default:
           return 0;
