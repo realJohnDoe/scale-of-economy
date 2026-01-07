@@ -40,24 +40,6 @@ function App() {
     }));
   }, [orderBy, circlesData, itemSpacingPx]); // Depend on itemSpacingPx (now a const) and circlesData
 
-  const selectNextCircle = () => {
-    const currentIndex = sortedCirclesWithOffsets.findIndex(
-      (item) => item.circle.id === selectedId
-    );
-    if (currentIndex < sortedCirclesWithOffsets.length - 1) {
-      setSelectedId(sortedCirclesWithOffsets[currentIndex + 1].circle.id);
-    }
-  };
-
-  const selectPreviousCircle = () => {
-    const currentIndex = sortedCirclesWithOffsets.findIndex(
-      (item) => item.circle.id === selectedId
-    );
-    if (currentIndex > 0) {
-      setSelectedId(sortedCirclesWithOffsets[currentIndex - 1].circle.id);
-    }
-  };
-
   const isUserScrollingRef = React.useRef(false);
   const scrollEndTimeout = React.useRef<number | null>(null);
 
@@ -97,7 +79,8 @@ function App() {
         const offsetX =
           sortedCirclesWithOffsets.find((item) => item.circle.id === circleId)
             ?.offsetX ?? 0;
-        const circleCenter = circle.offsetLeft + offsetX + circle.offsetWidth / 2;
+        const circleCenter =
+          circle.offsetLeft + offsetX + circle.offsetWidth / 2;
         const distance = Math.abs(containerCenter - circleCenter);
 
         if (distance < minDistance) {
