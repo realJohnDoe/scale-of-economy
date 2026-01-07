@@ -93,6 +93,9 @@ function App() {
       const circles = scrollContainer.querySelectorAll('[id^="circle-"]');
       circles.forEach((circleElement) => {
         const circle = circleElement as HTMLElement;
+        // const offsetX =
+        //   sortedCirclesWithOffsets.find((item) => item.circle.id === id)
+        //     ?.offsetX ?? 0;
         const circleCenter = circle.offsetLeft + circle.offsetWidth / 2;
         const distance = Math.abs(containerCenter - circleCenter);
 
@@ -153,26 +156,6 @@ function App() {
     };
   }, []);
 
-  const [touchStart, setTouchStart] = React.useState(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const touchEnd = e.changedTouches[0].clientX;
-
-    if (touchStart - touchEnd > 50) {
-      // Swiped left
-      selectNextCircle();
-    }
-
-    if (touchStart - touchEnd < -50) {
-      // Swiped right
-      selectPreviousCircle();
-    }
-  };
-
   return (
     <>
       <Overlay
@@ -192,8 +175,6 @@ function App() {
             paddingRight: `${paddingX}px`,
             gap: `${GAP_PX}px`,
           }}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
         >
           {sortedCirclesWithOffsets.map((item) => {
             const { circle, offsetX } = item;
