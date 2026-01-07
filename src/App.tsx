@@ -169,11 +169,10 @@ function App() {
               <div
                 key={circle.id}
                 id={`circle-${circle.id}`}
-                className="snap-center relative flex flex-col items-center"
+                className="snap-center relative flex flex-col items-center transition-transform duration-500 ease-in-out"
                 style={{
                   width: `${CIRCLE_DIAMETER_REM}rem`,
                   transform: `translateX(${offsetX}px)`,
-                  transition: "transform 0.5s ease-in-out", // Smooth transition for reordering
                 }}
               >
                 {/* Container for the visual circle */}
