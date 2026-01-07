@@ -186,8 +186,9 @@ function App() {
               <div
                 key={circle.id}
                 id={`circle-${circle.id}`}
-                className="snap-center relative w-[320px]"
+                className="snap-center relative flex flex-col items-center"
                 style={{
+                  width: `${CIRCLE_DIAMETER_REM}rem`,
                   transform: `translateX(${offsetX}px)`,
                   transition: "transform 0.5s ease-in-out", // Smooth transition for reordering
                 }}
@@ -203,10 +204,8 @@ function App() {
                 >
                   <Circle circle={circle} isSelected={isSelected} />
                 </div>
-                {/* Container for the InfoBox */}
-                <div>
-                  <InfoBox circle={circle} isSelected={isSelected} />
-                </div>
+                {/* InfoBox is now inside the same flex container */}
+                <InfoBox circle={circle} isSelected={isSelected} />
               </div>
             );
           })}
