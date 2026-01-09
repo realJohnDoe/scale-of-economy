@@ -3,7 +3,8 @@ import { circlesData } from "./data";
 import Circle from "./Circle";
 import InfoBox from "./InfoBox";
 import Overlay from "./Overlay";
-import { getSortingOffsets } from "./geometry"; // Removed TARGET_DIAMETER_REM from import
+import { getSortingOffsets } from "./geometry";
+import { type CircleData } from "./data"; // Import CircleData type
 
 // --- Constants ---
 const REM_TO_PX = 16;
@@ -25,26 +26,9 @@ function App() {
   // Use the new getSortingOffsets function with dynamically measured itemSpacingPx
   const itemSpacingPx = CIRCLE_DIAMETER_PX + GAP_PX; // Derived from constants
 
-  // Use the new getSortingOffsets function with dynamically measured itemSpacingPx
-  const sortedCirclesWithOffsets = React.useMemo(() => {
-    // If no circles, return a simple array without offsets.
-    if (circlesData.length === 0) {
-      return circlesData.map((circle) => ({ circle, offsetX: 0 }));
-    }
-
-    const offsetsMap = getSortingOffsets(circlesData, orderBy);
-    // Convert the Map to an array of objects that include the original circle data and its offset
-    return circlesData.map((circle) => {
-      const transformationParams = offsetsMap.get(circle.id);
-      const offsetX = transformationParams
-        ? (transformationParams.oldIndexOffset + transformationParams.newIndexOffset) * itemSpacingPx
-        : 0; // Default to 0 if no transformationParams
-      return {
-        circle,
-        offsetX,
-      };
-    });
-  }, [orderBy, circlesData, itemSpacingPx]); // Depend on itemSpacingPx (now a const) and circlesData
+  const offsetsMap = React.useMemo(() => {
+    return getSortingOffsets(circlesData, orderBy);
+  }, [orderBy]);
 
   const isUserScrollingRef = React.useRef(false);
   const scrollEndTimeout = React.useRef<number | null>(null);
@@ -57,7 +41,7 @@ function App() {
         inline: "center",
       });
     }
-  }, [selectedId, sortedCirclesWithOffsets]); // Dependency updated
+  }, [selectedId, offsetsMap]); // Dependency updated
 
   React.useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -82,9 +66,10 @@ function App() {
       circles.forEach((circleElement) => {
         const circle = circleElement as HTMLElement;
         const circleId = parseInt(circle.id.split("circle-")[1], 10);
-        const offsetX =
-          sortedCirclesWithOffsets.find((item) => item.circle.id === circleId)
-            ?.offsetX ?? 0;
+        const transformationParams = offsetsMap.get(circleId);
+        const offsetX = transformationParams
+          ? (transformationParams.oldIndexOffset + transformationParams.newIndexOffset) * itemSpacingPx
+          : 0;
         const circleCenter =
           circle.offsetLeft + offsetX + circle.offsetWidth / 2;
         const distance = Math.abs(containerCenter - circleCenter);
@@ -111,7 +96,7 @@ function App() {
         clearTimeout(scrollEndTimeout.current);
       }
     };
-  }, [sortedCirclesWithOffsets]); // Dependency updated
+  }, [offsetsMap, itemSpacingPx]); // Dependency updated
 
   React.useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -166,8 +151,10 @@ function App() {
             gap: `${GAP_PX}px`,
           }}
         >
-          {sortedCirclesWithOffsets.map((item) => {
-            const { circle, offsetX } = item;
+          {circlesData.map((circle) => {
+            const transformationParams = offsetsMap.get(circle.id);
+            const oldIndexOffset = transformationParams?.oldIndexOffset ?? 0;
+            const newIndexOffset = transformationParams?.newIndexOffset ?? 0;
             const scaleFactor = 1; // scaleFactor will be calculated by getVisualTransforms later
             const isSelected = circle.id === selectedId;
 
@@ -178,7 +165,7 @@ function App() {
                 className="snap-center relative flex flex-col items-center transition-transform duration-500 ease-in-out"
                 style={{
                   width: `${CIRCLE_DIAMETER_REM}rem`,
-                  transform: `translateX(${offsetX}px)`,
+                  transform: `translateX(${oldIndexOffset * itemSpacingPx}px) translateX(${newIndexOffset * itemSpacingPx}px)`,
                 }}
               >
                 {/* Container for the visual circle */}
