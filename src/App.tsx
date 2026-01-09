@@ -57,43 +57,28 @@ function App() {
         isUserScrollingRef.current = false; // User has stopped scrolling
       }, 100); // Reset flag after a short delay
 
-      const scrollContainerRect = scrollContainer.getBoundingClientRect();
       const containerCenter =
         scrollContainer.scrollLeft + scrollContainer.offsetWidth / 2;
       let closestCircleId: number | null = null;
       let minDistance = Infinity;
 
       const circles = scrollContainer.querySelectorAll('[id^="circle-"]');
-      circles.forEach((circleElement, index) => {
+      circles.forEach((circleElement) => {
         const circle = circleElement as HTMLElement;
         const circleId = parseInt(circle.id.split("circle-")[1], 10);
-        
         const transformationParams = offsetsMap.get(circleId);
-        const scaleFactor = transformationParams?.scale ?? 1;
-
-        const circleRect = circle.getBoundingClientRect();
-        const circleLeftInContainer = circleRect.left - scrollContainerRect.left;
-        const circleCenter = circleLeftInContainer + circleRect.width / 2 + scrollContainer.scrollLeft;
-
-        console.log(`Circle ${circleId}:`, {
-          offsetLeft: circle.offsetLeft,
-          scaleFactor,
-          circleCenter,
-        });
-
-        if (index > 0) {
-          const prevCircleElement = circles[index - 1] as HTMLElement;
-          const prevCircleRect = prevCircleElement.getBoundingClientRect();
-          const prevCircleLeftInContainer = prevCircleRect.left - scrollContainerRect.left;
-          const prevCircleCenter = prevCircleLeftInContainer + prevCircleRect.width / 2 + scrollContainer.scrollLeft;
-          console.log(`Distance between ${circles[index-1].id} and ${circle.id}: ${circleCenter - prevCircleCenter}`);
-        }
-
+        const offsetX = transformationParams
+          ? (transformationParams.oldIndexOffset +
+              transformationParams.newIndexOffset) *
+            itemSpacingPx
+          : 0;
+        const circleCenter =
+          circle.offsetLeft + offsetX + circle.offsetWidth / 2;
         const distance = Math.abs(containerCenter - circleCenter);
 
         if (distance < minDistance) {
           minDistance = distance;
-          closestCircleId = circleId;
+          closestCircleId = parseInt(circle.id.split("circle-")[1], 10);
         }
       });
 
@@ -179,28 +164,48 @@ function App() {
               <div
                 key={circle.id}
                 id={`circle-${circle.id}`}
-                className="snap-center relative flex flex-col items-center transition-transform duration-500 ease-in-out"
+                className="snap-center"
                 style={{
                   width: `${CIRCLE_DIAMETER_REM}rem`,
-                  transform: `translateX(${
-                    oldIndexOffset * itemSpacingPx
-                  }px) scale(${Math.min(scaleFactor, 2)}) translateX(${
-                    newIndexOffset * itemSpacingPx
-                  }px)`,
+                  flexShrink: 0,
                 }}
               >
-                {/* Container for the visual circle */}
                 <div
-                  className="origin-bottom transition-transform duration-500 ease-in-out"
+                  className="relative flex justify-center"
                   style={{
                     width: `${CIRCLE_DIAMETER_REM}rem`,
-                    height: `${CIRCLE_DIAMETER_REM}rem`,
+                    transform: `translateX(${
+                      (oldIndexOffset + newIndexOffset) * itemSpacingPx
+                    }px)`,
                   }}
                 >
-                  <Circle circle={circle} isSelected={isSelected} />
+                  {/* Paint-only scale layer */}
+                  <div className="flex flex-col items-center">
+                    {/* Circle scales from bottom */}
+                    <div
+                      className="transition-transform duration-500 ease-in-out origin-bottom"
+                      style={{
+                        transform: `scale(${Math.min(scaleFactor, 2)})`,
+                        width: `${CIRCLE_DIAMETER_REM}rem`,
+                        height: `${CIRCLE_DIAMETER_REM}rem`,
+                        willChange: "transform",
+                      }}
+                    >
+                      <Circle circle={circle} isSelected={isSelected} />
+                    </div>
+
+                    {/* InfoBox scales from top */}
+                    <div
+                      className="transition-transform duration-500 ease-in-out origin-top"
+                      style={{
+                        transform: `scale(${Math.min(scaleFactor, 2)})`,
+                        willChange: "transform",
+                      }}
+                    >
+                      <InfoBox circle={circle} isSelected={isSelected} />
+                    </div>
+                  </div>
                 </div>
-                {/* InfoBox is now inside the same flex container */}
-                <InfoBox circle={circle} isSelected={isSelected} />
               </div>
             );
           })}
