@@ -82,10 +82,9 @@ function App() {
       });
 
       if (closestCircleId !== null) {
-        setSelectedId((prevId) => {
-          if (prevId === (closestCircleId as number)) return prevId;
-          return closestCircleId as number;
-        });
+        if (closestCircleId !== selectedId) {
+          setSelectedId(closestCircleId);
+        }
       }
     };
 
