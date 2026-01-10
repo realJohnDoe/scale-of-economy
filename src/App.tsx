@@ -4,7 +4,6 @@ import Circle from "./Circle";
 import InfoBox from "./InfoBox";
 import Overlay from "./Overlay";
 import { getSortingOffsets } from "./geometry";
-import { type CircleData } from "./data"; // Import CircleData type
 
 // --- Constants ---
 const REM_TO_PX = 16;
