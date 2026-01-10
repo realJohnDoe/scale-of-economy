@@ -9,8 +9,17 @@ export const TARGET_DIAMETER_PX = TARGET_DIAMETER_REM * REM_TO_PX;
 type TransformationParams = {
   oldIndexOffset: number
   scale: number
+  scalingOffset: number
   newIndexOffset: number
 }
+
+const calculateDeltaX = (d1: number, d2: number): number => {
+  const r1 = d1 / 2;
+  const r2 = d2 / 2;
+  const hypotenuse = r1 + r2 + Math.min(r1, r2) * 0.1;
+  const vertical = Math.abs(r1 - r2);
+  return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
+};
 
 /**
  * Calculates the translateX offsets for each circle to animate them from their original
@@ -76,16 +85,30 @@ export function getSortingOffsets(
   });
 
   const translateXOffsets = new Map<number, TransformationParams>();
-  circles.forEach((circle) => {
-    const oldIndex = originalIdToIndex.get(circle.id) as number; // Should always exist
-    const newIndex = sortedIdToIndex.get(circle.id) as number; // Should always exist
+  let cumulativeScalingOffset = 0;
+  let previousDiameter = 0; // Diameter of the previously processed circle in the sorted list
+
+  sortedCircles.forEach((circle, index) => {
+    const oldIndex = originalIdToIndex.get(circle.id) as number;
+    const newIndex = sortedIdToIndex.get(circle.id) as number;
     const value = values.get(circle.id) as number;
+
+    const scale = Math.sqrt(value / minValue);
+    const currentDiameter = TARGET_DIAMETER_PX * scale;
+
+    if (index > 0) {
+      // The circles are placed such that their edges touch, plus a small gap (0.1 * minRadius)
+      cumulativeScalingOffset += calculateDeltaX(previousDiameter, currentDiameter);
+    }
 
     translateXOffsets.set(circle.id, {
       oldIndexOffset: -oldIndex,
-      scale: Math.sqrt(value / minValue),
+      scale: scale,
+      scalingOffset: cumulativeScalingOffset,
       newIndexOffset: newIndex
     });
+
+    previousDiameter = currentDiameter;
   });
 
   return translateXOffsets;
