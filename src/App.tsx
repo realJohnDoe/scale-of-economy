@@ -143,10 +143,10 @@ function App() {
       />
 
       {/* --- Scrollable Content --- */}
-      <div className="flex min-h-dvh">
+      <div className="flex h-dvh overflow-hidden">
         <div
           ref={scrollContainerRef}
-          className="flex items-center snap-x snap-mandatory overflow-x-scroll"
+          className="flex snap-x snap-mandatory overflow-x-scroll overflow-y-hidden"
           style={{
             paddingLeft: `${paddingX}px`,
             paddingRight: `${paddingX}px`,
@@ -169,6 +169,7 @@ function App() {
                 className="snap-center"
                 style={{
                   width: `${CIRCLE_DIAMETER_REM}rem`,
+                  height: `${CIRCLE_DIAMETER_REM}rem`,
                   flexShrink: 0,
                 }}
               >
@@ -176,9 +177,12 @@ function App() {
                   className="relative flex justify-center"
                   style={{
                     width: `${CIRCLE_DIAMETER_REM}rem`,
-                    transform: `translateX(${
-                      (oldIndexOffset + newIndexOffset) * itemSpacingPx
-                    }px)`,
+                    transform: `
+                      translateY(100%)
+                      translateX(${
+                        (oldIndexOffset + newIndexOffset) * itemSpacingPx
+                      }px)
+                    `,
                   }}
                 >
                   {/* Paint-only scale layer */}
