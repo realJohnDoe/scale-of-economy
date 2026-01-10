@@ -133,6 +133,9 @@ function App() {
     };
   }, []);
 
+  const totalRailWidth =
+    circlesData.length * itemSpacingPx - GAP_PX + paddingX * 2;
+
   return (
     <>
       <Overlay
@@ -143,26 +146,24 @@ function App() {
       />
 
       {/* --- Scrollable Content --- */}
-      <div className="flex h-dvh overflow-hidden">
+      <div className="relative h-dvh overflow-hidden">
+        {/* ===== Horizontal scroll container (owns scrollWidth) ===== */}
         <div
           ref={scrollContainerRef}
-          className="flex snap-x snap-mandatory overflow-x-scroll overflow-y-hidden"
+          className="relative h-full overflow-x-scroll overflow-y-hidden snap-x snap-mandatory"
           style={{
             paddingLeft: `${paddingX}px`,
             paddingRight: `${paddingX}px`,
-            gap: `${GAP_PX}px`,
           }}
         >
-          {circlesData.map((circle) => {
-            const selectedParams = offsetsMap.get(selectedId);
-            const transformationParams = offsetsMap.get(circle.id);
-            const oldIndexOffset = transformationParams?.oldIndexOffset ?? 0;
-            const newIndexOffset = transformationParams?.newIndexOffset ?? 0;
-            const scaleFactor =
-              (transformationParams?.scale ?? 1) / (selectedParams?.scale ?? 1); // scaleFactor will be calculated by getVisualTransforms later
-            const isSelected = circle.id === selectedId;
-
-            return (
+          {/* ===== Layout rail (geometry ONLY, no visuals) ===== */}
+          <div
+            className="flex"
+            style={{
+              gap: `${GAP_PX}px`,
+            }}
+          >
+            {circlesData.map((circle) => (
               <div
                 key={circle.id}
                 id={`circle-${circle.id}`}
@@ -172,49 +173,80 @@ function App() {
                   height: `${CIRCLE_DIAMETER_REM}rem`,
                   flexShrink: 0,
                 }}
-              >
+              />
+            ))}
+          </div>
+
+          {/* ===== Global paint layer (visuals + transforms, clipped) ===== */}
+          <div
+            className="pointer-events-none absolute top-0 left-0 overflow-hidden"
+            style={{
+              width: `${totalRailWidth}px`,
+              height: "100%", // fill scroll container vertically
+            }}
+          >
+            {circlesData.map((circle, index) => {
+              const selectedParams = offsetsMap.get(selectedId);
+              const transformationParams = offsetsMap.get(circle.id);
+
+              const offsetX =
+                ((transformationParams?.oldIndexOffset ?? 0) +
+                  (transformationParams?.newIndexOffset ?? 0)) *
+                itemSpacingPx;
+
+              const scaleFactor =
+                (transformationParams?.scale ?? 1) /
+                (selectedParams?.scale ?? 1);
+
+              const baseX = paddingX + index * itemSpacingPx;
+
+              return (
                 <div
-                  className="relative flex justify-center"
+                  key={circle.id}
+                  className="absolute top-1/2"
                   style={{
-                    width: `${CIRCLE_DIAMETER_REM}rem`,
+                    left: baseX,
                     transform: `
-                      translateY(100%)
-                      translateX(${
-                        (oldIndexOffset + newIndexOffset) * itemSpacingPx
-                      }px)
-                    `,
+                translate(0%, -50%)
+                translateX(${offsetX}px)
+              `,
+                    willChange: "transform",
+                    pointerEvents: circle.id === selectedId ? "auto" : "none",
                   }}
                 >
-                  {/* Paint-only scale layer */}
                   <div className="flex flex-col items-center">
-                    {/* Circle scales from bottom */}
+                    {/* Circle */}
                     <div
-                      className="transition-transform duration-500 ease-in-out origin-bottom"
+                      className="origin-bottom transition-transform duration-500 ease-in-out"
                       style={{
-                        transform: `scale(${Math.min(scaleFactor, 2)})`,
                         width: `${CIRCLE_DIAMETER_REM}rem`,
                         height: `${CIRCLE_DIAMETER_REM}rem`,
-                        willChange: "transform",
+                        transform: `scale(${Math.min(scaleFactor, 2)})`,
                       }}
                     >
-                      <Circle circle={circle} isSelected={isSelected} />
+                      <Circle
+                        circle={circle}
+                        isSelected={circle.id === selectedId}
+                      />
                     </div>
 
-                    {/* InfoBox scales from top */}
+                    {/* InfoBox */}
                     <div
-                      className="transition-transform duration-500 ease-in-out origin-top"
+                      className="origin-top transition-transform duration-500 ease-in-out"
                       style={{
                         transform: `scale(${scaleFactor})`,
-                        willChange: "transform",
                       }}
                     >
-                      <InfoBox circle={circle} isSelected={isSelected} />
+                      <InfoBox
+                        circle={circle}
+                        isSelected={circle.id === selectedId}
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
