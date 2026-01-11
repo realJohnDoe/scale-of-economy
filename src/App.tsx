@@ -4,6 +4,7 @@ import Circle from "./Circle";
 import InfoBox from "./InfoBox";
 import { getSortedCircles, getSortingOffsets } from "./geometry";
 import AppHeader from "./AppHeader"; // Import AppHeader
+import { ScrollSpace } from "./ScrollSpace";
 
 // --- Debounce Utility ---
 function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number) {
@@ -28,7 +29,6 @@ function App() {
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
-  const [paddingX, setPaddingX] = React.useState(0);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   // Removed itemSpacingPx state and its useEffect for dynamic measurement
 
@@ -108,138 +108,88 @@ function App() {
     };
   }, []);
 
-  React.useEffect(() => {
-    const calculatePadding = () => {
-      const newPaddingX = (window.innerWidth - CIRCLE_DIAMETER_PX) / 2;
-      setPaddingX(Math.max(0, newPaddingX)); // Ensure padding is not negative
-    };
-
-    calculatePadding(); // Calculate on mount
-    window.addEventListener("resize", calculatePadding); // Recalculate on resize
-
-    return () => {
-      window.removeEventListener("resize", calculatePadding); // Cleanup
-    };
-  }, []);
-
-  const totalRailWidth =
-    circlesData.length * itemSpacingPx - GAP_PX + paddingX * 2;
-
   return (
     <>
       <AppHeader orderBy={orderBy} setOrderBy={setOrderBy} />
-
-      {/* --- Scrollable Content --- */}
-      <div className="relative h-dvh overflow-hidden">
-        {/* ===== Horizontal scroll container (owns scrollWidth) ===== */}
-        <div
-          ref={scrollContainerRef}
-          className="relative h-full overflow-x-scroll overflow-y-hidden snap-x snap-mandatory"
-          style={{
-            paddingLeft: `${paddingX}px`,
-            paddingRight: `${paddingX}px`,
+      <div className="relative h-dvh overflow-x-auto overflow-y-hidden">
+        <ScrollSpace
+          numItems={circlesData.length}
+          itemDistance={itemSpacingPx}
+          scrollToIndex={idToIndex.get(selectedId)}
+          onIndexChange={(index) => {
+            const id = sortedCircles[index]?.id;
+            if (id && id !== selectedId) {
+              setSelectedId(id);
+            }
           }}
-        >
-          {/* ===== Layout rail (geometry ONLY, no visuals) ===== */}
-          <div
-            className="flex"
-            style={{
-              gap: `${GAP_PX}px`,
-            }}
-          >
-            {circlesData.map((circle) => (
-              <div
-                key={circle.id}
-                id={`circle-${circle.id}`}
-                className="snap-center"
-                style={{
-                  width: `${CIRCLE_DIAMETER_REM}rem`,
-                  height: `${CIRCLE_DIAMETER_REM}rem`,
-                  flexShrink: 0,
-                }}
-              />
-            ))}
-          </div>
+        />
+      </div>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {circlesData.map((circle, index) => {
+          const selectedParams = offsetsMap.get(selectedId);
+          const transformationParams = offsetsMap.get(circle.id);
 
-          {/* ===== Global paint layer (visuals + transforms, clipped) ===== */}
-          <div
-            className="pointer-events-none absolute top-0 left-0 overflow-hidden"
-            style={{
-              width: `${totalRailWidth}px`,
-              height: "100%", // fill scroll container vertically
-            }}
-          >
-            {circlesData.map((circle, index) => {
-              const selectedParams = offsetsMap.get(selectedId);
-              const transformationParams = offsetsMap.get(circle.id);
+          const scalingOffset =
+            ((transformationParams?.scalingOffset ?? 1) -
+              (selectedParams?.scalingOffset ?? 1)) /
+            (selectedParams?.scale ?? 1);
+          const offsetX =
+            // ((transformationParams?.oldIndexOffset ?? 0) +
+            // (selectedParams?.newIndexOffset ?? 0) +
+            scalingOffset * itemSpacingPx;
 
-              const scalingOffset =
-                ((transformationParams?.scalingOffset ?? 1) -
-                  (selectedParams?.scalingOffset ?? 1)) /
-                (selectedParams?.scale ?? 1);
-              const offsetX =
-                ((transformationParams?.oldIndexOffset ?? 0) +
-                  (selectedParams?.newIndexOffset ?? 0) +
-                  scalingOffset) *
-                itemSpacingPx;
+          const scaleFactor =
+            (transformationParams?.scale ?? 1) / (selectedParams?.scale ?? 1);
 
-              const scaleFactor =
-                (transformationParams?.scale ?? 1) /
-                (selectedParams?.scale ?? 1);
+          console.log(scalingOffset);
 
-              console.log(scalingOffset);
-
-              const baseX = paddingX + index * itemSpacingPx;
-
-              return (
-                <div
-                  key={circle.id}
-                  className="absolute"
-                  style={{
-                    top: "50%",
-                    left: baseX,
-                    transform: `
-                              translate(0%, -100%)
+          return (
+            <div
+              key={circle.id}
+              className="absolute"
+              style={{
+                top: "60%",
+                left: "50%",
+                transform: `
+                              translate(-50%, -100%)
                               translateX(${offsetX + scalingOffset}px)
                               `,
-                    willChange: "transform",
-                    pointerEvents: circle.id === selectedId ? "auto" : "none",
+                willChange: "transform",
+                pointerEvents: circle.id === selectedId ? "auto" : "none",
+              }}
+            >
+              <div className="relative">
+                {/* Circle */}
+                <div
+                  className="origin-bottom transition-transform duration-500 ease-in-out"
+                  style={{
+                    width: `${CIRCLE_DIAMETER_REM}rem`,
+                    height: `${CIRCLE_DIAMETER_REM}rem`,
+                    transform: `scale(${Math.min(scaleFactor, 5)})`,
                   }}
                 >
-                  <div className="relative">
-                    {/* Circle */}
-                    <div
-                      className="origin-bottom transition-transform duration-500 ease-in-out"
-                      style={{
-                        width: `${CIRCLE_DIAMETER_REM}rem`,
-                        height: `${CIRCLE_DIAMETER_REM}rem`,
-                        transform: `scale(${Math.min(scaleFactor, 5)})`,
-                      }}
-                    >
-                      <Circle
-                        circle={circle}
-                        isSelected={circle.id === selectedId}
-                      />
-                    </div>
-
-                    {/* InfoBox */}
-                    <div
-                      className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-80 transition-transform duration-500 ease-in-out"
-                      style={{
-                        transform: `scale(${scaleFactor})`,
-                      }}
-                    >
-                      <InfoBox
-                        circle={circle}
-                        isSelected={circle.id === selectedId}
-                      />
-                    </div>
-                  </div>
+                  <Circle
+                    circle={circle}
+                    isSelected={circle.id === selectedId}
+                  />
                 </div>
-              );
-            })}
-          </div>
-        </div>
+
+                {/* InfoBox */}
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-80 transition-transform duration-500 ease-in-out"
+                  style={{
+                    transform: `scale(${scaleFactor})`,
+                  }}
+                >
+                  <InfoBox
+                    circle={circle}
+                    isSelected={circle.id === selectedId}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );

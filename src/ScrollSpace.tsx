@@ -125,13 +125,13 @@ export function ScrollSpace({
         {Array.from({ length: numItems }).map((_, i) => (
           <div
             key={i}
-            className="shrink-0 bg-red-400 flex items-center justify-center text-white font-bold rounded-lg"
+            className="shrink-0 flex items-center justify-center text-white font-bold rounded-lg"
             style={{
               width: itemDistance,
               height: 200, // give each item a height
             }}
           >
-            {i + 1} {/* optional label to see which item is which */}
+            {/* {i + 1} optional label to see which item is which */}
           </div>
         ))}
       </div>
