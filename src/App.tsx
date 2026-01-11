@@ -13,7 +13,7 @@ const GAP_PX = 50; // Hardcoded gap between circles (e.g., equivalent to space-x
 
 // --- The React Component ---
 function App() {
-  const [selectedId, setSelectedId] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0); // floating index in sortedCircles
   const programmaticChangeRef = React.useRef(false);
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
@@ -27,10 +27,9 @@ function App() {
     return getSortingOffsets(circlesData, orderBy);
   }, [orderBy]);
 
-  const { sortedCircles, idToIndex } = React.useMemo(() => {
+  const { sortedCircles } = React.useMemo(() => {
     const sorted = getSortedCircles(circlesData, orderBy);
-    const map = new Map(sorted.map((c, i) => [c.id, i]));
-    return { sortedCircles: sorted, idToIndex: map };
+    return { sortedCircles: sorted };
   }, [orderBy]);
 
   const handleOrderChange = (value: typeof orderBy) => {
@@ -40,7 +39,7 @@ function App() {
 
   React.useEffect(() => {
     programmaticChangeRef.current = false;
-  }, [selectedId]);
+  }, [selectedIndex]);
 
   return (
     <>
@@ -50,22 +49,18 @@ function App() {
           numItems={circlesData.length}
           itemDistance={itemSpacingPx}
           scrollToIndex={
-            programmaticChangeRef.current
-              ? idToIndex.get(selectedId)
-              : undefined
+            programmaticChangeRef.current ? selectedIndex : undefined
           }
           onIndexChange={(index) => {
-            const id = sortedCircles[index]?.id;
-            if (id && id !== selectedId) {
-              setSelectedId(id);
-            }
+            setSelectedIndex(index); // now a float
           }}
         />
       </div>
       <CirclesLayer
-        selectedId={selectedId}
+        selectedIndex={selectedIndex}
         itemSpacingPx={itemSpacingPx}
         offsetsMap={offsetsMap}
+        sortedCircles={sortedCircles}
       />
     </>
   );
