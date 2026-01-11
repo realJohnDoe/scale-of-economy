@@ -6,10 +6,7 @@ import { getSortedCircles, getSortingOffsets } from "./geometry";
 import Dropdown from "./Dropdown";
 
 // --- Debounce Utility ---
-function debounce<F extends (...args: any[]) => any>(
-  func: F,
-  waitFor: number,
-) {
+function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number) {
   let timeout: number;
 
   return (...args: Parameters<F>): Promise<ReturnType<F>> =>
@@ -31,7 +28,6 @@ function App() {
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [paddingX, setPaddingX] = React.useState(0);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   // Removed itemSpacingPx state and its useEffect for dynamic measurement
@@ -72,7 +68,7 @@ function App() {
     const handleScroll = debounce(() => {
       isScrolling.current = true;
       const centeredIndex = Math.round(
-        scrollContainer.scrollLeft / itemSpacingPx,
+        scrollContainer.scrollLeft / itemSpacingPx
       );
       const newSelectedId = sortedCircles[centeredIndex]?.id;
 
@@ -142,12 +138,7 @@ function App() {
 
           {/* Dropdown */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
-            <Dropdown
-              orderBy={orderBy}
-              setOrderBy={setOrderBy}
-              isMenuOpen={isMenuOpen}
-              setIsMenuOpen={setIsMenuOpen}
-            />
+            <Dropdown orderBy={orderBy} setOrderBy={setOrderBy} />
           </div>
         </div>
       </div>
