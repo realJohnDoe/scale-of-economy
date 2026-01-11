@@ -54,7 +54,7 @@ function Dropdown({
       </div>
       {isMenuOpen && (
         <div
-          className="absolute bottom-full left-1/2 -translate-x-1/2 bg-gray-700 text-white rounded p-2 w-48 mb-2 z-20"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 bg-gray-700 text-white rounded p-2 w-48 mb-2"
           onMouseLeave={() => setHoveredOption(null)}
         >
           <div

@@ -4,6 +4,7 @@ import Circle from "./Circle";
 import InfoBox from "./InfoBox";
 import Overlay from "./Overlay";
 import { getSortingOffsets } from "./geometry";
+import Dropdown from "./Dropdown";
 
 // --- Constants ---
 const REM_TO_PX = 16;
@@ -136,12 +137,30 @@ function App() {
 
   return (
     <>
-      <Overlay
-        orderBy={orderBy}
-        setOrderBy={setOrderBy}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-      />
+      <div className="fixed inset-0 z-10 pointer-events-none">
+        <div className="relative w-full h-full">
+          {/* Title */}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
+            <div className="text-3xl font-bold text-primary">
+              How many people are...
+            </div>
+          </div>
+
+          {/* Dropdown */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
+            <Dropdown
+              orderBy={orderBy}
+              setOrderBy={setOrderBy}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute left-1/2 -translate-x-1/2 top-20 bottom-20 z-0">
+        <div className="w-[min(90vw,24rem)] h-full rounded-lg bg-gray-200" />
+      </div>
 
       {/* --- Scrollable Content --- */}
       <div className="relative h-dvh overflow-hidden">
