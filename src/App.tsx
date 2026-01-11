@@ -194,25 +194,26 @@ function App() {
               return (
                 <div
                   key={circle.id}
-                  className="absolute top-1/2"
+                  className="absolute"
                   style={{
+                    top: "50%",
                     left: baseX,
                     transform: `
-                translate(0%, -50%)
-                translateX(${offsetX + scalingOffset}px)
-              `,
+                              translate(0%, -100%)
+                              translateX(${offsetX + scalingOffset}px)
+                              `,
                     willChange: "transform",
                     pointerEvents: circle.id === selectedId ? "auto" : "none",
                   }}
                 >
-                  <div className="flex flex-col items-center">
+                  <div className="relative">
                     {/* Circle */}
                     <div
                       className="origin-bottom transition-transform duration-500 ease-in-out"
                       style={{
                         width: `${CIRCLE_DIAMETER_REM}rem`,
                         height: `${CIRCLE_DIAMETER_REM}rem`,
-                        transform: `scale(${Math.min(scaleFactor, 5)}`,
+                        transform: `scale(${Math.min(scaleFactor, 5)})`,
                       }}
                     >
                       <Circle
@@ -223,7 +224,7 @@ function App() {
 
                     {/* InfoBox */}
                     <div
-                      className="origin-top transition-transform duration-500 ease-in-out"
+                      className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-80 transition-transform duration-500 ease-in-out"
                       style={{
                         transform: `scale(${scaleFactor})`,
                       }}
