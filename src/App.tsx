@@ -34,7 +34,21 @@ function App() {
 
   const handleOrderChange = (value: typeof orderBy) => {
     programmaticChangeRef.current = true;
+
+    // Find the circleId that is currently selected
+    const currentCircleId = sortedCircles[selectedIndex]?.id;
+
     setOrderBy(value);
+
+    // After order changes, compute the new index that matches the same circleId
+    const newIndex = getSortedCircles(circlesData, value).findIndex(
+      (c) => c.id === currentCircleId
+    );
+
+    // Update selectedIndex to match the same circle
+    if (newIndex !== -1) {
+      setSelectedIndex(newIndex);
+    }
   };
 
   React.useEffect(() => {
