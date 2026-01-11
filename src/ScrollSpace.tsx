@@ -91,6 +91,23 @@ export function ScrollSpace({
     };
   }, [itemDistance, onIndexChange]);
 
+  // --- horizontal wheel scrolling ---
+  React.useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      el.scrollBy({
+        left: e.deltaY,
+        behavior: "smooth",
+      });
+    };
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, []);
+
   return (
     <div
       ref={containerRef}
