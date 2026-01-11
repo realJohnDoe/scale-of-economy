@@ -2,7 +2,6 @@ import React from "react";
 import { circlesData } from "./data";
 import Circle from "./Circle";
 import InfoBox from "./InfoBox";
-import Overlay from "./Overlay";
 import { getSortingOffsets } from "./geometry";
 import Dropdown from "./Dropdown";
 
