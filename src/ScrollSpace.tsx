@@ -53,34 +53,50 @@ export function ScrollSpace({
 
     const id = window.setTimeout(() => {
       isProgrammaticScroll.current = false;
-    }, 100);
+    }, 150);
 
     return () => window.clearTimeout(id);
   }, [scrollToIndex, itemDistance]);
 
-  // --- scroll → index ---
+  // --- scroll → index with soft snapping ---
   React.useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    const onScroll = () => {
+    let scrollTimeout: number;
+
+    const handleScroll = () => {
       if (isProgrammaticScroll.current) return;
 
-      const index = Math.round(el.scrollLeft / itemDistance);
-      onIndexChange?.(index);
+      // debounce scroll end
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(() => {
+        if (!el) return;
+        const index = Math.round(el.scrollLeft / itemDistance);
+
+        // Smoothly scroll to center this item
+        el.scrollTo({
+          left: index * itemDistance,
+          behavior: "smooth",
+        });
+
+        onIndexChange?.(index);
+      }, 100);
     };
 
-    el.addEventListener("scroll", onScroll);
-    return () => el.removeEventListener("scroll", onScroll);
+    el.addEventListener("scroll", handleScroll);
+    return () => {
+      el.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
+    };
   }, [itemDistance, onIndexChange]);
 
   return (
     <div
       ref={containerRef}
       className="
-        h-full w-full
+        w-full h-screen
         overflow-x-scroll overflow-y-hidden
-        snap-x snap-mandatory
         box-border
       "
       style={{
@@ -88,15 +104,18 @@ export function ScrollSpace({
         paddingRight: paddingX,
       }}
     >
-      <div className="flex">
+      <div className="flex" style={{ minWidth: numItems * itemDistance }}>
         {Array.from({ length: numItems }).map((_, i) => (
           <div
             key={i}
-            className="shrink-0 snap-center"
+            className="shrink-0 bg-red-400 flex items-center justify-center text-white font-bold rounded-lg"
             style={{
               width: itemDistance,
+              height: 200, // give each item a height
             }}
-          />
+          >
+            {i + 1} {/* optional label to see which item is which */}
+          </div>
         ))}
       </div>
     </div>
