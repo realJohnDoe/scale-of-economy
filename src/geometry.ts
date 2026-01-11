@@ -36,27 +36,7 @@ export function getSortingOffsets(
   circles: CircleData[],
   sortBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson",
 ): Map<number, TransformationParams> {
-  // Changed return type to Map<number, number>
-  const sortedCircles = [...circles]; // Create a shallow copy to sort
-
-  sortedCircles.sort((a, b) => {
-    switch (sortBy) {
-      case "numberOfPersons":
-        return a.numberOfPersons - b.numberOfPersons;
-      case "yearlyTurnOver":
-        return a.yearlyTurnOver - b.yearlyTurnOver;
-      case "turnoverPerPerson":
-        const turnoverA = a.numberOfPersons
-          ? a.yearlyTurnOver / a.numberOfPersons
-          : 0;
-        const turnoverB = b.numberOfPersons
-          ? b.yearlyTurnOver / b.numberOfPersons
-          : 0;
-        return turnoverA - turnoverB;
-      default:
-        return 0; // Should not happen with type checking
-    }
-  });
+  const sortedCircles = getSortedCircles(circles, sortBy);
 
   const originalIdToIndex = new Map<number, number>();
   circles.forEach((circle, index) => {
