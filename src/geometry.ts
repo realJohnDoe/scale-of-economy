@@ -18,7 +18,9 @@ const calculateDeltaX = (d1: number, d2: number): number => {
   const r2 = d2 / 2;
   const hypotenuse = r1 + r2 + Math.min(r1, r2) * 0.1;
   const vertical = Math.abs(r1 - r2);
-  return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
+  const deltaX = Math.sqrt(hypotenuse ** 2 - vertical ** 2);
+  console.log(r1, r2, deltaX)
+  return deltaX
 };
 
 /**
@@ -93,12 +95,11 @@ export function getSortingOffsets(
     const newIndex = sortedIdToIndex.get(circle.id) as number;
     const value = values.get(circle.id) as number;
 
-    const scale = Math.sqrt(value / minValue);
-    const currentDiameter = TARGET_DIAMETER_PX * scale;
+    const scale = Math.sqrt(value);
 
     if (index > 0) {
       // The circles are placed such that their edges touch, plus a small gap (0.1 * minRadius)
-      cumulativeScalingOffset += calculateDeltaX(previousDiameter, currentDiameter);
+      cumulativeScalingOffset += calculateDeltaX(previousDiameter, scale);
     }
 
     translateXOffsets.set(circle.id, {
@@ -108,8 +109,10 @@ export function getSortingOffsets(
       newIndexOffset: newIndex
     });
 
-    previousDiameter = currentDiameter;
+    previousDiameter = scale;
   });
+
+  console.log(translateXOffsets)
 
   return translateXOffsets;
 }

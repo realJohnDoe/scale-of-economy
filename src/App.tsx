@@ -214,6 +214,10 @@ function App() {
                 (transformationParams?.scale ?? 1) /
                 (selectedParams?.scale ?? 1);
 
+              const scalingOffset =
+                (transformationParams?.scalingOffset ?? 1) -
+                (selectedParams?.scalingOffset ?? 1) * scaleFactor;
+
               const baseX = paddingX + index * itemSpacingPx;
 
               return (
@@ -237,7 +241,7 @@ function App() {
                       style={{
                         width: `${CIRCLE_DIAMETER_REM}rem`,
                         height: `${CIRCLE_DIAMETER_REM}rem`,
-                        transform: `scale(${Math.min(scaleFactor, 2)})`,
+                        transform: `scale(${Math.min(scaleFactor, 5)})`,
                       }}
                     >
                       <Circle
