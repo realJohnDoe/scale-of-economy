@@ -105,7 +105,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
           }}
           className="absolute"
           style={{
-            top: "35%", // bottom alignment reference for circle
+            top: "25%", // bottom alignment reference for circle
             left: "50%",
             willChange: "transform",
           }}
