@@ -11,7 +11,7 @@ type TransformationParams = {
 const calculateDeltaX = (d1: number, d2: number): number => {
   const r1 = d1 / 2;
   const r2 = d2 / 2;
-  const hypotenuse = r1 + r2 + Math.min(r1, r2) * 0.1;
+  const hypotenuse = r1 + r2 - Math.min(r1, r2) * 0.3;
   const vertical = Math.abs(r1 - r2);
   const deltaX = Math.sqrt(hypotenuse ** 2 - vertical ** 2);
   console.log(r1, r2, deltaX);

@@ -79,7 +79,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
       </div>
 
       {sources && sources.length > 0 && (
-        <div className="mt-4 text-sm text-gray-500">
+        <div className="mt-4 text-sm text-gray-500 pointer-events-auto">
           [
           {sources.map((source, index) => (
             <React.Fragment key={index}>

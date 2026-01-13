@@ -20,7 +20,7 @@ interface CirclesLayerProps {
   sortedCircles: CircleData[];
 }
 
-const CIRCLE_DIAMETER_REM = 20;
+const CIRCLE_DIAMETER_REM = 18;
 
 // Linear interpolation helper
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;

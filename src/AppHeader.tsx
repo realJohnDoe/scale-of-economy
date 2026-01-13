@@ -21,7 +21,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ orderBy, setOrderBy }) => {
           </div>
 
           {/* Dropdown */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/4 z-10 pointer-events-auto w-96 justify-center">
+          <div className="absolute bottom-4 inset-x-0 flex z-10 pointer-events-auto justify-center">
             <Dropdown orderBy={orderBy} setOrderBy={setOrderBy} />
           </div>
         </div>
