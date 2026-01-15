@@ -20,16 +20,15 @@ const AppHeader: React.FC<AppHeaderProps> = ({ orderBy, setOrderBy }) => {
             </div>
           </div>
 
-          {/* Center Box */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-16 bottom-18 z-0">
-            <div className="w-[min(90vw,24rem)] h-full rounded-lg bg-gray-200" />
-          </div>
-
           {/* Dropdown */}
           <div className="absolute bottom-4 inset-x-0 flex z-10 pointer-events-auto justify-center">
             <Dropdown orderBy={orderBy} setOrderBy={setOrderBy} />
           </div>
         </div>
+      </div>
+
+      <div className="absolute left-1/2 -translate-x-1/2 top-16 bottom-18 z-0">
+        <div className="w-[min(90vw,24rem)] h-full rounded-lg bg-gray-200" />
       </div>
     </div>
   );
