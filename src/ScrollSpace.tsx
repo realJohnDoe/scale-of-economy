@@ -35,23 +35,6 @@ export function ScrollSpace({
     // rafId.current = requestAnimationFrame(checkSettled);
   };
 
-  // const checkSettled = () => {
-  //   const el = containerRef.current!;
-  //   const current = el.scrollLeft;
-
-  //   if (Math.abs(current - lastScrollLeft.current) < 0.5) {
-  //     // SCROLL HAS SETTLED
-  //     rafId.current = null;
-
-  //     const snappedIndex = Math.round(current / itemDistance);
-  //     snapToIndex(snappedIndex);
-  //     return;
-  //   }
-
-  //   lastScrollLeft.current = current;
-  //   rafId.current = requestAnimationFrame(checkSettled);
-  // };
-
   // --- measure container + compute centering padding ---
   React.useEffect(() => {
     const el = containerRef.current;
@@ -100,37 +83,6 @@ export function ScrollSpace({
 
     requestAnimationFrame(waitForSettle);
   }, [scrollToIndex, itemDistance]);
-
-  // --- scroll → float index with soft snapping ---
-  // const snapToIndex = (index: number) => {
-  //   if (!snappingEnabledRef.current) return;
-
-  //   const el = containerRef.current;
-  //   if (!el) return;
-
-  //   snappingEnabledRef.current = false;
-
-  //   el.scrollTo({
-  //     left: index * itemDistance,
-  //     behavior: "smooth",
-  //   });
-
-  //   let last = el.scrollLeft;
-
-  //   const waitForSettle = () => {
-  //     const current = el.scrollLeft;
-
-  //     if (Math.abs(current - last) < 0.5) {
-  //       snappingEnabledRef.current = true;
-  //       return;
-  //     }
-
-  //     last = current;
-  //     requestAnimationFrame(waitForSettle);
-  //   };
-
-  //   requestAnimationFrame(waitForSettle);
-  // };
 
   React.useEffect(() => {
     const el = containerRef.current;
