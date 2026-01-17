@@ -62,17 +62,32 @@ function App() {
   const [itemDistance, setItemDistance] = React.useState(0);
 
   React.useEffect(() => {
-    if (containerRef.current) {
-      const style = getComputedStyle(containerRef.current);
-      const circlePx = style.getPropertyValue("--circle"); // e.g., "16rem"
+    let timeout: number;
 
-      // Convert rem to px if needed
-      const px = circlePx.includes("rem")
-        ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
-        : parseFloat(circlePx);
+    const updateItemDistance = () => {
+      if (containerRef.current) {
+        const style = getComputedStyle(containerRef.current);
+        const circlePx = style.getPropertyValue("--circle");
+        const px = circlePx.includes("rem")
+          ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
+          : parseFloat(circlePx);
 
-      setItemDistance(px);
-    }
+        setItemDistance((prev) => (prev !== px ? px : prev));
+      }
+    };
+
+    const handleResize = () => {
+      clearTimeout(timeout);
+      timeout = window.setTimeout(updateItemDistance, 50); // note window.setTimeout
+    };
+
+    window.addEventListener("resize", handleResize);
+    updateItemDistance(); // initial calculation
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (
