@@ -1,13 +1,16 @@
 import React from "react";
 import { circlesData } from "./data";
-import { getSortedCircles, getSortingOffsets } from "./geometry";
+import {
+  getSortedCircles,
+  getSortingOffsets,
+  ITEM_SPACING_FACTOR,
+} from "./geometry";
 import AppHeader from "./AppHeader"; // Import AppHeader
 import { ScrollSpace } from "./ScrollSpace";
 import CirclesLayer from "./CirclesLayer";
 
 // --- Constants ---
 const REM_TO_PX = 16;
-const GAP_PX = 50; // Hardcoded gap between circles (e.g., equivalent to space-x-8)
 
 // --- The React Component ---
 function App() {
@@ -65,10 +68,10 @@ function App() {
 
       // Convert rem to px if needed
       const px = circlePx.includes("rem")
-        ? parseFloat(circlePx) * REM_TO_PX
+        ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
         : parseFloat(circlePx);
 
-      setItemDistance(px + GAP_PX); // include your gap
+      setItemDistance(px);
     }
   }, []);
 
