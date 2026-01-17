@@ -99,10 +99,8 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
           ref={(el) => {
             circleRefs.current[i] = el!;
           }}
-          className="absolute"
+          className="absolute top-[25%] left-1/2"
           style={{
-            top: "25%", // bottom alignment reference for circle
-            left: "50%",
             willChange: "transform",
             transform: "translateX(-50%)",
           }}

@@ -16,7 +16,6 @@ const calculateDeltaX = (d1: number, d2: number): number => {
   const hypotenuse = r1 + r2 + Math.min(r1, r2) * (ITEM_SPACING_FACTOR - 1);
   const vertical = Math.abs(r1 - r2);
   const deltaX = Math.sqrt(hypotenuse ** 2 - vertical ** 2);
-  console.log(r1, r2, deltaX);
   return deltaX;
 };
 
@@ -98,8 +97,6 @@ export function getSortingOffsets(
 
     previousDiameter = scale;
   });
-
-  console.log(translateXOffsets);
 
   return translateXOffsets;
 }

@@ -59,11 +59,17 @@ function App() {
 
   // Compute circle size in pixels for scroll space
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [itemDistance, setItemDistance] = React.useState(0);
+  const [itemDistance, setItemDistance] = React.useState(() => {
+    if (!containerRef.current) return ITEM_SPACING_FACTOR * 16 * REM_TO_PX; // fallback
+    const style = getComputedStyle(containerRef.current);
+    const circlePx = style.getPropertyValue("--circle");
+    const px = circlePx.includes("rem")
+      ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
+      : parseFloat(circlePx);
+    return px;
+  });
 
-  React.useEffect(() => {
-    let timeout: number;
-
+  React.useLayoutEffect(() => {
     const updateItemDistance = () => {
       if (containerRef.current) {
         const style = getComputedStyle(containerRef.current);
@@ -76,18 +82,12 @@ function App() {
       }
     };
 
+    updateItemDistance(); // initial measurement
     const handleResize = () => {
-      clearTimeout(timeout);
-      timeout = window.setTimeout(updateItemDistance, 50); // note window.setTimeout
+      updateItemDistance();
     };
-
     window.addEventListener("resize", handleResize);
-    updateItemDistance(); // initial calculation
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(timeout);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
