@@ -9,7 +9,7 @@ interface InfoBoxProps {
 // Helper function from Circle.tsx, could be moved to a shared file later
 function formatToTwoSignificantDigits(
   num: number,
-  isCurrency: boolean = false
+  isCurrency: boolean = false,
 ): string {
   const prefix = isCurrency ? "$" : "";
   if (num === 0) return prefix + "0";
@@ -53,33 +53,37 @@ const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
   const dailyTurnover = yearlyTurnOver / 365;
   const formattedDailyTurnover = formatToTwoSignificantDigits(
     dailyTurnover,
-    true
+    true,
   );
   const formattedPersons = formatToTwoSignificantDigits(numberOfPersons);
 
   const dailyTurnoverPerPerson = yearlyTurnOver / numberOfPersons / 365; // Corrected to daily
   const formattedDailyTurnoverPerPerson = formatToTwoSignificantDigits(
     dailyTurnoverPerPerson,
-    true
+    true,
   );
 
   return (
     <div
-      className={`text-primary text-lg font-bold text-center w-max mt-4 ${fadeClass}`}
+      className={`text-primary font-bold text-center w-max mt-4 ${fadeClass}`}
     >
-      <div className="text-2xl">{formattedPersons},</div>
-      <div>with a daily turnover of</div>
-      <div className="text-2xl">
+      <div className="text-2xl landscape:text-lg landscape:lg:text-2xl">
+        {formattedPersons},
+      </div>
+      <div className="text-lg landscape:text-sm landscape:lg:text-lg">
+        with a daily turnover of
+      </div>
+      <div className="text-2xl landscape:text-lg landscape:lg:text-2xl">
         {formattedDailyTurnover}
         {numberOfPersons > 1 && (
-          <span className="text-lg ml-2">
+          <span className="ml-2">
             ({formattedDailyTurnoverPerPerson}/person)
           </span>
         )}
       </div>
 
       {sources && sources.length > 0 && (
-        <div className="mt-4 text-sm text-gray-500">
+        <div className="mt-4 text-sm text-gray-500 pointer-events-auto">
           [
           {sources.map((source, index) => (
             <React.Fragment key={index}>

@@ -18,10 +18,19 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
     <div className="relative w-full h-full">
       {/* Top text container */}
       {predicate || imageFileName ? (
-        <div className="absolute bottom-full mb-4 text-primary text-lg font-bold text-center w-max left-1/2 -translate-x-1/2">
-          {predicate && <div className={fadeClass}>{predicate}</div>}
+        <div className="absolute bottom-full mb-3 text-primary font-bold text-center w-max left-1/2 -translate-x-1/2">
+          {predicate && (
+            <div
+              className={`${fadeClass} text-lg landscape:text-sm landscape:lg:lg`}
+            >
+              ...{predicate}
+            </div>
+          )}
           {imageFileName && ( // Always show name if image, regardless of selection
-            <div className="text-2xl">
+            <div
+              className={`text-2xl transition-colors landscape:text-base landscape:lg:text-2xl ${!isSelected && "text-gray-400"}`}
+            >
+              {!predicate && "..."}
               {name}
               <span className={fadeClass}>?</span>
             </div>

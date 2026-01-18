@@ -1,225 +1,123 @@
 import React from "react";
 import { circlesData } from "./data";
-import Dropdown from "./Dropdown";
-import Circle from "./Circle";
+import {
+  getSortedCircles,
+  getSortingOffsets,
+  ITEM_SPACING_FACTOR,
+} from "./geometry";
+import AppHeader from "./AppHeader"; // Import AppHeader
+import { ScrollSpace } from "./ScrollSpace";
+import CirclesLayer from "./CirclesLayer";
 
-// --- Pure Geometric Calculation Function ---
-function calculatePositions(
-  areas: number[],
-  selectedIndex: number,
-  targetDiameter: number
-): number[] {
-  if (selectedIndex < 0 || selectedIndex >= areas.length) return [];
-
-  const anchorArea = areas[selectedIndex];
-
-  const getDisplayDiameter = (area: number) => {
-    return targetDiameter * Math.sqrt(area / anchorArea);
-  };
-
-  const calculateDeltaX = (d1: number, d2: number): number => {
-    const r1 = d1 / 2;
-    const r2 = d2 / 2;
-    const hypotenuse = r1 + r2 + Math.min(r1, r2) * 0.1;
-    const vertical = Math.abs(r1 - r2);
-    return Math.sqrt(hypotenuse ** 2 - vertical ** 2);
-  };
-
-  const displayDiameters = areas.map(getDisplayDiameter);
-  const selectedCircleDisplayRadius = targetDiameter / 2;
-
-  const sortedIndices = [...areas.keys()].sort((a, b) => areas[a] - areas[b]);
-  const anchorSortedIndex = sortedIndices.indexOf(selectedIndex);
-
-  const posXValues: number[] = new Array(areas.length);
-  posXValues[selectedIndex] = 0; // posX is in units of selected radius
-  let currentPosRem = 0;
-
-  // Right side of anchor in sorted list
-  for (let i = anchorSortedIndex + 1; i < sortedIndices.length; i++) {
-    const prevSortedIdx = sortedIndices[i - 1];
-    const currentSortedIdx = sortedIndices[i];
-    currentPosRem += calculateDeltaX(
-      displayDiameters[prevSortedIdx],
-      displayDiameters[currentSortedIdx]
-    );
-    posXValues[currentSortedIdx] = currentPosRem / selectedCircleDisplayRadius;
-  }
-
-  // Left side of anchor in sorted list
-  currentPosRem = 0;
-  for (let i = anchorSortedIndex - 1; i >= 0; i--) {
-    const prevSortedIdx = sortedIndices[i + 1];
-    const currentSortedIdx = sortedIndices[i];
-    currentPosRem -= calculateDeltaX(
-      displayDiameters[currentSortedIdx],
-      displayDiameters[prevSortedIdx]
-    );
-    posXValues[currentSortedIdx] = currentPosRem / selectedCircleDisplayRadius;
-  }
-
-  return posXValues;
-}
-
-import InfoBox from "./InfoBox";
+// --- Constants ---
+const REM_TO_PX = 16;
 
 // --- The React Component ---
 function App() {
-  const [selectedId, setSelectedId] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const floatingIndexRef = React.useRef(0);
+
+  const programmaticChangeRef = React.useRef(false);
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  // Removed itemSpacingPx state and its useEffect for dynamic measurement
 
-  const targetDiameter = 20; // rem
+  // Use the new getSortingOffsets function with dynamically measured itemSpacingPx
 
-  const areas = circlesData.map((c) => {
-    if (orderBy === "turnoverPerPerson") {
-      return c.yearlyTurnOver / c.numberOfPersons;
-    }
-    return c[orderBy];
-  });
-  const selectedIndex = circlesData.findIndex((c) => c.id === selectedId);
+  const offsetsMap = React.useMemo(() => {
+    return getSortingOffsets(circlesData, orderBy);
+  }, [orderBy]);
 
-  const posXValues = calculatePositions(areas, selectedIndex, targetDiameter);
+  const { sortedCircles } = React.useMemo(() => {
+    const sorted = getSortedCircles(circlesData, orderBy);
+    return { sortedCircles: sorted };
+  }, [orderBy]);
 
-  const anchorValue =
-    orderBy === "turnoverPerPerson"
-      ? (circlesData.find((c) => c.id === selectedId)?.yearlyTurnOver || 1) /
-        (circlesData.find((c) => c.id === selectedId)?.numberOfPersons || 1)
-      : circlesData.find((c) => c.id === selectedId)?.[orderBy] || 1;
+  const handleOrderChange = (value: typeof orderBy) => {
+    programmaticChangeRef.current = true;
 
-  const getDisplayDiameter = (value: number) => {
-    return targetDiameter * Math.sqrt(value / anchorValue);
-  };
+    // Find the circleId that is currently selected
+    const currentCircleId = sortedCircles[selectedIndex]?.id;
 
-  const selectNextCircle = () => {
-    const selectedPosX = posXValues[selectedIndex];
-    const positionsToTheRight = posXValues
-      .map((posX, index) => ({ posX, index }))
-      .filter((p) => p.posX > selectedPosX);
+    setOrderBy(value);
 
-    if (positionsToTheRight.length > 0) {
-      const nextCircle = positionsToTheRight.reduce((prev, curr) =>
-        prev.posX < curr.posX ? prev : curr
-      );
-      setSelectedId(circlesData[nextCircle.index].id);
-    }
-  };
+    // After order changes, compute the new index that matches the same circleId
+    const newIndex = getSortedCircles(circlesData, value).findIndex(
+      (c) => c.id === currentCircleId,
+    );
 
-  const selectPreviousCircle = () => {
-    const selectedPosX = posXValues[selectedIndex];
-    const positionsToTheLeft = posXValues
-      .map((posX, index) => ({ posX, index }))
-      .filter((p) => p.posX < selectedPosX);
-
-    if (positionsToTheLeft.length > 0) {
-      const prevCircle = positionsToTheLeft.reduce((prev, curr) =>
-        prev.posX > curr.posX ? prev : curr
-      );
-      setSelectedId(circlesData[prevCircle.index].id);
+    // Update selectedIndex to match the same circle
+    if (newIndex !== -1) {
+      setSelectedIndex(newIndex);
     }
   };
 
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight") {
-        selectNextCircle();
-      } else if (event.key === "ArrowLeft") {
-        selectPreviousCircle();
+    programmaticChangeRef.current = false;
+  }, [selectedIndex]);
+
+  // Compute circle size in pixels for scroll space
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [itemDistance, setItemDistance] = React.useState(() => {
+    if (!containerRef.current) return ITEM_SPACING_FACTOR * 16 * REM_TO_PX; // fallback
+    const style = getComputedStyle(containerRef.current);
+    const circlePx = style.getPropertyValue("--circle");
+    const px = circlePx.includes("rem")
+      ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
+      : parseFloat(circlePx);
+    return px;
+  });
+
+  React.useLayoutEffect(() => {
+    const updateItemDistance = () => {
+      if (containerRef.current) {
+        const style = getComputedStyle(containerRef.current);
+        const circlePx = style.getPropertyValue("--circle");
+        const px = circlePx.includes("rem")
+          ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
+          : parseFloat(circlePx);
+
+        setItemDistance((prev) => (prev !== px ? px : prev));
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+    updateItemDistance(); // initial measurement
+    const handleResize = () => {
+      updateItemDistance();
     };
-  }, [selectedId, posXValues]);
-
-  const [touchStart, setTouchStart] = React.useState(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const touchEnd = e.changedTouches[0].clientX;
-
-    if (touchStart - touchEnd > 50) {
-      // Swiped left
-      selectNextCircle();
-    }
-
-    if (touchStart - touchEnd < -50) {
-      // Swiped right
-      selectPreviousCircle();
-    }
-  };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div className="flex flex-col items-center min-h-dvh">
-      <div className="text-3xl font-bold text-primary my-4">
-        How many people are...
-      </div>
-
+    <>
       <div
-        className="relative w-full flex-1 min-h-0"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        ref={containerRef}
+        className="relative [--circle:18rem] landscape:[--circle:8rem] landscape:lg:[--circle:18rem] landscape:xl:[--circle:24rem]"
       >
-        {selectedId && (
-          <div className="absolute rounded-lg bg-gray-200 top-0 bottom-0 w-96 left-1/2 -translate-x-1/2 z-0"></div>
-        )}
-        {circlesData.map((circle, index) => {
-          const posX = posXValues[index];
-          if (posX === undefined) return null;
-
-          const diameter = getDisplayDiameter(
-            orderBy === "turnoverPerPerson"
-              ? circle.yearlyTurnOver / circle.numberOfPersons
-              : circle[orderBy]
-          );
-          const selectedCircleRadius = targetDiameter / 2;
-          const scaleFactor = diameter / targetDiameter;
-          const isSelected = circle.id === selectedId;
-
-          return (
-            <div
-              key={circle.id}
-              style={{
-                left: `calc(50% + ${posX * selectedCircleRadius}rem)`,
-              }}
-              className="absolute -translate-x-1/2 transition-[left] duration-500 ease-in-out h-full"
-            >
-              {/* Container for the visual circle */}
-              <div
-                className="absolute bottom-[calc(50%-10rem)] left-1/2 -translate-x-1/2 origin-bottom transition-transform duration-500 ease-in-out"
-                style={{
-                  width: `${targetDiameter}rem`,
-                  height: `${targetDiameter}rem`,
-                  transform: `scale(${scaleFactor})`,
-                }}
-              >
-                <Circle circle={circle} isSelected={isSelected} />
-              </div>
-              {/* Container for the InfoBox */}
-              <div className="absolute top-[calc(50%+10rem)] left-1/2 -translate-x-1/2">
-                <InfoBox circle={circle} isSelected={isSelected} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="my-4">
-        <Dropdown
-          orderBy={orderBy}
-          setOrderBy={setOrderBy}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
+        <AppHeader orderBy={orderBy} setOrderBy={handleOrderChange} />
+        <div className="relative h-dvh overflow-x-auto overflow-y-hidden">
+          <ScrollSpace
+            numItems={circlesData.length}
+            itemDistance={itemDistance}
+            floatingIndexRef={floatingIndexRef}
+            scrollToIndex={
+              programmaticChangeRef.current ? selectedIndex : undefined
+            }
+            onIndexChange={(index) => {
+              setSelectedIndex(index); // integer only
+            }}
+          />
+        </div>
+        <CirclesLayer
+          floatingIndexRef={floatingIndexRef}
+          selectedIndex={selectedIndex} // optional, for “isSelected” logic
+          offsetsMap={offsetsMap}
+          sortedCircles={sortedCircles}
         />
       </div>
-    </div>
+    </>
   );
 }
 

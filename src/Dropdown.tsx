@@ -5,19 +5,13 @@ type DropdownProps = {
   setOrderBy: (
     orderBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   ) => void;
-  isMenuOpen: boolean;
-  setIsMenuOpen: (isMenuOpen: boolean) => void;
 };
 
-function Dropdown({
-  orderBy,
-  setOrderBy,
-  isMenuOpen,
-  setIsMenuOpen,
-}: DropdownProps) {
+function Dropdown({ orderBy, setOrderBy }: DropdownProps) {
   const [hoveredOption, setHoveredOption] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson" | null
   >(null);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const getOptionClassName = (
     option: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
@@ -54,7 +48,7 @@ function Dropdown({
       </div>
       {isMenuOpen && (
         <div
-          className="absolute bottom-full left-1/2 -translate-x-1/2 bg-gray-700 text-white rounded p-2 w-48 mb-2 z-20"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 bg-gray-700 text-white rounded p-2 w-48 mb-2"
           onMouseLeave={() => setHoveredOption(null)}
         >
           <div
