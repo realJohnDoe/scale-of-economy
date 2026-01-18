@@ -28,7 +28,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ orderBy, setOrderBy }) => {
       </div>
 
       <div className="absolute left-1/2 -translate-x-1/2 top-16 bottom-18 z-0">
-        <div className="w-[min(90vw,24rem)] landscape:w-80 h-full rounded-lg bg-gray-200" />
+        <div className="w-[min(90vw,24rem)] landscape:w-80 h-full portrait:md:w-110 rounded-lg bg-gray-200" />
       </div>
     </div>
   );

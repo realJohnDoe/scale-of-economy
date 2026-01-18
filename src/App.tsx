@@ -94,7 +94,7 @@ function App() {
     <>
       <div
         ref={containerRef}
-        className="relative [--circle:18rem] landscape:[--circle:8rem] md:[--circle:18rem] lg:[--circle:24rem]"
+        className="relative [--circle:18rem] landscape:[--circle:8rem] landscape:lg:[--circle:18rem]"
       >
         <AppHeader orderBy={orderBy} setOrderBy={handleOrderChange} />
         <div className="relative h-dvh overflow-x-auto overflow-y-hidden">

@@ -67,9 +67,13 @@ const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
     <div
       className={`text-primary font-bold text-center w-max mt-4 ${fadeClass}`}
     >
-      <div className="text-2xl landscape:text-lg">{formattedPersons},</div>
-      <div className="text-lg landscape:text-sm">with a daily turnover of</div>
-      <div className="text-2xl landscape:text-lg">
+      <div className="text-2xl landscape:text-lg landscape:lg:text-2xl">
+        {formattedPersons},
+      </div>
+      <div className="text-lg landscape:text-sm landscape:lg:text-lg">
+        with a daily turnover of
+      </div>
+      <div className="text-2xl landscape:text-lg landscape:lg:text-2xl">
         {formattedDailyTurnover}
         {numberOfPersons > 1 && (
           <span className="ml-2">
