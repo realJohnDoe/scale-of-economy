@@ -289,5 +289,17 @@ export const circlesData: CircleData[] = [
       name: "Wikipedia",
       url: "https://en.wikipedia.org/wiki/List_of_highest-grossing_concert_tours"
     }]
+  },
+  {
+    id: 29,
+    name: "Extreme Poverty",
+    predicate: "living in",
+    numberOfPersons: 710000000,
+    yearlyTurnOver: 492385000000,
+    imageFileName: "images/extreme-poverty.webp",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/Extreme_poverty"
+    }]
   }
 ];
