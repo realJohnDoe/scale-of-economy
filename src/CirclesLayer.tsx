@@ -49,7 +49,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
       const interpolatedScalingOffset = lerp(
         leftParams.scalingOffset,
         rightParams.scalingOffset,
-        t
+        t,
       );
 
       circleRefs.current.forEach((el, i) => {
@@ -69,7 +69,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
         if (circleContainer) {
           circleContainer.style.transform = `scale(${Math.min(
             scaleFactor,
-            5
+            5,
           )})`;
         }
 
@@ -99,7 +99,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
           ref={(el) => {
             circleRefs.current[i] = el!;
           }}
-          className="absolute top-[25%] left-1/2"
+          className="absolute top-[25%] landscape:top-[30%] left-1/2"
           style={{
             willChange: "transform",
             transform: "translateX(-50%)",
@@ -112,7 +112,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
             </div>
 
             {/* InfoBox */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-80">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-70 landscape:translate-y-30 lg:translate-y-95">
               <InfoBox circle={circle} isSelected={selectedIndex === i} />
             </div>
           </div>

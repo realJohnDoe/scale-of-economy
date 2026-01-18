@@ -44,7 +44,7 @@ function App() {
 
     // After order changes, compute the new index that matches the same circleId
     const newIndex = getSortedCircles(circlesData, value).findIndex(
-      (c) => c.id === currentCircleId
+      (c) => c.id === currentCircleId,
     );
 
     // Update selectedIndex to match the same circle
@@ -94,7 +94,7 @@ function App() {
     <>
       <div
         ref={containerRef}
-        className="relative [--circle:16rem] md:[--circle:18rem] lg:[--circle:20rem]"
+        className="relative [--circle:18rem] landscape:[--circle:8rem] md:[--circle:18rem] lg:[--circle:24rem]"
       >
         <AppHeader orderBy={orderBy} setOrderBy={handleOrderChange} />
         <div className="relative h-dvh overflow-x-auto overflow-y-hidden">
