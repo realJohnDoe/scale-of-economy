@@ -10,7 +10,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
   const { name, predicate, imageFileName } = circle;
   const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-400";
 
-  const fadeClass = `transition-opacity transition-colors duration-500 ease-in-out ${
+  const fadeClass = `transition-opacity duration-500 ease-in-out ${
     isSelected ? "opacity-100" : "opacity-0"
   }`;
 
@@ -28,7 +28,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
           )}
           {imageFileName && ( // Always show name if image, regardless of selection
             <div
-              className={`text-2xl landscape:text-base landscape:lg:text-2xl ${!isSelected && "text-gray-400"}`}
+              className={`text-2xl transition-colors landscape:text-base landscape:lg:text-2xl ${!isSelected && "text-gray-400"}`}
             >
               {!predicate && "..."}
               {name}

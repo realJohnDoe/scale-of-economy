@@ -99,7 +99,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
           ref={(el) => {
             circleRefs.current[i] = el!;
           }}
-          className="absolute top-[25%] landscape:top-[30%] landscape:lg:top-[25%] portrait:md:top-[30%] left-1/2"
+          className="absolute top-[25%] landscape:top-[30%] landscape:lg:top-[30%] portrait:md:top-[30%] landscape:xl:top-[25%] left-1/2"
           style={{
             willChange: "transform",
             transform: "translateX(-50%)",
@@ -112,7 +112,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
             </div>
 
             {/* InfoBox */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-70 landscape:translate-y-30 landscape:lg:translate-y-70">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-70 landscape:translate-y-30 landscape:lg:translate-y-70 landscape:xl:translate-y-94">
               <InfoBox circle={circle} isSelected={selectedIndex === i} />
             </div>
           </div>
