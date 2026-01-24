@@ -7,7 +7,7 @@ interface CircleProps {
 }
 
 const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
-  const { name, predicate, imageFileName } = circle;
+  const { name, groupPredicate, imageFileName } = circle;
   const bgColor = isSelected ? "bg-yellow-400" : "bg-gray-400";
 
   const fadeClass = `transition-opacity duration-500 ease-in-out ${
@@ -17,20 +17,20 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
   return (
     <div className="relative w-full h-full">
       {/* Top text container */}
-      {predicate || imageFileName ? (
+      {groupPredicate || imageFileName ? (
         <div className="absolute bottom-full mb-3 text-primary font-bold text-center w-max left-1/2 -translate-x-1/2">
-          {predicate && (
+          {groupPredicate && (
             <div
               className={`${fadeClass} text-lg landscape:text-sm landscape:lg:lg`}
             >
-              ...{predicate}
+              ...{groupPredicate}
             </div>
           )}
           {imageFileName && ( // Always show name if image, regardless of selection
             <div
               className={`text-2xl transition-colors landscape:text-base landscape:lg:text-2xl ${!isSelected && "text-gray-400"}`}
             >
-              {!predicate && "..."}
+              {!groupPredicate && "..."}
               {name}
               <span className={fadeClass}>?</span>
             </div>
