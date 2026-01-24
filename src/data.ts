@@ -9,7 +9,7 @@ export type CircleData = {
   name: string;
   numberOfPersons: number;
   yearlyTurnOver: number; // Explicitly declared
-  predicate: "living in" | "living in the" | "working at" | "working at the" | "attending" | null;
+  predicate: "living in" | "living in the" | "working at" | "working at the" | "attending" | "associated with" | null;
   imageFileName: string | null;
   sources: Source[];
 };
@@ -300,6 +300,30 @@ export const circlesData: CircleData[] = [
     sources: [{
       name: "Wikipedia",
       url: "https://en.wikipedia.org/wiki/Extreme_poverty"
+    }]
+  },
+  {
+    id: 30,
+    name: "NASA",
+    predicate: "working at",
+    numberOfPersons: 17960,
+    yearlyTurnOver: 25400000000,
+    imageFileName: "images/nasa.webp",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/NASA"
+    }]
+  },
+  {
+    id: 31,
+    name: "Stanford University",
+    predicate: "associated with",
+    numberOfPersons: 38200,
+    yearlyTurnOver: 8900000000,
+    imageFileName: "images/stanford.webp",
+    sources: [{
+      name: "Wikipedia",
+      url: "https://en.wikipedia.org/wiki/Harvard_University"
     }]
   }
 ];
