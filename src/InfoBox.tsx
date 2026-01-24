@@ -118,7 +118,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {/* Context text, if available */}
       {context && (
         <div
-          className={`${size("turnoverPerPerson")} px-2 w-[min(90vw,24rem)] landscape:w-80 h-full 
+          className={`text-lg landscape:text-sm landscape:lg:text-lg px-2 mt-4 w-[min(90vw,24rem)] landscape:w-80 h-full 
       md:w-110 landscape:md:w-110`}
         >
           {context}.

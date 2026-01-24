@@ -27,10 +27,10 @@ export type CircleData = {
 export const circlesData: CircleData[] = [
   {
     id: 1,
+    groupPredicate: null,
     name: "You",
     numberOfPersons: 1,
     yearlyTurnOver: 50257,
-    groupPredicate: null,
     turnOverPredicate: "earning each day",
     context: "assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
@@ -43,12 +43,19 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 2,
-    name: "A typical Family",
-    numberOfPersons: 4,
-    yearlyTurnOver: 93600,
     groupPredicate: "living in",
+    name: "A typical Family",
+    turnOverPredicate: "earning each day",
+    numberOfPersons: 4,
+    yearlyTurnOver: 100500,
+    context: "assuming two adults with an average German salary and two children",
     imageFileName: "images/family.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Statista",
+        url: "https://www.statista.com/statistics/416207/average-annual-wages-germany-y-on-y-in-euros/"
+      }
+    ],
   },
   {
     id: 3,
