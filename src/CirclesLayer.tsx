@@ -17,6 +17,7 @@ interface CirclesLayerProps {
   selectedIndex: number; // still useful, but NOT for interpolation
   offsetsMap: OffsetsMap;
   sortedCircles: CircleData[];
+  highlightedNumber: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
 }
 
 // Linear interpolation helper
@@ -27,6 +28,7 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
   selectedIndex,
   offsetsMap,
   sortedCircles,
+  highlightedNumber,
 }) => {
   const circleRefs = useRef<HTMLDivElement[]>([]);
 
@@ -113,7 +115,11 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
 
             {/* InfoBox */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-70 landscape:translate-y-30 landscape:lg:translate-y-70 landscape:xl:translate-y-94">
-              <InfoBox circle={circle} isSelected={selectedIndex === i} />
+              <InfoBox
+                circle={circle}
+                isSelected={selectedIndex === i}
+                highlightedNumber={highlightedNumber}
+              />
             </div>
           </div>
         </div>

@@ -115,6 +115,7 @@ function App() {
           selectedIndex={selectedIndex} // optional, for “isSelected” logic
           offsetsMap={offsetsMap}
           sortedCircles={sortedCircles}
+          highlightedNumber={orderBy}
         />
       </div>
     </>

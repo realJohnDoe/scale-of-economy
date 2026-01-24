@@ -4,6 +4,7 @@ import { type CircleData } from "./data"; // Import CircleData type
 interface InfoBoxProps {
   circle: CircleData;
   isSelected: boolean;
+  highlightedNumber: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
 }
 
 // Helper function from Circle.tsx, could be moved to a shared file later
@@ -44,7 +45,11 @@ function formatToTwoSignificantDigits(
   return prefix + sign + formatted + suffix;
 }
 
-const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
+const InfoBox: React.FC<InfoBoxProps> = ({
+  circle,
+  isSelected,
+  highlightedNumber,
+}) => {
   const { numberOfPersons, yearlyTurnOver, sources } = circle;
   const fadeClass = `transition-opacity duration-500 ease-in-out ${
     isSelected ? "opacity-100" : "opacity-0"
@@ -63,20 +68,34 @@ const InfoBox: React.FC<InfoBoxProps> = ({ circle, isSelected }) => {
     true,
   );
 
+  const effectiveHighlightedNumber =
+    numberOfPersons === 1 && highlightedNumber === "turnoverPerPerson"
+      ? "yearlyTurnOver"
+      : highlightedNumber;
+
+  const size = (key: InfoBoxProps["highlightedNumber"]) =>
+    `
+    transition-all duration-500 ease-in-out
+    ${
+      key === effectiveHighlightedNumber
+        ? "text-2xl landscape:text-lg landscape:lg:text-2xl"
+        : "text-lg landscape:text-sm landscape:lg:text-lg"
+    }
+    `;
+
   return (
     <div
       className={`text-primary font-bold text-center w-max mt-4 ${fadeClass}`}
     >
-      <div className="text-2xl landscape:text-lg landscape:lg:text-2xl">
-        {formattedPersons},
-      </div>
+      <div className={size("numberOfPersons")}>{formattedPersons},</div>
       <div className="text-lg landscape:text-sm landscape:lg:text-lg">
         with a daily turnover of
       </div>
-      <div className="text-2xl landscape:text-lg landscape:lg:text-2xl">
+      <div className={size("yearlyTurnOver")}>
         {formattedDailyTurnover}
         {numberOfPersons > 1 && (
-          <span className="ml-2">
+          <span className={size("turnoverPerPerson")}>
+            {" "}
             ({formattedDailyTurnoverPerPerson}/person)
           </span>
         )}
