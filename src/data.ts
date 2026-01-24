@@ -23,6 +23,10 @@ export type CircleData = {
   sources: Source[];
 };
 
+const EARN_PREDICATE = "earning each day"
+const STORE_PREDICATE = "bringing in each day"
+const COUNTRY_PREDICATE = 'generating each day'
+
 // --- Constants ---
 export const circlesData: CircleData[] = [
   {
@@ -30,9 +34,9 @@ export const circlesData: CircleData[] = [
     name: "You",
     groupPredicate: null,
     numberOfPersons: 1,
-    turnOverPredicate: "earning each day",
+    turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 69433,
-    context: "assuming you earn as much as an average German",
+    context: "Assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
     sources: [
       {
@@ -46,9 +50,9 @@ export const circlesData: CircleData[] = [
     name: "A typical Family",
     groupPredicate: "living in",
     numberOfPersons: 3,
-    turnOverPredicate: "earning each day",
+    turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 138866,
-    context: "assuming two adults with an average German salary and one child",
+    context: "Assuming two adults with an average German salary and one child",
     imageFileName: "images/family.webp",
     sources: [
       {
@@ -62,9 +66,9 @@ export const circlesData: CircleData[] = [
     name: "A typical circle of friends",
     groupPredicate: null,
     numberOfPersons: 30,
-    turnOverPredicate: "earning each day",
+    turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 1040000,
-    context: "assuming 15 working adults with an average German salary",
+    context: "Assuming 15 working adults with an average German salary",
     imageFileName: "images/friends.webp",
     sources: [
       {
@@ -76,9 +80,11 @@ export const circlesData: CircleData[] = [
   {
     id: 7,
     name: "an average Walmart store",
-    numberOfPersons: 195,
-    yearlyTurnOver: 63200000,
     groupPredicate: "working at",
+    numberOfPersons: 195,
+    turnOverPredicate: STORE_PREDICATE,
+    yearlyTurnOver: 63200000,
+    context: "Walmart is the world's largest company by revenue",
     imageFileName: "images/walmart.webp",
     sources: [
       {
@@ -90,11 +96,18 @@ export const circlesData: CircleData[] = [
   {
     id: 8,
     name: "Germany",
-    numberOfPersons: 83000000,
-    yearlyTurnOver: 5000000000000,
     groupPredicate: "living in",
+    numberOfPersons: 83000000,
+    turnOverPredicate: COUNTRY_PREDICATE,
+    yearlyTurnOver: 5010000000000,
+    context: "Germany is the country with the third-largest economy in the World",
     imageFileName: "images/germany.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Germany"
+      }
+    ],
   },
   {
     id: 9,

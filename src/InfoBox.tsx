@@ -112,7 +112,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         )}
 
         {/* Add colon or comma depending on context */}
-        {context ? "," : "."}
+        {"."}
       </div>
 
       {/* Context text, if available */}
