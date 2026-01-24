@@ -27,11 +27,11 @@ export type CircleData = {
 export const circlesData: CircleData[] = [
   {
     id: 1,
-    groupPredicate: null,
     name: "You",
+    groupPredicate: null,
     numberOfPersons: 1,
-    yearlyTurnOver: 50257,
     turnOverPredicate: "earning each day",
+    yearlyTurnOver: 69433,
     context: "assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
     sources: [
@@ -43,12 +43,12 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 2,
-    groupPredicate: "living in",
     name: "A typical Family",
+    groupPredicate: "living in",
+    numberOfPersons: 3,
     turnOverPredicate: "earning each day",
-    numberOfPersons: 4,
-    yearlyTurnOver: 100500,
-    context: "assuming two adults with an average German salary and two children",
+    yearlyTurnOver: 138866,
+    context: "assuming two adults with an average German salary and one child",
     imageFileName: "images/family.webp",
     sources: [
       {
@@ -60,11 +60,18 @@ export const circlesData: CircleData[] = [
   {
     id: 3,
     name: "A typical circle of friends",
-    numberOfPersons: 30,
-    yearlyTurnOver: 1400000,
     groupPredicate: null,
+    numberOfPersons: 30,
+    turnOverPredicate: "earning each day",
+    yearlyTurnOver: 1040000,
+    context: "assuming 15 working adults with an average German salary",
     imageFileName: "images/friends.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Statista",
+        url: "https://www.statista.com/statistics/416207/average-annual-wages-germany-y-on-y-in-euros/"
+      }
+    ],
   },
   {
     id: 7,
