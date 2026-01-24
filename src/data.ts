@@ -7,8 +7,6 @@ export type Source = {
 export type CircleData = {
   id: number;
   name: string;
-  numberOfPersons: number;
-  yearlyTurnOver: number;
   groupPredicate:
   | "living in"
   | "living in the"
@@ -17,6 +15,10 @@ export type CircleData = {
   | "attending"
   | "associated with"
   | null;
+  numberOfPersons: number;
+  turnOverPredicate?: string;
+  yearlyTurnOver: number;
+  context?: string;
   imageFileName: string | null;
   sources: Source[];
 };
@@ -27,10 +29,17 @@ export const circlesData: CircleData[] = [
     id: 1,
     name: "You",
     numberOfPersons: 1,
-    yearlyTurnOver: 46800,
+    yearlyTurnOver: 50257,
     groupPredicate: null,
+    turnOverPredicate: "earning each day",
+    context: "assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Statista",
+        url: "https://www.statista.com/statistics/416207/average-annual-wages-germany-y-on-y-in-euros/"
+      }
+    ],
   },
   {
     id: 2,

@@ -50,7 +50,13 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   isSelected,
   highlightedNumber,
 }) => {
-  const { numberOfPersons, yearlyTurnOver, sources } = circle;
+  const {
+    numberOfPersons,
+    turnOverPredicate,
+    yearlyTurnOver,
+    context,
+    sources,
+  } = circle;
   const fadeClass = `transition-opacity duration-500 ease-in-out ${
     isSelected ? "opacity-100" : "opacity-0"
   }`;
@@ -87,10 +93,15 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     <div
       className={`text-primary font-bold text-center w-max mt-4 ${fadeClass}`}
     >
+      {/* Number of persons */}
       <div className={size("numberOfPersons")}>{formattedPersons},</div>
+
+      {/* Turnover Predicate or default text */}
       <div className="text-lg landscape:text-sm landscape:lg:text-lg">
-        with a daily turnover of
+        {turnOverPredicate ?? "with a daily turnover of"}
       </div>
+
+      {/* Turnover amount */}
       <div className={size("yearlyTurnOver")}>
         {formattedDailyTurnover}
         {numberOfPersons > 1 && (
@@ -99,7 +110,20 @@ const InfoBox: React.FC<InfoBoxProps> = ({
             ({formattedDailyTurnoverPerPerson}/person)
           </span>
         )}
+
+        {/* Add colon or comma depending on context */}
+        {context ? "," : "."}
       </div>
+
+      {/* Context text, if available */}
+      {context && (
+        <div
+          className={`${size("turnoverPerPerson")} px-2 w-[min(90vw,24rem)] landscape:w-80 h-full 
+      md:w-110 landscape:md:w-110`}
+        >
+          {context}.
+        </div>
+      )}
 
       {sources && sources.length > 0 && (
         <div className="mt-4 text-sm text-gray-500 pointer-events-auto">
