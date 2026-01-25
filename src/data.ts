@@ -25,7 +25,8 @@ export type CircleData = {
 
 const EARN_PREDICATE = "earning each day"
 const STORE_PREDICATE = "bringing in each day"
-const COUNTRY_PREDICATE = 'generating each day'
+const COUNTRY_PREDICATE = "generating each day"
+const COMPANY_PREDICATE = "turning over each day"
 
 // --- Constants ---
 export const circlesData: CircleData[] = [
@@ -100,7 +101,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 83000000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 5010000000000,
-    context: "Germany is the country with the third-largest economy in the World",
+    context: "Germany is the country with the third-largest economy in the World and the home country of the author of this web site",
     imageFileName: "images/germany.webp",
     sources: [
       {
@@ -112,27 +113,38 @@ export const circlesData: CircleData[] = [
   {
     id: 9,
     name: "Bosch",
-    numberOfPersons: 418000,
-    yearlyTurnOver: 90000000000,
     groupPredicate: "working at",
+    numberOfPersons: 418000,
+    turnOverPredicate: COMPANY_PREDICATE,
+    yearlyTurnOver: 90300000000,
+    context: "The author of this web site is working for Bosch",
     imageFileName: "images/bosch.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Bosch_(company)"
+      }
+    ],
   },
   {
     id: 10,
     name: "China",
-    numberOfPersons: 1400000000,
-    yearlyTurnOver: 19000000000000,
     groupPredicate: "living in",
+    numberOfPersons: 1400000000,
+    turnOverPredicate: COUNTRY_PREDICATE,
+    yearlyTurnOver: 19000000000000,
+    context: "China is the the second-most populous country and the country with the second-biggest economy",
     imageFileName: "images/china.webp",
     sources: [],
   },
   {
     id: 11,
     name: "India",
-    numberOfPersons: 1430000000,
-    yearlyTurnOver: 4200000000000,
     groupPredicate: "living in",
+    numberOfPersons: 1430000000,
+    turnOverPredicate: COUNTRY_PREDICATE,
+    yearlyTurnOver: 4200000000000,
+    context: "India is the most populous country and the country with the fifth-biggest economy",
     imageFileName: "images/india.webp",
     sources: [],
   },
