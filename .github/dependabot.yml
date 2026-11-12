@@ -18,6 +18,10 @@ updates:
       interval: weekly
     cooldown:
       default-days: 1
+    ignore:
+      # v5 hangs: deployment is created but status never leaves "" until timeout.
+      - dependency-name: actions/deploy-pages
+        update-types: ["version-update:semver-major"]
     groups:
       actions-minor-patch:
         update-types: [minor, patch]
