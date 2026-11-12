@@ -30,16 +30,16 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Setup Pages
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/ccr-cbb8af12-nhuus1' # TEMP: v5 diagnostic run
         uses: actions/configure-pages@v6
       - name: Upload artifact
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/ccr-cbb8af12-nhuus1' # TEMP: v5 diagnostic run
         uses: actions/upload-pages-artifact@v5
         with:
           path: "./dist"
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/ccr-cbb8af12-nhuus1' # TEMP: v5 diagnostic run
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -48,4 +48,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5  # TEMP: v5 diagnostic run
