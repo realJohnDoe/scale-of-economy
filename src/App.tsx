@@ -17,7 +17,8 @@ function App() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const floatingIndexRef = React.useRef(0);
 
-  const programmaticChangeRef = React.useRef(false);
+  // Set by an order change so ScrollSpace scrolls to the same circle's new slot.
+  const [programmaticIndex, setProgrammaticIndex] = React.useState<number>();
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
@@ -35,8 +36,6 @@ function App() {
   }, [orderBy]);
 
   const handleOrderChange = (value: typeof orderBy) => {
-    programmaticChangeRef.current = true;
-
     // Find the circleId that is currently selected
     const currentCircleId = sortedCircles[selectedIndex]?.id;
 
@@ -49,25 +48,17 @@ function App() {
 
     // Update selectedIndex to match the same circle
     if (newIndex !== -1) {
+      setProgrammaticIndex(newIndex);
       setSelectedIndex(newIndex);
     }
   };
 
-  React.useEffect(() => {
-    programmaticChangeRef.current = false;
-  }, [selectedIndex]);
-
   // Compute circle size in pixels for scroll space
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [itemDistance, setItemDistance] = React.useState(() => {
-    if (!containerRef.current) return ITEM_SPACING_FACTOR * 16 * REM_TO_PX; // fallback
-    const style = getComputedStyle(containerRef.current);
-    const circlePx = style.getPropertyValue("--circle");
-    const px = circlePx.includes("rem")
-      ? parseFloat(circlePx) * REM_TO_PX * ITEM_SPACING_FACTOR
-      : parseFloat(circlePx);
-    return px;
-  });
+  // First render has no container to measure yet; the layout effect below measures it.
+  const [itemDistance, setItemDistance] = React.useState(
+    ITEM_SPACING_FACTOR * 16 * REM_TO_PX,
+  );
 
   React.useLayoutEffect(() => {
     const updateItemDistance = () => {
@@ -102,10 +93,9 @@ function App() {
             numItems={circlesData.length}
             itemDistance={itemDistance}
             floatingIndexRef={floatingIndexRef}
-            scrollToIndex={
-              programmaticChangeRef.current ? selectedIndex : undefined
-            }
+            scrollToIndex={programmaticIndex}
             onIndexChange={(index) => {
+              setProgrammaticIndex(undefined);
               setSelectedIndex(index); // integer only
             }}
           />
