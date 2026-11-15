@@ -23,7 +23,6 @@ function formatToTwoSignificantDigits(
     minimumSignificantDigits: 1,
   };
 
-  let formatted = absNum.toLocaleString("en-US", options);
   let scaledNum = absNum;
   let suffix = "";
 
@@ -41,7 +40,7 @@ function formatToTwoSignificantDigits(
     suffix = " thousand";
   }
 
-  formatted = scaledNum.toLocaleString("en-US", options);
+  const formatted = scaledNum.toLocaleString("en-US", options);
   return prefix + sign + formatted + suffix;
 }
 

@@ -111,7 +111,7 @@ export function ScrollSpace({
 
     el.addEventListener("scroll", handleScroll);
     return () => el.removeEventListener("scroll", handleScroll);
-  }, [itemDistance, onIndexChange]);
+  }, [itemDistance, onIndexChange, externalFloatingIndexRef]);
 
   // --- horizontal wheel scrolling ---
   React.useEffect(() => {
