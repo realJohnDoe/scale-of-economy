@@ -16,6 +16,11 @@ updates:
         update-types: [minor, patch]
       npm-major:
         update-types: [major]
+    # typescript-eslint refuses TS 7. Lift once
+    # `npm view @typescript-eslint/typescript-estree@latest peerDependencies.typescript` includes 7.
+    ignore:
+      - dependency-name: typescript
+        versions: [">=7"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
