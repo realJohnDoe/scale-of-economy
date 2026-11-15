@@ -7,6 +7,10 @@ updates:
     # Matches pnpm-workspace.yaml `minimumReleaseAge: 1440` (24 h).
     cooldown:
       default-days: 1
+    ignore:
+      # typescript-eslint doesn't support TS 7 yet, so `pnpm run lint` crashes on it.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     groups:
       npm-minor-patch:
         update-types: [minor, patch]

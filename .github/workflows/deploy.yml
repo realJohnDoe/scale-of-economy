@@ -23,11 +23,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 22  # pnpm 11 needs Node 22+
+          node-version: 26  # pnpm 11 needs Node 22+
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - run: pnpm run lint
+      - name: Lint
+        run: pnpm run lint
       - name: Build
         run: pnpm run build
       - name: Setup Pages

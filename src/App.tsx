@@ -17,8 +17,8 @@ function App() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const floatingIndexRef = React.useRef(0);
 
-  // Set by an order change so ScrollSpace scrolls to the same circle's new slot.
-  const [programmaticIndex, setProgrammaticIndex] = React.useState<number>();
+  // Set when the order changes, so ScrollSpace scrolls to the same circle.
+  const [scrollTarget, setScrollTarget] = React.useState<number>();
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
@@ -48,14 +48,14 @@ function App() {
 
     // Update selectedIndex to match the same circle
     if (newIndex !== -1) {
-      setProgrammaticIndex(newIndex);
       setSelectedIndex(newIndex);
+      setScrollTarget(newIndex);
     }
   };
 
   // Compute circle size in pixels for scroll space
   const containerRef = React.useRef<HTMLDivElement>(null);
-  // First render has no container to measure yet; the layout effect below measures it.
+  // Fallback until the layout effect below measures the real size.
   const [itemDistance, setItemDistance] = React.useState(
     ITEM_SPACING_FACTOR * 16 * REM_TO_PX,
   );
@@ -93,9 +93,9 @@ function App() {
             numItems={circlesData.length}
             itemDistance={itemDistance}
             floatingIndexRef={floatingIndexRef}
-            scrollToIndex={programmaticIndex}
+            scrollToIndex={scrollTarget}
             onIndexChange={(index) => {
-              setProgrammaticIndex(undefined);
+              setScrollTarget(undefined);
               setSelectedIndex(index); // integer only
             }}
           />
