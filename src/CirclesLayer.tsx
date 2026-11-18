@@ -32,9 +32,11 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
   const circleRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    let raf: number;
+    let raf = 0;
+    let lastDrawn: number | null = null;
 
-    const loop = () => {
+    const draw = () => {
+      raf = 0;
       const floatingIndex = floatingIndexRef.current;
       const leftIndex = Math.floor(floatingIndex);
       const rightIndex = Math.min(leftIndex + 1, sortedCircles.length - 1);
@@ -76,11 +78,24 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
         }
       });
 
-      raf = requestAnimationFrame(loop);
+      lastDrawn = floatingIndex;
     };
 
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+    // Draw once per frame, and only while the scroll position moves.
+    const schedule = () => {
+      if (!raf && floatingIndexRef.current !== lastDrawn) {
+        raf = requestAnimationFrame(draw);
+      }
+    };
+
+    // Scroll events don't bubble; capture catches the ScrollSpace container's.
+    document.addEventListener("scroll", schedule, true);
+    // Draw once now: the order (and so the layout) just changed.
+    raf = requestAnimationFrame(draw);
+    return () => {
+      document.removeEventListener("scroll", schedule, true);
+      cancelAnimationFrame(raf);
+    };
   }, [floatingIndexRef, sortedCircles, offsetsMap]);
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
