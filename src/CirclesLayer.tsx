@@ -8,7 +8,6 @@ type OffsetsMap = Map<
   {
     scale: number;
     scalingOffset: number;
-    newIndexOffset: number;
   }
 >;
 
@@ -64,16 +63,6 @@ const CirclesLayer: React.FC<CirclesLayerProps> = ({
           interpolatedScale;
 
         const scaleFactor = params.scale / interpolatedScale;
-
-        // Apply transform **directly on the circle container**
-        const circleContainer =
-          el.querySelector<HTMLDivElement>(".circle-container");
-        if (circleContainer) {
-          circleContainer.style.transform = `scale(${Math.min(
-            scaleFactor,
-            5,
-          )})`;
-        }
 
         // Apply horizontal offset to the outer wrapper
         // Move the wrapper horizontally only

@@ -1,11 +1,10 @@
 import * as React from "react";
-import { useRef } from "react";
 
 type ScrollSpaceProps = {
   numItems: number;
   itemDistance: number; // px
-  onIndexChange?: (index: number) => void;
-  floatingIndexRef?: React.MutableRefObject<number>;
+  onIndexChange: (index: number) => void;
+  floatingIndexRef: React.MutableRefObject<number>;
   /** Controlled scroll target */
   scrollToIndex?: number;
 };
@@ -15,25 +14,11 @@ export function ScrollSpace({
   itemDistance,
   onIndexChange,
   scrollToIndex,
-  floatingIndexRef: externalFloatingIndexRef,
+  floatingIndexRef,
 }: ScrollSpaceProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [paddingX, setPaddingX] = React.useState(0);
   const lastEmittedIndexRef = React.useRef<number | null>(null);
-  const snappingEnabledRef = useRef(true);
-
-  const lastScrollLeft = useRef(0);
-  const rafId = useRef<number | null>(null);
-
-  const onScroll = () => {
-    if (rafId.current != null) return;
-
-    const el = containerRef.current;
-    if (!el) return;
-
-    lastScrollLeft.current = el.scrollLeft; // 👈 CRITICAL
-    // rafId.current = requestAnimationFrame(checkSettled);
-  };
 
   // --- measure container + compute centering padding ---
   React.useEffect(() => {
@@ -60,28 +45,10 @@ export function ScrollSpace({
     const el = containerRef.current;
     if (!el) return;
 
-    snappingEnabledRef.current = false;
-
     el.scrollTo({
       left: scrollToIndex * itemDistance,
       behavior: "smooth",
     });
-
-    let last = el.scrollLeft;
-
-    const waitForSettle = () => {
-      const current = el.scrollLeft;
-
-      if (Math.abs(current - last) < 0.5) {
-        snappingEnabledRef.current = true;
-        return;
-      }
-
-      last = current;
-      requestAnimationFrame(waitForSettle);
-    };
-
-    requestAnimationFrame(waitForSettle);
   }, [scrollToIndex, itemDistance]);
 
   React.useEffect(() => {
@@ -95,23 +62,19 @@ export function ScrollSpace({
       const rawIndex = el.scrollLeft / itemDistance;
 
       // 🔁 continuous signal (NO React)
-      if (externalFloatingIndexRef) {
-        externalFloatingIndexRef.current = rawIndex;
-      }
+      floatingIndexRef.current = rawIndex;
 
       // 🧠 discrete signal (React-safe)
       const rounded = Math.round(rawIndex);
       if (lastEmittedIndexRef.current !== rounded) {
         lastEmittedIndexRef.current = rounded;
-        onIndexChange?.(rounded);
+        onIndexChange(rounded);
       }
-
-      onScroll(); // rAF settle detector
     };
 
     el.addEventListener("scroll", handleScroll);
     return () => el.removeEventListener("scroll", handleScroll);
-  }, [itemDistance, onIndexChange, externalFloatingIndexRef]);
+  }, [itemDistance, onIndexChange, floatingIndexRef]);
 
   // --- horizontal wheel scrolling ---
   React.useEffect(() => {

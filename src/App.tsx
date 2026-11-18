@@ -22,17 +22,12 @@ function App() {
   const [orderBy, setOrderBy] = React.useState<
     "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
   >("yearlyTurnOver");
-  // Removed itemSpacingPx state and its useEffect for dynamic measurement
-
-  // Use the new getSortingOffsets function with dynamically measured itemSpacingPx
-
   const offsetsMap = React.useMemo(() => {
     return getSortingOffsets(circlesData, orderBy);
   }, [orderBy]);
 
-  const { sortedCircles } = React.useMemo(() => {
-    const sorted = getSortedCircles(circlesData, orderBy);
-    return { sortedCircles: sorted };
+  const sortedCircles = React.useMemo(() => {
+    return getSortedCircles(circlesData, orderBy);
   }, [orderBy]);
 
   const handleOrderChange = (value: typeof orderBy) => {

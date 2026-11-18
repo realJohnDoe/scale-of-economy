@@ -4,10 +4,8 @@ import { type CircleData } from "./data"; // Import CircleData type
 export const ITEM_SPACING_FACTOR = 1.15
 
 type TransformationParams = {
-  oldIndexOffset: number;
   scale: number;
   scalingOffset: number;
-  newIndexOffset: number;
 };
 
 const calculateDeltaX = (d1: number, d2: number): number => {
@@ -51,37 +49,12 @@ export function getSortingOffsets(
 ): Map<number, TransformationParams> {
   const sortedCircles = getSortedCircles(circles, sortBy);
 
-  const originalIdToIndex = new Map<number, number>();
-  circles.forEach((circle, index) => {
-    originalIdToIndex.set(circle.id, index);
-  });
-
-  const sortedIdToIndex = new Map<number, number>();
-  sortedCircles.forEach((circle, index) => {
-    sortedIdToIndex.set(circle.id, index);
-  });
-
-  const values = new Map<number, number>();
-  let minValue = Infinity;
-
-  circles.forEach((circle) => {
-    const value = getCircleValue(circle, sortBy);
-    values.set(circle.id, value);
-    if (value < minValue) {
-      minValue = value;
-    }
-  });
-
   const translateXOffsets = new Map<number, TransformationParams>();
   let cumulativeScalingOffset = 0;
   let previousDiameter = 0; // Diameter of the previously processed circle in the sorted list
 
   sortedCircles.forEach((circle, index) => {
-    const oldIndex = originalIdToIndex.get(circle.id) as number;
-    const newIndex = sortedIdToIndex.get(circle.id) as number;
-    const value = values.get(circle.id) as number;
-
-    const scale = Math.sqrt(value);
+    const scale = Math.sqrt(getCircleValue(circle, sortBy));
 
     if (index > 0) {
       // The circles are placed such that their edges touch, plus a small gap (0.1 * minRadius)
@@ -89,10 +62,8 @@ export function getSortingOffsets(
     }
 
     translateXOffsets.set(circle.id, {
-      oldIndexOffset: -oldIndex,
       scale: scale,
       scalingOffset: cumulativeScalingOffset,
-      newIndexOffset: newIndex,
     });
 
     previousDiameter = scale;
