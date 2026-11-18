@@ -1,10 +1,11 @@
 import React from "react";
 import { type CircleData } from "./data"; // Import CircleData type
+import type { OrderBy } from "./geometry";
 
 interface InfoBoxProps {
   circle: CircleData;
   isSelected: boolean;
-  highlightedNumber: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
+  highlightedNumber: OrderBy;
 }
 
 // Helper function from Circle.tsx, could be moved to a shared file later

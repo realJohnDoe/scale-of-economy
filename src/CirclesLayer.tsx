@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Circle from "./Circle";
+import type { OrderBy } from "./geometry";
 import InfoBox from "./InfoBox";
 import type { CircleData } from "./data";
 
@@ -16,7 +17,7 @@ interface CirclesLayerProps {
   selectedIndex: number; // still useful, but NOT for interpolation
   offsetsMap: OffsetsMap;
   sortedCircles: CircleData[];
-  highlightedNumber: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
+  highlightedNumber: OrderBy;
 }
 
 // Linear interpolation helper

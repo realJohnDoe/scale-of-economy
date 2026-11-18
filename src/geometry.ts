@@ -1,6 +1,14 @@
 // src/geometry.ts
 import { type CircleData } from "./data"; // Import CircleData type
 
+export type OrderBy = "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
+
+export const ORDER_LABELS: Record<OrderBy, string> = {
+  numberOfPersons: "Number of Persons",
+  yearlyTurnOver: "Total Daily Turnover",
+  turnoverPerPerson: "Turnover per Person",
+};
+
 export const ITEM_SPACING_FACTOR = 1.15
 
 type TransformationParams = {
@@ -19,7 +27,7 @@ const calculateDeltaX = (d1: number, d2: number): number => {
 
 function getCircleValue(
   circle: CircleData,
-  sortBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson",
+  sortBy: OrderBy,
 ): number {
   switch (sortBy) {
     case "numberOfPersons":
@@ -45,7 +53,7 @@ function getCircleValue(
  */
 export function getSortingOffsets(
   circles: CircleData[],
-  sortBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson",
+  sortBy: OrderBy,
 ): Map<number, TransformationParams> {
   const sortedCircles = getSortedCircles(circles, sortBy);
 
@@ -74,7 +82,7 @@ export function getSortingOffsets(
 
 export function getSortedCircles(
   circles: CircleData[],
-  sortBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson",
+  sortBy: OrderBy,
 ): CircleData[] {
   const sortedCircles = [...circles]; // Create a shallow copy to sort
 

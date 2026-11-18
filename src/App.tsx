@@ -1,6 +1,7 @@
 import React from "react";
 import { circlesData } from "./data";
 import {
+  type OrderBy,
   getSortedCircles,
   getSortingOffsets,
   ITEM_SPACING_FACTOR,
@@ -20,7 +21,7 @@ function App() {
   // Set when the order changes, so ScrollSpace scrolls to the same circle.
   const [scrollTarget, setScrollTarget] = React.useState<number>();
   const [orderBy, setOrderBy] = React.useState<
-    "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
+    OrderBy
   >("yearlyTurnOver");
   const offsetsMap = React.useMemo(() => {
     return getSortingOffsets(circlesData, orderBy);
