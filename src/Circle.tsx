@@ -18,10 +18,10 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
     <div className="relative w-full h-full">
       {/* Top text container */}
       {groupPredicate || imageFileName ? (
-        <div className="absolute bottom-full mb-3 text-primary font-bold text-center w-max left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-full mb-3 font-bold text-center w-max left-1/2 -translate-x-1/2">
           {groupPredicate && (
             <div
-              className={`${fadeClass} text-lg landscape:text-sm landscape:lg:lg`}
+              className={`${fadeClass} text-lg landscape:text-sm landscape:lg:text-lg`}
             >
               ...{groupPredicate}
             </div>
@@ -40,7 +40,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
 
       {/* The actual circle content */}
       <div
-        className={`${bgColor} rounded-full flex justify-center items-center text-primary font-bold p-2 text-center w-full h-full transition-colors duration-500 ease-in-out relative overflow-hidden`}
+        className={`${bgColor} rounded-full flex justify-center items-center font-bold p-2 text-center w-full h-full transition-colors duration-500 ease-in-out relative overflow-hidden`}
       >
         {imageFileName ? (
           <img

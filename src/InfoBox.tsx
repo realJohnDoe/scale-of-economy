@@ -90,7 +90,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
 
   return (
     <div
-      className={`text-primary font-bold text-center w-max mt-4 ${fadeClass}`}
+      className={`font-bold text-center w-max mt-4 ${fadeClass}`}
     >
       {/* Number of persons */}
       <div className={size("numberOfPersons")}>{formattedPersons},</div>

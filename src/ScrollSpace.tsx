@@ -134,7 +134,6 @@ export function ScrollSpace({
         w-full h-screen
         overflow-x-scroll overflow-y-hidden
         box-border
-        scroll-px-(--padding-x)
         snap-x snap-mandatory
       "
       style={{
