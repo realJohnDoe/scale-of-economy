@@ -1,20 +1,21 @@
 import React from "react";
+import { ORDER_LABELS, type OrderBy } from "./geometry";
 
 type DropdownProps = {
-  orderBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
+  orderBy: OrderBy;
   setOrderBy: (
-    orderBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
+    orderBy: OrderBy
   ) => void;
 };
 
 function Dropdown({ orderBy, setOrderBy }: DropdownProps) {
   const [hoveredOption, setHoveredOption] = React.useState<
-    "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson" | null
+    OrderBy | null
   >(null);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const getOptionClassName = (
-    option: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
+    option: OrderBy
   ) => {
     if (hoveredOption) {
       return hoveredOption === option ? "bg-gray-600" : "";
@@ -22,18 +23,7 @@ function Dropdown({ orderBy, setOrderBy }: DropdownProps) {
     return orderBy === option ? "bg-gray-600" : "";
   };
 
-  const getOrderByText = (
-    option: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson"
-  ) => {
-    switch (option) {
-      case "numberOfPersons":
-        return "Number of Persons";
-      case "yearlyTurnOver":
-        return "Total Daily Turnover";
-      case "turnoverPerPerson":
-        return "Turnover per Person";
-    }
-  };
+  const getOrderByText = (option: OrderBy) => ORDER_LABELS[option];
 
   return (
     <div className="relative">

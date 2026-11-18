@@ -1,10 +1,11 @@
 import React from "react";
 import Dropdown from "./Dropdown";
+import type { OrderBy } from "./geometry";
 
 interface AppHeaderProps {
-  orderBy: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson";
+  orderBy: OrderBy;
   setOrderBy: (
-    value: "numberOfPersons" | "yearlyTurnOver" | "turnoverPerPerson",
+    value: OrderBy,
   ) => void;
 }
 
