@@ -15,7 +15,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ orderBy, setOrderBy }) => {
         <div className="relative w-full h-full">
           {/* Title */}
           <div className="absolute top-4 inset-x-0 z-10 flex justify-center">
-            <div className="text-2xl font-bold text-primary w-96 text-center">
+            <div className="text-2xl font-bold w-96 text-center">
               How many people are...
             </div>
           </div>

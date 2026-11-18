@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
 @layer base {
-  :root {
-    --color-text-primary: #000000;
-  }
-
   html {
     /* Ensure html doesn't interfere with body scrolling */
   }

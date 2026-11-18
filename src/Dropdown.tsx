@@ -38,7 +38,7 @@ function Dropdown({ orderBy, setOrderBy }: DropdownProps) {
   return (
     <div className="relative">
       <div className="flex items-center">
-        <span className="text-primary mr-2">Visualizing</span>
+        <span className="mr-2">Visualizing</span>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="bg-gray-700 text-white rounded p-2"
