@@ -27,9 +27,8 @@ jobs:
     env:
       BASE_PATH: ${{ github.event_name == 'pull_request' && format('/scale-of-economy/pr-preview/pr-{0}/', github.event.number) || '/scale-of-economy/' }}
     steps:
-      # On `closed` only the preview action's cleanup runs.
+      # On `closed` only the checkout and the preview action's cleanup run.
       - name: Checkout
-        if: github.event.action != 'closed'
         uses: actions/checkout@v7
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         if: github.event.action != 'closed'
