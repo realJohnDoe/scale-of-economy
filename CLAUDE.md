@@ -2,7 +2,7 @@
 
 - Use pnpm, never npm or yarn.
 - Before pushing, run the checks CI runs: `pnpm install --frozen-lockfile`,
-  `pnpm run lint`, `pnpm run build`.
+  `pnpm run lint`, `pnpm test`, `pnpm run build`.
 
 ## Workshop
 

@@ -1,48 +1,12 @@
 import React from "react";
 import { type CircleData } from "./data"; // Import CircleData type
 import type { OrderBy } from "./geometry";
+import { formatToTwoSignificantDigits } from "./format";
 
 interface InfoBoxProps {
   circle: CircleData;
   isSelected: boolean;
   highlightedNumber: OrderBy;
-}
-
-// Helper function from Circle.tsx, could be moved to a shared file later
-function formatToTwoSignificantDigits(
-  num: number,
-  isCurrency: boolean = false,
-): string {
-  const prefix = isCurrency ? "$" : "";
-  if (num === 0) return prefix + "0";
-
-  const absNum = Math.abs(num);
-  const sign = num < 0 ? "-" : "";
-
-  const options: Intl.NumberFormatOptions = {
-    maximumSignificantDigits: 2,
-    minimumSignificantDigits: 1,
-  };
-
-  let scaledNum = absNum;
-  let suffix = "";
-
-  if (absNum >= 1.0e12) {
-    scaledNum = absNum / 1.0e12;
-    suffix = " trillion";
-  } else if (absNum >= 1.0e9) {
-    scaledNum = absNum / 1.0e9;
-    suffix = " billion";
-  } else if (absNum >= 1.0e6) {
-    scaledNum = absNum / 1.0e6;
-    suffix = " million";
-  } else if (absNum >= 1.0e3) {
-    scaledNum = absNum / 1.0e3;
-    suffix = " thousand";
-  }
-
-  const formatted = scaledNum.toLocaleString("en-US", options);
-  return prefix + sign + formatted + suffix;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({
