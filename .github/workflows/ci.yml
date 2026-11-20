@@ -1,0 +1,42 @@
+name: CI
+
+# Called by deploy.yml (production) and preview.yml (PR previews). Its job
+# reports as `ci / build` in the caller.
+on:
+  workflow_call:
+    inputs:
+      base-path:
+        description: Base path the site is built for (vite `base`).
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BASE_PATH: ${{ inputs.base-path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26  # pnpm 11 needs Node 22+
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm run lint
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm run build
+      # The caller's deploy job runs on another runner.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dist
+          path: dist
