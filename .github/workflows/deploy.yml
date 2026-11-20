@@ -1,68 +1,39 @@
 name: Deploy to GitHub Pages
 
+# Production only. PR events go to preview.yml, so they cannot reach this.
 on:
   push:
     branches:
       - main
-  # Builds every PR, so Dependabot auto-merge has a check to wait for. A PR
-  # labelled `preview` is also deployed to pr-preview/pr-<N>/ on gh-pages.
-  pull_request:
-    types: [opened, reopened, synchronize, labeled, closed]
   workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
-
-# Production and previews all push to gh-pages: queue, never cancel.
-concurrency:
-  group: ${{ github.event_name == 'pull_request' && format('preview-{0}', github.event.number) || 'pages' }}
-  cancel-in-progress: false
 
 jobs:
-  build:
-    # Adding another label (e.g. automerge) must not rebuild.
-    if: github.event.action != 'labeled' || github.event.label.name == 'preview'
+  ci:
+    uses: ./.github/workflows/ci.yml
+    with:
+      base-path: /scale-of-economy/
+
+  deploy:
+    needs: ci
     runs-on: ubuntu-latest
-    env:
-      BASE_PATH: ${{ github.event_name == 'pull_request' && format('/scale-of-economy/pr-preview/pr-{0}/', github.event.number) || '/scale-of-economy/' }}
+    # Queue, never cancel. Previews push to gh-pages from their own groups;
+    # the deploy action rebases and retries a rejected push.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     steps:
-      # On `closed` only the checkout and the preview action's cleanup run.
       - name: Checkout
         uses: actions/checkout@v7
-      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
-        if: github.event.action != 'closed'
-      - name: Set up Node.js
-        if: github.event.action != 'closed'
-        uses: actions/setup-node@v7
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          node-version: 26  # pnpm 11 needs Node 22+
-          cache: pnpm
-      - name: Install dependencies
-        if: github.event.action != 'closed'
-        run: pnpm install --frozen-lockfile
-      - name: Lint
-        if: github.event.action != 'closed'
-        run: pnpm run lint
-      - name: Test
-        if: github.event.action != 'closed'
-        run: pnpm test
-      - name: Build
-        if: github.event.action != 'closed'
-        run: pnpm run build
+          name: dist
+          path: dist
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
         with:
           folder: dist
           branch: gh-pages
           clean-exclude: pr-preview/
-      # Removal on `closed` runs whether or not the label is still there.
-      - name: Deploy PR preview
-        if: >-
-          github.event_name == 'pull_request'
-          && github.event.pull_request.head.repo.full_name == github.repository
-          && (github.event.action == 'closed' || contains(github.event.pull_request.labels.*.name, 'preview'))
-        uses: rossjrw/pr-preview-action@873417d2df72380da1f3978378fb58560bcde976 # v1.8.2
-        with:
-          source-dir: ./dist
