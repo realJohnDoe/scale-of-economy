@@ -1,7 +1,7 @@
 name: CI
 
-# Called by deploy.yml (production) and preview.yml (PR previews). Its job
-# reports as `ci / build` in the caller.
+# Called by pages.yml (production and PR previews). Its job
+# reports as `build / build` in the caller.
 on:
   workflow_call:
     inputs:
@@ -40,3 +40,4 @@ jobs:
         with:
           name: dist
           path: dist
+          include-hidden-files: true
