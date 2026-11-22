@@ -78,8 +78,19 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
               Did you know?
             </div>
             <div className="font-normal text-base leading-snug landscape:text-[0.625rem] landscape:leading-tight landscape:lg:text-base landscape:lg:leading-snug landscape:xl:text-xl">
-              {trivia}.
+              {trivia.text}.
             </div>
+            <a
+              href={trivia.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={showTrivia ? 0 : -1}
+              className={`mt-2 text-sm text-gray-300 hover:underline landscape:mt-0.5 landscape:text-[0.5rem] landscape:lg:mt-2 landscape:lg:text-sm ${
+                showTrivia ? "pointer-events-auto" : "pointer-events-none"
+              }`}
+            >
+              [{trivia.source.name}]
+            </a>
           </div>
         )}
       </div>
@@ -93,7 +104,7 @@ const Circle: React.FC<CircleProps> = ({ circle, isSelected }) => {
           aria-controls={`trivia-${circle.id}`}
           aria-label={showTrivia ? "Hide trivia" : `Did you know? Trivia about ${name}`}
           tabIndex={isSelected ? 0 : -1}
-          className={`absolute top-[14.6%] right-[14.6%] translate-x-1/2 -translate-y-1/2 z-20 rounded-full bg-yellow-400 text-gray-900 font-bold shadow-md ring-2 ring-white cursor-pointer flex items-center justify-center w-11 h-11 text-2xl landscape:w-7 landscape:h-7 landscape:text-base landscape:lg:w-11 landscape:lg:h-11 landscape:lg:text-2xl hover:bg-yellow-300 ${fadeClass} ${
+          className={`absolute top-[14.6%] right-[14.6%] landscape:top-[6%] landscape:right-[6%] landscape:lg:top-[14.6%] landscape:lg:right-[14.6%] translate-x-1/2 -translate-y-1/2 z-20 rounded-full bg-yellow-400 text-gray-900 font-bold shadow-md ring-2 ring-white cursor-pointer flex items-center justify-center w-11 h-11 text-2xl landscape:w-7 landscape:h-7 landscape:text-base landscape:lg:w-11 landscape:lg:h-11 landscape:lg:text-2xl hover:bg-yellow-300 ${fadeClass} ${
             isSelected ? "pointer-events-auto" : "pointer-events-none"
           }`}
         >
