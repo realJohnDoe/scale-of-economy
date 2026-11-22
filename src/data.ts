@@ -42,7 +42,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1,
     turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 69433,
-    context: "Assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
     sources: [
       {
@@ -58,7 +57,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 3,
     turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 138866,
-    context: "Assuming two adults with an average German salary and one child",
     imageFileName: "images/family.webp",
     sources: [
       {
@@ -74,7 +72,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 30,
     turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 1040000,
-    context: "Assuming 15 working adults with an average German salary",
     imageFileName: "images/friends.webp",
     sources: [
       {
@@ -90,7 +87,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 195,
     turnOverPredicate: STORE_PREDICATE,
     yearlyTurnOver: 63200000,
-    context: "Walmart is the world's largest company by revenue",
     imageFileName: "images/walmart.webp",
     trivia: {
       text: "With about 2.1 million staff, Walmart is the world's largest private employer",
@@ -113,7 +109,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 83000000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 5010000000000,
-    context: "Germany is the country with the third-largest economy in the World and the home country of the author of this web site",
     imageFileName: "images/germany.webp",
     sources: [
       {
@@ -151,7 +146,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1400000000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 19000000000000,
-    context: "China is the the second-most populous country and the country with the second-biggest economy",
     imageFileName: "images/china.webp",
     trivia: {
       text: "China makes more than half of the world's steel",
@@ -169,7 +163,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1430000000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 4200000000000,
-    context: "India is the most populous country and the country with the fifth-biggest economy",
     imageFileName: "images/india.webp",
     trivia: {
       text: "India produces more milk than any other country",
