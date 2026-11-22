@@ -150,12 +150,17 @@ export const circlesData: CircleData[] = [
     id: 10,
     name: "China",
     groupPredicate: "living in",
-    numberOfPersons: 1400000000,
+    numberOfPersons: 1404000000,
     turnOverPredicate: COUNTRY_PREDICATE,
-    yearlyTurnOver: 19000000000000,
+    yearlyTurnOver: 21546000000000,
     context: "China is the the second-most populous country and the country with the second-biggest economy",
     imageFileName: "images/china.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/China",
+      },
+    ],
   },
   {
     id: 11,
