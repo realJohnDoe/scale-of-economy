@@ -36,13 +36,17 @@ export const circlesData: CircleData[] = [
     groupPredicate: null,
     numberOfPersons: 1,
     turnOverPredicate: EARN_PREDICATE,
-    yearlyTurnOver: 69433,
+    yearlyTurnOver: 54400,
     context: "Assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
     sources: [
       {
         name: "Statista",
         url: "https://www.statista.com/statistics/416207/average-annual-wages-germany-y-on-y-in-euros/"
+      },
+      {
+        name: "ECB",
+        url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
       }
     ],
   },
@@ -52,13 +56,17 @@ export const circlesData: CircleData[] = [
     groupPredicate: "living in",
     numberOfPersons: 3,
     turnOverPredicate: EARN_PREDICATE,
-    yearlyTurnOver: 138866,
+    yearlyTurnOver: 108800,
     context: "Assuming two adults with an average German salary and one child",
     imageFileName: "images/family.webp",
     sources: [
       {
         name: "Statista",
         url: "https://www.statista.com/statistics/416207/average-annual-wages-germany-y-on-y-in-euros/"
+      },
+      {
+        name: "ECB",
+        url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
       }
     ],
   },
@@ -68,13 +76,17 @@ export const circlesData: CircleData[] = [
     groupPredicate: null,
     numberOfPersons: 30,
     turnOverPredicate: EARN_PREDICATE,
-    yearlyTurnOver: 1040000,
+    yearlyTurnOver: 816000,
     context: "Assuming 15 working adults with an average German salary",
     imageFileName: "images/friends.webp",
     sources: [
       {
         name: "Statista",
         url: "https://www.statista.com/statistics/416207/average-annual-wages-germany-y-on-y-in-euros/"
+      },
+      {
+        name: "ECB",
+        url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
       }
     ],
   },
