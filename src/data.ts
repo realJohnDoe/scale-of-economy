@@ -19,6 +19,11 @@ export type CircleData = {
   turnOverPredicate?: string;
   yearlyTurnOver: number;
   context?: string;
+  /** A short fun fact, shown below the context. Not every entity has one. */
+  trivia?: {
+    text: string;
+    source: Source;
+  };
   imageFileName: string | null;
   sources: Source[];
 };
@@ -37,7 +42,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1,
     turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 54400,
-    context: "Assuming you earn as much as an average German",
     imageFileName: "images/you.webp",
     sources: [
       {
@@ -57,7 +61,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 3,
     turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 108800,
-    context: "Assuming two adults with an average German salary and one child",
     imageFileName: "images/family.webp",
     sources: [
       {
@@ -77,7 +80,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 30,
     turnOverPredicate: EARN_PREDICATE,
     yearlyTurnOver: 816000,
-    context: "Assuming 15 working adults with an average German salary",
     imageFileName: "images/friends.webp",
     sources: [
       {
@@ -97,8 +99,14 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 191,
     turnOverPredicate: STORE_PREDICATE,
     yearlyTurnOver: 64970000,
-    context: "Walmart is the world's largest company by revenue",
     imageFileName: "images/walmart.webp",
+    trivia: {
+      text: "With about 2.1 million staff, Walmart is the world's largest private employer",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Walmart",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -113,7 +121,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 83467000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 5470000000000,
-    context: "Germany is the country with the third-largest economy in the World and the home country of the author of this web site",
     imageFileName: "images/germany.webp",
     sources: [
       {
@@ -129,8 +136,14 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 413000,
     turnOverPredicate: COMPANY_PREDICATE,
     yearlyTurnOver: 102830000000,
-    context: "The author of this web site is working for Bosch",
     imageFileName: "images/bosch.webp",
+    trivia: {
+      text: "About 94% of Bosch is owned by a charity, the Robert Bosch Stiftung",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Bosch_(company)",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -153,8 +166,14 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1404000000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 21546000000000,
-    context: "China is the the second-most populous country and the country with the second-biggest economy",
     imageFileName: "images/china.webp",
+    trivia: {
+      text: "China makes more than half of the world's steel",
+      source: {
+        name: "worldsteel",
+        url: "https://worldsteel.org/media/press-releases/2025/december-2024-crude-steel-production-and-2024-global-totals/",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -169,8 +188,14 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1430000000,
     turnOverPredicate: COUNTRY_PREDICATE,
     yearlyTurnOver: 4200000000000,
-    context: "India is the most populous country and the country with the fifth-biggest economy",
     imageFileName: "images/india.webp",
+    trivia: {
+      text: "India produces more milk than any other country",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/List_of_countries_by_milk_production",
+      },
+    },
     sources: [],
   },
   {
@@ -180,6 +205,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 117000000000000,
     groupPredicate: "living in the",
     imageFileName: "images/world.webp",
+    trivia: {
+      text: "The world's population passed 8 billion in November 2022",
+      source: {
+        name: "UNFPA",
+        url: "https://www.unfpa.org/press/worlds-population-hits-8-billion-people-un-calls-solidarity-advancing-sustainable-development",
+      },
+    },
     sources: [],
   },
   {
@@ -189,6 +221,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 812000000000,
     groupPredicate: null,
     imageFileName: "images/elon.webp",
+    trivia: {
+      text: "In June 2026, Musk became the first trillionaire, after SpaceX went public",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Wealth_of_Elon_Musk",
+      },
+    },
     sources: [
       {
         name: "Forbes",
@@ -203,6 +242,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 30600000000000,
     groupPredicate: "living in the",
     imageFileName: "images/usa.webp",
+    trivia: {
+      text: "The US dollar is on one side of almost 90% of all currency trades",
+      source: {
+        name: "BIS",
+        url: "https://www.bis.org/statistics/rpfx25_fx.htm",
+      },
+    },
     sources: [],
   },
   {
@@ -212,6 +258,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 717000000000,
     groupPredicate: "working at",
     imageFileName: "images/amazon.webp",
+    trivia: {
+      text: "AWS brings in under a fifth of Amazon's revenue, but most of its profit",
+      source: {
+        name: "Amazon",
+        url: "https://ir.aboutamazon.com/news-release/news-release-details/2025/Amazon-com-Announces-Fourth-Quarter-Results/default.aspx",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -226,6 +279,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 546000000000,
     groupPredicate: "working at the",
     imageFileName: "images/state-grid.webp",
+    trivia: {
+      text: "State Grid supplies electricity to more than a billion people",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/State_Grid_Corporation_of_China",
+      },
+    },
     sources: [],
   },
   {
@@ -235,6 +295,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 3560000000000,
     groupPredicate: "living in",
     imageFileName: "images/africa.webp",
+    trivia: {
+      text: "Africa is the youngest continent: half its people are under 20",
+      source: {
+        name: "Pew Research",
+        url: "https://www.pewresearch.org/short-reads/2026/05/19/5-facts-about-africas-population-growth/",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -249,6 +316,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 59000000000,
     groupPredicate: "living in",
     imageFileName: "images/stuttgart.webp",
+    trivia: {
+      text: "Both Mercedes-Benz and Porsche are headquartered in Stuttgart",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Stuttgart",
+      },
+    },
     sources: [],
   },
   {
@@ -258,6 +332,13 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 13100000000,
     groupPredicate: "working at",
     imageFileName: "images/open-ai.webp",
+    trivia: {
+      text: "OpenAI was founded in 2015 as a non-profit research lab",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/OpenAI",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -272,6 +353,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 23000000,
     yearlyTurnOver: 18300000000,
     imageFileName: "images/malawi.webp",
+    trivia: {
+      text: "Tobacco is Malawi's biggest export, bringing in around half of its export earnings",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Tobacco_industry_in_Malawi",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -286,6 +374,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 32862000,
     yearlyTurnOver: 205000000000,
     imageFileName: "images/ukraine.webp",
+    trivia: {
+      text: "Before 2022, Ukraine was the world's largest exporter of sunflower oil",
+      source: {
+        name: "CBI",
+        url: "https://www.cbi.eu/market-information/natural-ingredients-cosmetics/what-impact-war-ukraine-exports-vegetable-oils",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -314,6 +409,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 31282,
     yearlyTurnOver: 10760000000,
     imageFileName: "images/lego.webp",
+    trivia: {
+      text: "Lego makes around 300 million tiny tyres a year, a Guinness World Record",
+      source: {
+        name: "Guinness",
+        url: "https://www.guinnessworldrecords.com/world-records/100909-largest-tyre-manufacture-per-annum",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -336,6 +438,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 23,
     yearlyTurnOver: 10020000,
     imageFileName: "images/aldi.webp",
+    trivia: {
+      text: "Since 1960, Aldi has been two separate companies: Aldi Nord and Aldi Süd",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Aldi",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -354,6 +463,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 460,
     yearlyTurnOver: 92300000,
     imageFileName: "images/ikea.webp",
+    trivia: {
+      text: "IKEA is Ingvar Kamprad, Elmtaryd, Agunnaryd: its founder, his farm and his village",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/IKEA",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -372,6 +488,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1,
     yearlyTurnOver: 275000000,
     imageFileName: "images/ronaldo.webp",
+    trivia: {
+      text: "In 2020, Ronaldo became the first footballer to earn $1 billion in his career",
+      source: {
+        name: "Euronews",
+        url: "https://www.euronews.com/2020/06/05/cristiano-ronaldo-is-first-footballer-to-earn-more-than-1-billion",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -386,6 +509,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 67785,
     yearlyTurnOver: 5089468750,
     imageFileName: "images/taylor-swift.webp",
+    trivia: {
+      text: "The Eras Tour was the first concert tour to gross more than $2 billion",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/The_Eras_Tour",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -400,6 +530,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 831000000,
     yearlyTurnOver: 909945000000,
     imageFileName: "images/extreme-poverty.webp",
+    trivia: {
+      text: "In 1990, more than a third of humanity lived in extreme poverty",
+      source: {
+        name: "Our World in Data",
+        url: "https://ourworldindata.org/extreme-poverty",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -414,6 +551,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 21000,
     yearlyTurnOver: 24400000000,
     imageFileName: "images/nasa.webp",
+    trivia: {
+      text: "In 1966, NASA got 4.4% of the US federal budget; today it gets under 0.5%",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Budget_of_NASA",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
@@ -428,6 +572,13 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 38200,
     yearlyTurnOver: 8900000000,
     imageFileName: "images/stanford.webp",
+    trivia: {
+      text: "Google, Hewlett-Packard and Yahoo were all started by Stanford students",
+      source: {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Stanford_University",
+      },
+    },
     sources: [
       {
         name: "Wikipedia",
