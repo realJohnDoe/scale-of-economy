@@ -312,13 +312,17 @@ export const circlesData: CircleData[] = [
     id: 25,
     name: "an average Aldi store",
     groupPredicate: "working at",
-    numberOfPersons: 22,
-    yearlyTurnOver: 8880000,
+    numberOfPersons: 23,
+    yearlyTurnOver: 10020000,
     imageFileName: "images/aldi.webp",
     sources: [
       {
         name: "Wikipedia",
         url: "https://en.wikipedia.org/wiki/Aldi",
+      },
+      {
+        name: "Wikipedia (Trader Joe's)",
+        url: "https://en.wikipedia.org/wiki/Trader_Joe%27s",
       },
     ],
   },
