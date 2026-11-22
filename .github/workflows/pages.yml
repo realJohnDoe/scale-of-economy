@@ -27,7 +27,7 @@ jobs:
     needs: build
     # `skipped` lets `closed` and `unlabeled` reach the removal.
     if: ${{ !cancelled() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
-    uses: realJohnDoe/agent-skills/.github/workflows/pages.yml@main
+    uses: realJohnDoe/joes-workshop/.github/workflows/pages.yml@main
     with:
       artifact: dist
     permissions:
