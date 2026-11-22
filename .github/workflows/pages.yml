@@ -1,0 +1,35 @@
+name: Pages
+
+# Production deploy on main, and PR previews under pr-preview/pr-<N>/ for PRs
+# labelled `preview`. Every PR is built, so Dependabot auto-merge has a check
+# to wait for. Deploy, preview and removal live in the shared workflow.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled, closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    # Adding another label (e.g. automerge) must not rebuild.
+    if: >-
+      github.event.action != 'closed' && github.event.action != 'unlabeled' &&
+      (github.event.action != 'labeled' || github.event.label.name == 'preview')
+    uses: ./.github/workflows/ci.yml
+    with:
+      base-path: ${{ github.event_name == 'pull_request' && format('/{0}/pr-preview/pr-{1}/', github.event.repository.name, github.event.number) || format('/{0}/', github.event.repository.name) }}
+
+  pages:
+    needs: build
+    # `skipped` lets `closed` and `unlabeled` reach the removal.
+    if: ${{ !cancelled() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    uses: realJohnDoe/agent-skills/.github/workflows/pages.yml@main
+    with:
+      artifact: dist
+    permissions:
+      contents: write
+      pull-requests: write
