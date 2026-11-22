@@ -307,12 +307,20 @@ export const circlesData: CircleData[] = [
     name: "The Lego Group",
     groupPredicate: "working at the",
     numberOfPersons: 31282,
-    yearlyTurnOver: 11670000000,
+    yearlyTurnOver: 10760000000,
     imageFileName: "images/lego.webp",
     sources: [
       {
         name: "Wikipedia",
         url: "https://en.wikipedia.org/wiki/The_Lego_Group",
+      },
+      {
+        name: "ECB (DKK)",
+        url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-dkk.en.html",
+      },
+      {
+        name: "ECB (USD)",
+        url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
       },
     ],
   },
