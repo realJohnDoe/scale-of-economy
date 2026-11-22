@@ -19,6 +19,8 @@ export type CircleData = {
   turnOverPredicate?: string;
   yearlyTurnOver: number;
   context?: string;
+  /** A short fun fact, shown below the context. Not every entity has one. */
+  trivia?: string;
   imageFileName: string | null;
   sources: Source[];
 };
@@ -87,6 +89,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 63200000,
     context: "Walmart is the world's largest company by revenue",
     imageFileName: "images/walmart.webp",
+    trivia: "With about 2.1 million staff, Walmart is the world's largest private employer",
     sources: [
       {
         name: "Wikipedia",
@@ -119,6 +122,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 90300000000,
     context: "The author of this web site is working for Bosch",
     imageFileName: "images/bosch.webp",
+    trivia: "Most of Bosch is owned by a charity, the Robert Bosch Stiftung",
     sources: [
       {
         name: "Wikipedia",
@@ -135,6 +139,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 19000000000000,
     context: "China is the the second-most populous country and the country with the second-biggest economy",
     imageFileName: "images/china.webp",
+    trivia: "China makes more than half of the world's steel",
     sources: [],
   },
   {
@@ -146,6 +151,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 4200000000000,
     context: "India is the most populous country and the country with the fifth-biggest economy",
     imageFileName: "images/india.webp",
+    trivia: "India produces more milk than any other country",
     sources: [],
   },
   {
@@ -155,6 +161,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 117000000000000,
     groupPredicate: "living in the",
     imageFileName: "images/world.webp",
+    trivia: "The world's population passed 8 billion in November 2022",
     sources: [],
   },
   {
@@ -164,6 +171,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 300000000000,
     groupPredicate: null,
     imageFileName: "images/elon.webp",
+    trivia: "In December 2024, Musk became the first person worth over $400 billion",
     sources: [],
   },
   {
@@ -173,6 +181,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 30600000000000,
     groupPredicate: "living in the",
     imageFileName: "images/usa.webp",
+    trivia: "The US dollar is on one side of almost 90% of all currency trades",
     sources: [],
   },
   {
@@ -182,6 +191,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 638000000000,
     groupPredicate: "working at",
     imageFileName: "images/amazon.webp",
+    trivia: "AWS brings in under a fifth of Amazon's revenue, but most of its profit",
     sources: [],
   },
   {
@@ -191,6 +201,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 546000000000,
     groupPredicate: "working at the",
     imageFileName: "images/state-grid.webp",
+    trivia: "State Grid supplies electricity to more than a billion people",
     sources: [],
   },
   {
@@ -200,6 +211,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 2820000000000,
     groupPredicate: "living in",
     imageFileName: "images/africa.webp",
+    trivia: "Africa is the youngest continent: half its people are under 20",
     sources: [],
   },
   {
@@ -209,6 +221,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 59000000000,
     groupPredicate: "living in",
     imageFileName: "images/stuttgart.webp",
+    trivia: "Both Mercedes-Benz and Porsche are headquartered in Stuttgart",
     sources: [],
   },
   {
@@ -218,6 +231,7 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 3700000000,
     groupPredicate: "working at",
     imageFileName: "images/open-ai.webp",
+    trivia: "OpenAI was founded in 2015 as a non-profit research lab",
     sources: [],
   },
   {
@@ -227,6 +241,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 21240000,
     yearlyTurnOver: 13176000000,
     imageFileName: "images/malawi.webp",
+    trivia: "Lake Malawi has more fish species than any other lake on Earth",
     sources: [
       {
         name: "Wikipedia",
@@ -241,6 +256,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 32862000,
     yearlyTurnOver: 205000000000,
     imageFileName: "images/ukraine.webp",
+    trivia: "Before 2022, Ukraine was the world's largest exporter of sunflower oil",
     sources: [
       {
         name: "Wikipedia",
@@ -269,6 +285,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 31282,
     yearlyTurnOver: 11670000000,
     imageFileName: "images/lego.webp",
+    trivia: "By number of units, Lego makes more tyres than any other company",
     sources: [
       {
         name: "Wikipedia",
@@ -283,6 +300,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 22,
     yearlyTurnOver: 8880000,
     imageFileName: "images/aldi.webp",
+    trivia: "Since 1960, Aldi has been two separate companies: Aldi Nord and Aldi Süd",
     sources: [
       {
         name: "Wikipedia",
@@ -297,6 +315,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 460,
     yearlyTurnOver: 92300000,
     imageFileName: "images/ikea.webp",
+    trivia: "IKEA stands for Ingvar Kamprad, Elmtaryd and Agunnaryd: its founder, his farm and his village",
     sources: [
       {
         name: "Wikipedia",
@@ -315,6 +334,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 1,
     yearlyTurnOver: 275000000,
     imageFileName: "images/ronaldo.webp",
+    trivia: "In 2020, Ronaldo became the first footballer to earn $1 billion in his career",
     sources: [
       {
         name: "Wikipedia",
@@ -329,6 +349,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 67785,
     yearlyTurnOver: 5089468750,
     imageFileName: "images/taylor-swift.webp",
+    trivia: "The Eras Tour was the first concert tour to gross more than $2 billion",
     sources: [
       {
         name: "Wikipedia",
@@ -343,6 +364,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 710000000,
     yearlyTurnOver: 492385000000,
     imageFileName: "images/extreme-poverty.webp",
+    trivia: "In 1990, more than a third of humanity lived in extreme poverty",
     sources: [
       {
         name: "Wikipedia",
@@ -357,6 +379,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 17960,
     yearlyTurnOver: 25400000000,
     imageFileName: "images/nasa.webp",
+    trivia: "In the Apollo era, NASA got over 4% of the US federal budget; today it's about 0.4%",
     sources: [
       {
         name: "Wikipedia",
@@ -371,6 +394,7 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 38200,
     yearlyTurnOver: 8900000000,
     imageFileName: "images/stanford.webp",
+    trivia: "Google, Hewlett-Packard and Yahoo were all started by Stanford students",
     sources: [
       {
         name: "Wikipedia",
