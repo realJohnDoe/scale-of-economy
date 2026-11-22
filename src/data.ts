@@ -185,9 +185,9 @@ export const circlesData: CircleData[] = [
     id: 11,
     name: "India",
     groupPredicate: "living in",
-    numberOfPersons: 1430000000,
+    numberOfPersons: 1480000000,
     turnOverPredicate: COUNTRY_PREDICATE,
-    yearlyTurnOver: 4200000000000,
+    yearlyTurnOver: 4060000000000,
     imageFileName: "images/india.webp",
     trivia: {
       text: "India produces more milk than any other country",
@@ -196,7 +196,12 @@ export const circlesData: CircleData[] = [
         url: "https://en.wikipedia.org/wiki/List_of_countries_by_milk_production",
       },
     },
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/India",
+      },
+    ],
   },
   {
     id: 12,
