@@ -355,8 +355,8 @@ export const circlesData: CircleData[] = [
     id: 29,
     name: "Extreme Poverty",
     groupPredicate: "living in",
-    numberOfPersons: 710000000,
-    yearlyTurnOver: 492385000000,
+    numberOfPersons: 831000000,
+    yearlyTurnOver: 909945000000,
     imageFileName: "images/extreme-poverty.webp",
     sources: [
       {
