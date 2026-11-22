@@ -243,8 +243,8 @@ export const circlesData: CircleData[] = [
   {
     id: 14,
     name: "USA",
-    numberOfPersons: 340000000,
-    yearlyTurnOver: 30600000000000,
+    numberOfPersons: 342000000,
+    yearlyTurnOver: 32600000000000,
     groupPredicate: "living in the",
     imageFileName: "images/usa.webp",
     trivia: {
@@ -254,7 +254,12 @@ export const circlesData: CircleData[] = [
         url: "https://www.bis.org/statistics/rpfx25_fx.htm",
       },
     },
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/United_States",
+      },
+    ],
   },
   {
     id: 15,
