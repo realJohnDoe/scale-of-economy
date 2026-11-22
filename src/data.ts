@@ -369,8 +369,8 @@ export const circlesData: CircleData[] = [
     id: 30,
     name: "NASA",
     groupPredicate: "working at",
-    numberOfPersons: 17960,
-    yearlyTurnOver: 25400000000,
+    numberOfPersons: 21000,
+    yearlyTurnOver: 24400000000,
     imageFileName: "images/nasa.webp",
     sources: [
       {
