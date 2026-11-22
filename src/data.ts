@@ -129,7 +129,6 @@ export const circlesData: CircleData[] = [
     numberOfPersons: 418000,
     turnOverPredicate: COMPANY_PREDICATE,
     yearlyTurnOver: 90300000000,
-    context: "The author of this web site is working for Bosch",
     imageFileName: "images/bosch.webp",
     trivia: {
       text: "About 94% of Bosch is owned by a charity, the Robert Bosch Stiftung",
@@ -205,10 +204,10 @@ export const circlesData: CircleData[] = [
     groupPredicate: null,
     imageFileName: "images/elon.webp",
     trivia: {
-      text: "In December 2024, Musk became the first person worth over $400 billion",
+      text: "In June 2026, Musk became the first trillionaire, after SpaceX went public",
       source: {
-        name: "Fortune",
-        url: "https://fortune.com/2024/12/11/elon-musk-net-worth-tops-400-billion-historic-first-richest-man-alive-spacex-tesla/",
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Wealth_of_Elon_Musk",
       },
     },
     sources: [],
@@ -317,10 +316,10 @@ export const circlesData: CircleData[] = [
     yearlyTurnOver: 13176000000,
     imageFileName: "images/malawi.webp",
     trivia: {
-      text: "Lake Malawi has more fish species than any other lake on Earth",
+      text: "Tobacco is Malawi's biggest export, bringing in around half of its export earnings",
       source: {
         name: "Wikipedia",
-        url: "https://en.wikipedia.org/wiki/Lake_Malawi",
+        url: "https://en.wikipedia.org/wiki/Tobacco_industry_in_Malawi",
       },
     },
     sources: [
