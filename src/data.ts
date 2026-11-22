@@ -206,11 +206,16 @@ export const circlesData: CircleData[] = [
   {
     id: 17,
     name: "Africa",
-    numberOfPersons: 1390000000,
-    yearlyTurnOver: 2820000000000,
+    numberOfPersons: 1470000000,
+    yearlyTurnOver: 3560000000000,
     groupPredicate: "living in",
     imageFileName: "images/africa.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Economy_of_Africa",
+      },
+    ],
   },
   {
     id: 18,
