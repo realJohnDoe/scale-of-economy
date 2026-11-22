@@ -183,11 +183,16 @@ export const circlesData: CircleData[] = [
   {
     id: 15,
     name: "Amazon",
-    numberOfPersons: 1556000,
-    yearlyTurnOver: 638000000000,
+    numberOfPersons: 1576000,
+    yearlyTurnOver: 717000000000,
     groupPredicate: "working at",
     imageFileName: "images/amazon.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Amazon_(company)",
+      },
+    ],
   },
   {
     id: 16,
