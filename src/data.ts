@@ -207,7 +207,7 @@ export const circlesData: CircleData[] = [
     id: 12,
     name: "World",
     numberOfPersons: 8300000000,
-    yearlyTurnOver: 117000000000000,
+    yearlyTurnOver: 128000000000000,
     groupPredicate: "living in the",
     imageFileName: "images/world.webp",
     trivia: {
@@ -217,7 +217,16 @@ export const circlesData: CircleData[] = [
         url: "https://www.unfpa.org/press/worlds-population-hits-8-billion-people-un-calls-solidarity-advancing-sustainable-development",
       },
     },
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia (population)",
+        url: "https://en.wikipedia.org/wiki/World_population",
+      },
+      {
+        name: "Wikipedia (economy)",
+        url: "https://en.wikipedia.org/wiki/World_economy",
+      },
+    ],
   },
   {
     id: 13,
