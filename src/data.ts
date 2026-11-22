@@ -110,9 +110,9 @@ export const circlesData: CircleData[] = [
     id: 8,
     name: "Germany",
     groupPredicate: "living in",
-    numberOfPersons: 83000000,
+    numberOfPersons: 83467000,
     turnOverPredicate: COUNTRY_PREDICATE,
-    yearlyTurnOver: 5010000000000,
+    yearlyTurnOver: 5470000000000,
     context: "Germany is the country with the third-largest economy in the World and the home country of the author of this web site",
     imageFileName: "images/germany.webp",
     sources: [
