@@ -94,9 +94,9 @@ export const circlesData: CircleData[] = [
     id: 7,
     name: "an average Walmart store",
     groupPredicate: "working at",
-    numberOfPersons: 195,
+    numberOfPersons: 191,
     turnOverPredicate: STORE_PREDICATE,
-    yearlyTurnOver: 63200000,
+    yearlyTurnOver: 64970000,
     context: "Walmart is the world's largest company by revenue",
     imageFileName: "images/walmart.webp",
     sources: [
