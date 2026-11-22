@@ -161,10 +161,15 @@ export const circlesData: CircleData[] = [
     id: 13,
     name: "Elon Musk",
     numberOfPersons: 1,
-    yearlyTurnOver: 300000000000,
+    yearlyTurnOver: 812000000000,
     groupPredicate: null,
     imageFileName: "images/elon.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Forbes",
+        url: "https://www.forbes.com/profile/elon-musk/",
+      },
+    ],
   },
   {
     id: 14,
@@ -214,11 +219,16 @@ export const circlesData: CircleData[] = [
   {
     id: 19,
     name: "OpenAI",
-    numberOfPersons: 3000,
-    yearlyTurnOver: 3700000000,
+    numberOfPersons: 4500,
+    yearlyTurnOver: 13100000000,
     groupPredicate: "working at",
     imageFileName: "images/open-ai.webp",
-    sources: [],
+    sources: [
+      {
+        name: "Wikipedia",
+        url: "https://en.wikipedia.org/wiki/OpenAI",
+      },
+    ],
   },
   {
     id: 20,
