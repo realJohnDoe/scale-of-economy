@@ -256,8 +256,8 @@ export const circlesData: CircleData[] = [
     id: 20,
     name: "Malawi",
     groupPredicate: "living in",
-    numberOfPersons: 21240000,
-    yearlyTurnOver: 13176000000,
+    numberOfPersons: 23000000,
+    yearlyTurnOver: 18300000000,
     imageFileName: "images/malawi.webp",
     sources: [
       {
