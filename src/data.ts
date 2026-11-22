@@ -310,7 +310,7 @@ export const circlesData: CircleData[] = [
   },
   {
     id: 27,
-    name: "Christiano Ronaldo",
+    name: "Cristiano Ronaldo",
     groupPredicate: null,
     numberOfPersons: 1,
     yearlyTurnOver: 275000000,
@@ -374,7 +374,7 @@ export const circlesData: CircleData[] = [
     sources: [
       {
         name: "Wikipedia",
-        url: "https://en.wikipedia.org/wiki/Harvard_University",
+        url: "https://en.wikipedia.org/wiki/Stanford_University",
       },
     ],
   },
