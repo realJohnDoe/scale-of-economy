@@ -126,15 +126,23 @@ export const circlesData: CircleData[] = [
     id: 9,
     name: "Bosch",
     groupPredicate: "working at",
-    numberOfPersons: 418000,
+    numberOfPersons: 413000,
     turnOverPredicate: COMPANY_PREDICATE,
-    yearlyTurnOver: 90300000000,
+    yearlyTurnOver: 102830000000,
     context: "The author of this web site is working for Bosch",
     imageFileName: "images/bosch.webp",
     sources: [
       {
         name: "Wikipedia",
         url: "https://en.wikipedia.org/wiki/Bosch_(company)"
+      },
+      {
+        name: "Bosch",
+        url: "https://www.bosch.com/company/annual-report/"
+      },
+      {
+        name: "ECB",
+        url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
       }
     ],
   },
